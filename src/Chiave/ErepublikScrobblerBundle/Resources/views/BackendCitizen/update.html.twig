@@ -1,0 +1,16 @@
+{% extends "ChiaveCoreBundle::backendbase.html.twig" %}
+
+{% block title %}Zarządzanie użytkownikami{% endblock %}
+{% block description %}tworzenie/edycja użytkownika{% endblock %}
+
+{% block active_name %}chiave_user_users{% endblock %}
+
+{% block body -%}
+
+    {{ form(form) }}
+
+    <a class="small button" href="{{ path('chiave_user_users') }}">
+        Powrót do listy użytkowników
+    </a>
+
+{% endblock %}

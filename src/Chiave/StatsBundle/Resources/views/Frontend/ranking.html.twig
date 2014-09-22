@@ -1,0 +1,54 @@
+{% extends "ChiaveCoreBundle::frontendbase.html.twig" %}
+
+{% block body -%}
+
+    <caption><h2>Ranking</h2></caption>
+    <table>
+        <thead>
+            <tr>
+                <th class="sorter-false"></th>
+                <th>Nick</th>
+                <th>Dywizja</th>
+                <th>Zbiórek</th>
+                <th>Hity</th>
+                <th>Obrażenia</th>
+                <th>Q broni</th>
+            </tr>
+        </thead>
+      <tbody>
+        {% for rankingUser in ranking.rankingUsers %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>
+                {{ rankingUser.nick }}
+                <img src="{{ rankingUser.citizen.history.smallAvatarUrl }}" /><br />
+            </td>
+            <td>{{ rankingUser.citizen.history.division }}</td>
+            <td>{{ rankingUser.egovBattles }}</td>
+            <td>{{ rankingUser.egovHits }}</td>
+            <td>{{ rankingUser.egovInfluence }}</td>
+            <td>TODO: {{ rankingUser.citizen.history.egovQWeaponHit }}</td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(function() {
+        $("table").tablesorter({
+            widgets: ['preserveFirstColumnNumeration', 'scroller'],
+            cssAsc: 'thAsc',
+            cssDesc: 'thDesc',
+            cssNone: 'thNone',
+            sortList: [[5,1],[3,1],[4,1]],
+            widgetOptions : {
+              scroller_height : 600,
+            },
+        });
+    });
+</script>
+{% endblock %}

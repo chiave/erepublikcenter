@@ -1,0 +1,95 @@
+{% extends "ChiaveCoreBundle::backendbase.html.twig" %}
+
+{% block title %}Gracze{% endblock %}
+{% block description %}lista graczy{% endblock %}
+
+{% block active_name %}chiave_scrobbler_citizens{% endblock %}
+
+{% block body %}
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Citizen ID</th>
+                <th>Nick</th>
+                <th>Experience</th>
+                <th>Strength</th>
+                <th>rankPoints</th>
+                {# <th>truePatriot</th>
+                <th>eBirth</th>
+                <th>location</th>
+                <th>nationalRank</th>
+                <th>partyName</th>
+                <th>militaryUnitName</th> #}
+                <th>
+                    <a class="tiny button success" href="{{ path('chiave_scrobbler_citizen_new') }}">
+                        Dodaj nowego citizena
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for citizen in citizens %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ citizen.citizenId }}</td>
+                <td>{{ citizen.history.nick }}</td>
+                <td>{{ citizen.history.experience }}</td>
+                <td>{{ citizen.history.strength }}</td>
+                <td>{{ citizen.history.rankPoints }}</td>
+                {# <td>{{ citizen.truePatriot }}</td>
+                <td>eBirth</td>
+                <td>{{ citizen.country }}<br />
+                    {{ citizen.region }}<br />
+                    {{ citizen.citizenship }}</td>
+                <td>{{ citizen.nationalRank }}</td>
+                <td>{{ citizen.partyName }}</td>
+                <td>{{ citizen.militaryUnitName }}</td> #}
+                <td>
+                    <div class="button-bar">
+                        <ul class="button-group">
+                            <li>
+                                <a class="tiny button" href="{{ path('chiave_scrobbler_citizens_histories', { 'citizenId': citizen.id }) }}">Pokaż historię</a>
+                            </li>
+                            <li>
+                                <a class="tiny button alert delete_button" href="{{ path('chiave_scrobbler_citizen_delete', { 'id': citizen.id }) }}">Usuń</a>
+                            </li>
+                        </ul>
+                    </div>
+                    {#<div  class="button-bar">
+                        <ul class="button-group">
+                            <li><a class="tiny button" href="{{ path('chiave_gallery_categories_edit', { 'id': category.id }) }}">Edytuj</a></li>
+                            <li><a class="tiny button alert delete_button" href="{{ path('chiave_scrobbler_citizen_delete', { 'id': category.id }) }}">Usuń</a></li>
+                        </ul>
+                    </div> #}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascripts -%}
+
+<script type="text/javascript">
+    $('.delete_button').click(function(e) {
+        e.preventDefault();
+
+        var toRemove = $(this).closest('tr');
+
+        $.post(
+            $(this).attr('href'),
+            function(data) {
+                if (data.success) {
+                    $(toRemove).remove();
+                    alert('Citizen usunięty pomyślnie');
+                } else {
+                    alert('Wystąpił straszny błąd: '+data.error+' :(');
+                }
+            });
+    });
+</script>
+
+{% endblock %}

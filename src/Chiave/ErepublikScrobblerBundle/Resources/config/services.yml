@@ -1,0 +1,10 @@
+services:
+    erepublik_citizen_scrobbler:
+        class:  Chiave\ErepublikScrobblerBundle\Service\ErepublikScrobblerService
+        calls:
+            - [setContainer, [@service_container]]
+
+    egov_nationalraport_fetcher:
+        class:  Chiave\ErepublikScrobblerBundle\Service\EgovFetcherService
+        calls:
+            - [setContainer, [@service_container]]

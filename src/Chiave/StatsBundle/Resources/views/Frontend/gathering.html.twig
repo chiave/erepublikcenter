@@ -1,0 +1,135 @@
+{% extends "ChiaveCoreBundle::frontendbase.html.twig" %}
+
+{% block body -%}
+
+    <caption><h2>Zbiórki Bluerose</h2></caption>
+    <table id="soldiers">
+        <thead>
+            <tr>
+                <th class="sorter-false"></th>
+                <th class="sorter-false">Avatar</th>
+                <th>Nick</th>
+                <th>Ilość walk</th>
+                <th>Hity</th>
+                <th>Obrażenia</th>
+                <th>Q broni</th>
+            </tr>
+        </thead>
+      <tbody>
+        {% for citizen in citizens if citizen.history.egovBattles != 0 %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td><img src="{{ citizen.history.smallAvatarUrl }}" /></td>
+            <td>
+                {{ citizen.history.nick }}
+            </td>
+            <td>{{ citizen.history.egovBattles }}</td>
+            <td>{{ citizen.history.egovHits }}</td>
+            <td>{{ citizen.history.egovInfluence }}</td>
+            <td>{{ citizen.history.hit }}</td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+    <caption><h2>Statystyki żołnierzy bijących na zbiórkach w dniu {% render controller('date_time:getErepublikDate', {'modifyDays':1, 'response': true}) %}(egov)</h2></caption>
+    <table id="egov_soldiers">
+        <thead>
+            <tr>
+              <td class="sorter-false"></td>
+              <td class="sorter-false">Avatar</td>
+              <td>Nick</td>
+              <td>Ilość walk</td>
+              <td>Hity</td>
+              <td>Obrażenia</td>
+            </tr>
+        </thead>
+      <tbody>
+        {% for citizen in citizens if citizen.history(1).egovBattles != 0 %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td><img src="{{ citizen.history.smallAvatarUrl }}" /></td>
+            <td>
+                {{ citizen.history(1).nick }}
+            </td>
+            <td>{{ citizen.history(1).egovBattles }}</td>
+            <td>{{ citizen.history(1).egovHits }}</td>
+            <td>{{ citizen.history(1).egovInfluence }}</td>
+
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+    <caption><h2>Bluerose w świetle innych bojówek w dniu
+        {% render controller('date_time:getErepublikDate', {'modifyDays':1, 'response': true}) %}
+    (egov)</h2></caption>
+    <table id="egov_mu">
+        <thead>
+            <tr>
+              <td class="sorter-false"></td>
+              <td>Armia</td>
+              <td>Bitwy</td>
+              <td>Żołnierze</td>
+              <td>Hity</td>
+              <td>DMG</td>
+            </tr>
+        </thead>
+      <tbody>
+        {% for mu in militaryUnits %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ mu.name }}</td>
+          <td>{{ mu.history(1).battles }}</td>
+          <td>{{ mu.history(1).soldiers }}</td>
+          <td>{{ mu.history(1).hits }}</td>
+          <td>{{ mu.history(1).influence }}</td>
+
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(function() {
+        $("#soldiers").tablesorter({
+            widgets: ['preserveFirstColumnNumeration', 'scroller'],
+            cssAsc: 'thAsc',
+            cssDesc: 'thDesc',
+            cssNone: 'thNone',
+            sortList: [[5,1],[3,1],[4,1]],
+            widgetOptions : {
+              scroller_height : 600,
+            },
+        });
+
+        $("#egov_soldiers").tablesorter({
+            widgets: ['preserveFirstColumnNumeration', 'scroller'],
+            cssAsc: 'thAsc',
+            cssDesc: 'thDesc',
+            cssNone: 'thNone',
+            sortList: [[5,1],[3,1],[4,1]],
+            widgetOptions : {
+              scroller_height : 600,
+            },
+        });
+
+        $("#egov_mu").tablesorter({
+            widgets: ['preserveFirstColumnNumeration', 'scroller'],
+            cssAsc: 'thAsc',
+            cssDesc: 'thDesc',
+            cssNone: 'thNone',
+            sortList: [[5,1],[4,1]],
+            widgetOptions : {
+              scroller_height : 600,
+            },
+        });
+    });
+</script>
+{% endblock %}

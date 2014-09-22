@@ -1,0 +1,20 @@
+services:
+    date_time:
+        class:  Chiave\StatsBundle\Service\DateTimeService
+        calls:
+            - [setContainer, [@service_container]]
+
+    citizen_stats:
+        class:  Chiave\StatsBundle\Service\CitizenStatsService
+        calls:
+            - [setContainer, [@service_container]]
+
+    citizen_infuence:
+        class:  Chiave\StatsBundle\Service\CitizenInfluenceService
+        calls:
+            - [setContainer, [@service_container]]
+
+    ranking:
+        class:  Chiave\StatsBundle\Service\RankingService
+        calls:
+            - [setContainer, [@service_container]]

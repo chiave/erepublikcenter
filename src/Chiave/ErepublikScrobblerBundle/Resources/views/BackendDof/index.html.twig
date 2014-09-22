@@ -1,0 +1,154 @@
+{% extends "ChiaveCoreBundle::backendbase.html.twig" %}
+
+{% block title %}Dofinansowanie{% endblock %}
+{% block description %}lista graczy{% endblock %}
+
+{% block active_name %}chiave_dof{% endblock %}
+
+{% block body %}
+
+    {% set citizenProfile = 'http://www.erepublik.com/en/citizen/profile/' %}
+    {% set citizenPM = 'http://www.erepublik.com/en/main/messages-compose/' %}
+    {% set citizenItems = 'http://www.erepublik.com/en/economy/donate-items/' %}
+    {% set citizenMoney = 'http://www.erepublik.com/en/economy/donate-money/' %}
+
+    {{ form(searchForm) }}
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Nick</th>
+                <th>Dywizja</th>
+                <th>Hity (egov)</th>
+                <th>Influ (egov)</th>
+                <th>
+                    Q broni<br />
+                    egovHits * hit q7</th>
+                <th>dof</th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {#         {% for citizen in citizens %}#}
+            {% for history in histories %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>
+                        <img src="{{ history.smallAvatarUrl }}" />
+                        {{ history.nick }}
+                    </td>
+                    <td>{{ history.divisionText }}</th>
+                    <td>{{ history.egovHits }}</th>
+                    <td>{{ history.egovInfluence }}</td>
+                    <td>
+                        {{ history.egovQWeaponHit }}
+                        {% if history.egovInfluence != history.egovQWeaponHit %}
+                            <br />(różne)
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a class="button split tiny
+                           {% if history.dof == 1 %}
+                               success
+                           {% elseif history.dof == 0%}
+                               alert
+                           {% elseif history.dof == -1%}
+                               secondary
+                           {% else %}
+                               alert
+                           {% endif %}">
+                            {{ history.dofText }}
+                            <span data-dropdown="drop-status-{{history.id}}"></span>
+                        </a>
+                        <br />
+                        <ul id="drop-status-{{history.id}}" class="f-dropdown" data-dropdown-content>
+                            {# {% if history.dof != 1 %} #}<li><a href="{{ path('chiave_dof_change', { 'historyId': history.id, 'status':1 }) }}" class="dof_button" data-status='1'>Przyznaj</a></li>{# {% endif %} #}
+                            {# {% if history.dof != 0 %} #}<li><a href="{{ path('chiave_dof_change', { 'historyId': history.id, 'status':0 }) }}" class="dof_button" data-status='0'>Cofnij status</a></li>{# {% endif %} #}
+                            {# {% if history.dof != '-1' %} #}<li><a href="{{ path('chiave_dof_change', { 'historyId': history.id, 'status':'-1' }) }}" class="dof_button" data-status='-1'>Ukryj ten wpis </a></li>{# {% endif %} #}
+                        </ul>
+                    </td>
+                    <td>
+                        {% set citizenId = history.citizen.citizenId %}
+                        {#                     <div class="button-bar">#}
+                        {#                         <ul class="button-group">#}
+                        {#                             <li>#}
+                        {#                                 <a class="tiny button" href="{{ path('chiave_scrobbler_citizens_histories', { 'citizenId': citizenId }) }}">Pokaż pełną historię</a>#}
+                        {#                             </li>#}
+                        {#                         </ul>#}
+                        {#                     </div>#}
+                        <a class="button split tiny" href="{{ citizenItems~citizenId }}" target="_blank">
+                            Donuj
+                            <span data-dropdown="drop-interact-{{ history.id }}"></span>
+                        </a>
+                        <ul id="drop-interact-{{ history.id }}" class="f-dropdown" data-dropdown-content>
+                            <li><a href="{{ citizenProfile~citizenId }}" target="_blank">Pokaż profil</a></li>
+                            <li><a href="{{ citizenPM~citizenId }}" target="_blank">Ślij PM</a></li>
+                            <li><a href="{{ citizenItems~citizenId }}" target="_blank">Wyślij przedmioty</a></li>
+                            <li><a href="{{ citizenMoney~citizenId }}" target="_blank">Wyślij pieniądze</a></li>
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+            {#         {% endfor %}#}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascripts -%}
+
+    <script type="text/javascript">
+        $('.dof_button').click(function(e) {
+            e.preventDefault();
+
+            var clicked = $(this);
+            var toChange = $(this).closest('tr');
+
+            $.post(
+                    $(this).attr('href'),
+                    function(data) {
+                        if (data.success) {
+                            // $(toChange).remove();
+                            //console.log($(clicked).attr('data-status'));
+
+                            var infoButton = $(clicked).parent().parent().siblings('a');
+
+                            $(infoButton);
+
+                            switch ($(clicked).attr('data-status')) {
+                                case '1':
+                                    $(infoButton)
+                                            .removeClass('alert secondary')
+                                            .addClass('success');
+                                    $(infoButton)[0].firstChild.data = data.dofStatus;
+                                    break;
+
+                                case '0':
+                                    $(infoButton)
+                                            .removeClass('success secondary')
+                                            .addClass('alert');
+                                    $(infoButton)[0].firstChild.data = data.dofStatus;
+                                    break;
+
+                                case '-1':
+                                    $(infoButton)
+                                            .removeClass('success alert')
+                                            .addClass('secondary');
+                                    $(infoButton)[0].firstChild.data = data.dofStatus;
+                                    break;
+
+                                default:
+                                    alert('Zmieniono status dofinansowania na ' + data.dofStatus + '.');
+                                    ;
+                            }
+
+                        } else {
+                            alert('Wystąpił straszny błąd: ' + data.error + ' :(');
+                        }
+                    });
+        });
+    </script>
+
+{% endblock %}

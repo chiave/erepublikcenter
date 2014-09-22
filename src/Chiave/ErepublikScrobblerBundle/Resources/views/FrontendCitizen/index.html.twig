@@ -1,0 +1,67 @@
+{% extends "ChiaveCoreBundle::frontendbase.html.twig" %}
+
+{% block body -%}
+
+    <caption>
+        <h2>Tutaj znajdziecie ogólne statystyki rozwoju postaci</h2>
+    </caption>
+    <table>
+        <thead>
+            <tr>
+                <th class="sorter-false"></th>
+                <th class="sorter-false">Avatar</th>
+                <th class="sorter-false">ID</th>
+                <th>Nick</th>
+                <th class="sorter-false">Dywizja</th>
+                <th>Poziom</th>
+                <th>Ranga</th>
+                <th>Hit Q7</th>
+                <th>Siła</th>
+                <th>Wbity DMG dzisiaj</th>
+                <th>Wbity DMG wczoraj</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for citizen in citizens %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                    <img src="{{ citizen.history.smallAvatarUrl }}" />
+                </td>
+                <td>{{ citizen.citizenId }}</td>
+                <td>{{ citizen.history.nick }}</td>
+                <td>{{ citizen.history.divisionText }}</td>
+                <td>{{ citizen.history.level }}{# <br />(xx/100 %) #}</td>
+                <td>
+                    <img src="{{ citizen.history.rankImageUrl }}" />
+                    {{ citizen.history.rankName }}
+                </td>
+                <td>{{ citizen.history.hit }}</td>
+                <td>{{ citizen.history.strength }}</td>
+                <td>{{ citizen.history.influence }}
+                </td>
+                <td>{{ citizen.history(1).influence }}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(function() {
+        $("table").tablesorter({
+            widgets: ['preserveFirstColumnNumeration', 'scroller'],
+            cssAsc: 'thAsc',
+            cssDesc: 'thDesc',
+            cssNone: 'thNone',
+            sortList: [[9,1],[10,1]],
+            widgetOptions : {
+              scroller_height : 600,
+            }
+        });
+    });
+</script>
+{% endblock %}

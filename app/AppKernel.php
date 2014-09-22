@@ -17,8 +17,12 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            ###
             new Chiave\UserBundle\ChiaveUserBundle(),
             new Chiave\StaticBundle\ChiaveStaticBundle(),
+            new Chiave\CoreBundle\ChiaveCoreBundle(),
+            new Chiave\ErepublikScrobblerBundle\ChiaveErepublikScrobblerBundle(),
+            new Chiave\StatsBundle\ChiaveStatsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
