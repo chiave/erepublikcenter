@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Chiave\UserBundle\ChiaveUserBundle(),
+            new Chiave\StaticBundle\ChiaveStaticBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

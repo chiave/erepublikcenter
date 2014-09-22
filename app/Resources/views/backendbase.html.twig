@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <title>{% block title %}Panel administratora{% endblock %} - BlueRose</title>
+        <!--title>{% block description %}strona główna{% endblock %}</title-->
+    {% block stylesheets %}{% endblock %}
+
+    <link rel="stylesheet" href="{{ asset('bundles/chiavecore/css/foundation.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/chiavecore/css/backend.css') }}" />
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="{{ asset('bundles/chiavecore/js/modernizr.js') }}"></script>
+</head>
+<body>
+    <nav class="top-bar" data-topbar>
+        <ul class="title-area">
+            <li class="name">
+                <h1><a href="#">Bluerose</a></h1>
+            </li>
+            {# Wyświetli się dla tragicznie małych ekranów #}
+            <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
+        </ul>
+        <section class="top-bar-section">
+            <!-- Right Nav Section -->
+            <ul class="right">
+                <li class="has-dropdown">
+                    <a href="#">Użytkownik</a>
+                    <ul class="dropdown">
+                        <li><a href="{{ path('logout') }}">Wyloguj</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </nav>
+
+    <section role="main">
+        <div class="row header-intro">
+            <header>
+                <h1>{{ block('title')}}</h1>
+                <h4>{{ block('description') }}</h4>
+            </header>
+        </div>
+
+        {% set active = block('active_name') %}
+            <div class="row">
+                <div class="medium-3 columns">
+                    <nav class="sidebar">
+                        <ul class="side-nav">
+                            <li><h5><strong>Menu</strong></h5></li>
+                            <li class="divider"></li>
+                            <li><h6><strong>Użytkownicy</strong></h6></li>
+                            <li {% if active == "chiave_user_users" %}class="active"{% endif %}>
+                                <a href="{{ path('chiave_user_user_new') }}">Dodaj</a>
+                            </li>
+                            <li {% if active == "chiave_user_users" %}class="active"{% endif %}>
+                                <a href="{{ path('chiave_user_users') }}">Zarządzaj</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><h6><strong>Gracze</strong></h6></li>
+                            <li {% if active == "chiave_scrobbler_citizen_new" %}class="active"{% endif %}>
+                                <a href="{{ path('chiave_scrobbler_citizen_new') }}">Dodaj</a>
+                            </li>
+                            <li {% if active == "chiave_scrobbler_citizens" %}class="active"{% endif %}>
+                                <a href="{{ path('chiave_scrobbler_citizens') }}">Zarządzaj</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><h6><strong>Bojówki</strong></h6></li>
+                            <li {% if active == "chiave_militaryunits" %}class="active"{% endif %}>
+                                <a href="{{ path('chiave_militaryunits') }}">Zarządzaj</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><h6><strong>DOF</strong></h6></li>
+                            <li {% if active == "chiave_dofs" %}class="active"{% endif %}>
+                                <a href="{{ path('chiave_dofs') }}">Zarządzaj</a>
+                            </li>
+                            {# <li {% if active == "cms_articles" %}class="active"{% endif %}>
+                                <a href="{{ path('cms_articles') }}">Wpisy</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li {% if active == "cms_mails" %}class="active"{% endif %}>
+                                <a href="{{ path('cms_mails') }}">Wiadomości</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li {% if active == "cms_files" %}class="active"{% endif %}>
+                                <a href="{{ path('cms_files') }}">Pliki</a>
+                            </li> #}
+                        </ul>
+                    </nav>
+                </div>
+                <div class="medium-9 columns">
+                {% block body %}{% endblock %}
+            {% block javascripts %}{% endblock %}
+        </div>
+    </div>
+</section>
+
+
+<script src="{{ asset('bundles/chiavecore/js/foundation.min.js') }}"></script>
+<script type="text/javascript">
+    $(document).foundation();
+
+    $(function() {
+    });
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-kondzik_users:
+chiave_user:
     resource: "@ChiaveUserBundle/Controller/"
     type:     annotation
     prefix:   /
@@ -21,3 +21,8 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
+
+chiave_static:
+    resource: "@ChiaveStaticBundle/Controller/"
+    type:     annotation
+    prefix:   /
