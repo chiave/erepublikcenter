@@ -1,19 +1,14 @@
 parameters:
-    database_driver:   pdo_mysql
-    database_host:     127.0.0.1
-    database_port:     ~
-    database_name:     symfony
-    database_user:     root
+    mongodb_server: ~
+    database_name: ~
+    database_user: ~
     database_password: ~
-
-    mailer_transport:  smtp
-    mailer_host:       127.0.0.1
-    mailer_user:       ~
-    mailer_password:   ~
-
-    locale:            en
-    secret:            ThisTokenIsNotSoSecretChangeIt
-
-    debug_toolbar:          true
-    debug_redirects:        false
-    use_assetic_controller: true
+    mailer_transport: ~
+    mailer_host: ~
+    mailer_user: ~
+    mailer_password: ~
+    locale: ~
+    secret: ~
+    debug_toolbar: ~
+    debug_redirects: ~
+    use_assetic_controller: ~

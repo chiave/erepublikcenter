@@ -1,0 +1,6 @@
+services:
+    chiave_user.profile.form.type:
+        class: Chiave\UserBundle\Form\Type\ProfileFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: chiave_profile_edit }

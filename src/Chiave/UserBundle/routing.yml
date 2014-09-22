@@ -1,5 +1,5 @@
 kondzik_users:
-    resource: "@ChiaveUserBundle/Controller/"
+    resource: "@ChiabeUserBundle/Controller/"
     type:     annotation
     prefix:   /
 

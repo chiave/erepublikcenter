@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: "%locale%" }
+    translator:      { fallback: "%locale%" }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -43,22 +43,24 @@ assetic:
         #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 
 # Doctrine Configuration
-doctrine:
-    dbal:
-        driver:   "%database_driver%"
-        host:     "%database_host%"
-        port:     "%database_port%"
-        dbname:   "%database_name%"
-        user:     "%database_user%"
-        password: "%database_password%"
-        charset:  UTF8
-        # if using pdo_sqlite as your database driver, add the path in parameters.yml
-        # e.g. database_path: "%kernel.root_dir%/data/data.db3"
-        # path:     "%database_path%"
-
-    orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
-        auto_mapping: true
+doctrine_mongodb:
+    connections:
+        default:
+            server: "%mongodb_server%"
+            options:
+                connect:              ~
+#                persist:              ~
+#                timeout:              ~
+#                replicaSet:           ~
+                username:             "%database_user%"
+                password:             "%database_password%"
+                db:                   "%database_name%"
+    default_database: "%database_name%"
+    document_managers:
+        default:
+            auto_mapping: true
+#            metadata_cache_driver: array # array, apc, xcache, memcache
+    auto_generate_hydrator_classes:  true
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -67,3 +69,16 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+
+#FOSUserBundle
+fos_user:
+    db_driver: mongodb
+    firewall_name: main
+    user_class: Chiave\UserBundle\Document\User
+    registration:
+        confirmation:
+            enabled: true
+    profile:
+        form:
+            type: chiave_profile_edit
