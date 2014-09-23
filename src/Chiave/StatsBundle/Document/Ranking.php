@@ -2,47 +2,30 @@
 
 namespace Chiave\StatsBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
- * Ranking
- *
- * @ORM\Table(name="ranking")
- * @ORM\Entity
- * @ORM\HasLifecycleCallbacks()
+ * @MongoDB\Document
  */
 class Ranking
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @MongoDB\Id(strategy="auto")
      */
     private $id;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="RankingUser",
-     *     mappedBy="ranking",
-     *     cascade={"all"}
-     * )
-     * @ORM\OrderBy({"createdAt" = "DESC"})
+    /** 
+     * @ODM\ReferenceMany(targetDocument="RankingUser", mappedBy="ranking", cascade="all", OrderBy({"createdAt" = "DESC"}) ) 
      */
     private $rankingUsers;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="createdAt", type="datetime")
+     * @MongoDB\Date
      */
     private $createdAt;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updatedAt", type="datetime")
+     * @MongoDB\Date
      */
     private $updatedAt;
 

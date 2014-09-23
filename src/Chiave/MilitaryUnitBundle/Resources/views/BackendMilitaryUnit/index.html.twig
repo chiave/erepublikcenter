@@ -1,0 +1,77 @@
+{% extends "ChiaveCoreBundle::backendbase.html.twig" %}
+
+{% block title %}Bojówki{% endblock %}
+{% block description %}lista bojówek{% endblock %}
+
+{% block active_name %}chiave_militaryunits{% endblock %}
+
+{% block body %}
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th></th>
+                <th>MU ID</th>
+                <th>Nazwa</th>
+                <th>
+                    {# <a class="tiny button success" href="{{ path('chiave_scrobbler_citizen_new') }}">
+                        Dodaj nowego citizena
+                    </a> #}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mu in militaryUnits %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><a href="http://www.erepublik.com/en/main/group-show/{{ mu.unitId }}" >
+                    {{ mu.unitId }}
+                </a></td>
+                <td>{{ mu.name }}</td>
+                <td>
+                    <div class="button-bar">
+                        <ul class="button-group">
+                            <li>
+                                <a class="tiny button" href="{{ path('chiave_militaryunit_edit', { 'id': mu.id }) }}">Edytuj</a>
+                            </li>
+                            {# <li>
+                                <a class="tiny button alert delete_button" href="{{ path('chiave_scrobbler_citizen_delete', { 'id': citizen.id }) }}">Usuń</a>
+                            </li> #}
+                        </ul>
+                    </div>
+                    {#<div  class="button-bar">
+                        <ul class="button-group">
+                            <li><a class="tiny button" href="{{ path('chiave_gallery_categories_edit', { 'id': category.id }) }}">Edytuj</a></li>
+                            <li><a class="tiny button alert delete_button" href="{{ path('chiave_scrobbler_citizen_delete', { 'id': category.id }) }}">Usuń</a></li>
+                        </ul>
+                    </div> #}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascripts -%}
+
+<script type="text/javascript">
+    $('.delete_button').click(function(e) {
+        e.preventDefault();
+
+        var toRemove = $(this).closest('tr');
+
+        $.post(
+            $(this).attr('href'),
+            function(data) {
+                if (data.success) {
+                    $(toRemove).remove();
+                    alert('Citizen usunięty pomyślnie');
+                } else {
+                    alert('Wystąpił straszny błąd: '+data.error+' :(');
+                }
+            });
+    });
+</script>
+
+{% endblock %}

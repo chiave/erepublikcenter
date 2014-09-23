@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new Chiave\CoreBundle\ChiaveCoreBundle(),
             new Chiave\ErepublikScrobblerBundle\ChiaveErepublikScrobblerBundle(),
             new Chiave\StatsBundle\ChiaveStatsBundle(),
+            new Chiave\MilitaryUnitBundle\ChiaveMilitaryUnitBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

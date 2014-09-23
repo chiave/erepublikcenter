@@ -2,77 +2,55 @@
 
 namespace Chiave\StatsBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
- * RankingUser
- *
- * @ORM\Table(name="ranking_user")
- * @ORM\Entity
- * @ORM\HasLifecycleCallbacks()
+ * @MongoDB\Document
  */
 class RankingUser
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @MongoDB\Id(strategy="auto")
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Ranking", inversedBy="rankingUsers")
-     * @ORM\JoinColumn(name="ranking_id", referencedColumnName="id")
-     **/
+     * @ODM\ReferenceMany(targetDocument="Ranking", inversedBy="ranking_id", 
+     */
     private $ranking;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Chiave\ErepublikScrobblerBundle\Entity\Citizen", inversedBy="rankingUsers")
-     * @ORM\JoinColumn(name="citizen_id", referencedColumnName="id")
-     **/
+     * @ODM\ReferenceMany(targetDocument="Chiave\ErepublikScrobblerBundle\Document\Citizen", inversedBy="ranking_id", 
+     */
     private $citizen;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="nick", type="string", length=64)
+     * @MongoDB\String
      */
     private $nick;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(type="integer")
+     * @MongoDB\Int
      */
     private $egovBattles = 0;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(type="integer")
+     * @MongoDB\Int
      */
     private $egovHits = 0;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=1024)
+     * @MongoDB\String
      */
     private $egovInfluence = '0';
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="createdAt", type="datetime")
+     * @MongoDB\Date
      */
     private $createdAt;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updatedAt", type="datetime")
+     * @MongoDB\Date
      */
     private $updatedAt;
 

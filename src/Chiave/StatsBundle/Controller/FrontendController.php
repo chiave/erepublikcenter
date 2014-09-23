@@ -20,7 +20,7 @@ class FrontendController extends Controller
      */
     public function gatheringAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine_mongodb')->getManager();
 
         $militaryUnits = $em
             ->getRepository('ChiaveMilitaryUnitBundle:MilitaryUnit')

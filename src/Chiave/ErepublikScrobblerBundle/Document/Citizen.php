@@ -1,70 +1,54 @@
 <?php
 
-namespace Chiave\ErepublikScrobblerBundle\Entity;
+namespace Chiave\ErepublikScrobblerBundle\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Citizen
- *
- * If you will add new field, remember to add
- * field checking in CitizenScrobblerService
- * (function updateCitizenChanges())
- *
- * @ORM\Table(name="citizen")
- * @ORM\Entity
- * @ORM\HasLifecycleCallbacks()
+ * @MongoDB\Document
  */
 class Citizen
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @MongoDB\Id(strategy="auto")
      */
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="citizenId", type="integer", nullable=true)
+     * @MongoDB\Int
      */
     private $citizenId;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="CitizenHistory",
-     *     mappedBy="citizen",
-     *     cascade={"all"}
+
+    /** 
+     * @MongoDB\ReferenceMany(
+     *  targetDocument="CitizenHistory", 
+     *  mappedBy="citizen", 
+     *  cascade="all",
+     *  sort={"createdAt": "DESC"}
      * )
-     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $history;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="Chiave\StatsBundle\Entity\RankingUser",
-     *     mappedBy="citizen",
-     *     cascade={"all"}
-     * )
-     * @ORM\OrderBy({"createdAt" = "DESC"})
+    /** 
+     * @MongoDB\ReferenceMany(
+     *   targetDocument="Chiave\StatsBundle\Document\RankingUser", 
+     *   mappedBy="citizen", 
+     *   cascade="all",
+     *   sort={"createdAt": "DESC"}
+     *  )
      */
     private $rankingUsers;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="createdAt", type="datetime")
+     * @MongoDB\Date
      */
     private $createdAt;
 
+
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updatedAt", type="datetime")
+     * @MongoDB\Date
      */
     private $updatedAt;
 
@@ -249,7 +233,7 @@ class Citizen
     }
 
     /**
-     * @ORM\PrePersist
+     * @MongoDB\PrePersist
      */
     public function setInitialTimestamps()
     {
@@ -281,7 +265,7 @@ class Citizen
     }
 
     /**
-     * @ORM\PreUpdate
+     * @MongoDB\PreUpdate
      */
     public function setUpdatedTimestamps()
     {

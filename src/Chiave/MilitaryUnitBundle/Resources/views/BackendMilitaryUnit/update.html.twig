@@ -1,0 +1,16 @@
+{% extends "ChiaveCoreBundle::backendbase.html.twig" %}
+
+{% block title %}Zarządzanie bojówkami{% endblock %}
+{% block description %}tworzenie/edycja bojówki{% endblock %}
+
+{% block active_name %}chiave_militaryunits{% endblock %}
+
+{% block body -%}
+
+    {{ form(form) }}
+
+    <a class="small button" href="{{ path('chiave_militaryunits') }}">
+        Powrót do listy bojówek
+    </a>
+
+{% endblock %}

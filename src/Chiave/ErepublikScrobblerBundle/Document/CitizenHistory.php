@@ -2,184 +2,134 @@
 
 namespace Chiave\ErepublikScrobblerBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * CitizenHistory
- *
- * @ORM\Table(name="citizen_history")
- * @ORM\Entity
- * @ORM\HasLifecycleCallbacks()
+ * @MongoDB\Document
  */
 class CitizenHistory {
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @MongoDB\Id(strategy="auto")
      */
     private $id;
-
     /**
-     * @ORM\ManyToOne(targetEntity="Citizen", inversedBy="history")
-     * @ORM\JoinColumn(name="citizen_id", referencedColumnName="id")
-     * */
+     * @ODM\ReferenceMany(targetDocument="Citizen", inversedBy="citizen_id", 
+     */
     private $citizen;
 
+
     /**
-     * @var string
-     *
-     * @ORM\Column(name="nick", type="string", length=64)
+     * @MongoDB\String
      */
     private $nick;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="avatarUrl", type="string", length=255)
+     * @MongoDB\String
      */
     private $avatarUrl;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="experience", type="string")
+     * @MongoDB\String
      */
     private $experience;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="strength", type="float")
+     * @MongoDB\Float
      */
     private $strength;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="rankPoints", type="string")
+     * @MongoDB\String
      */
     private $rankPoints;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="truePatriot", type="string", nullable=true)
+     * @MongoDB\String
      */
     private $truePatriot;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="ebirth", type="date")
+     * @MongoDB\Date
      */
     private $ebirth;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="country", type="string", length=64)
+     * @MongoDB\String
      */
     private $country;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="region", type="string", length=64)
+     * @MongoDB\String
      */
     private $region;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="citizenship", type="string", length=64)
+     * @MongoDB\String
      */
     private $citizenship;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="nationalRank", type="integer")
+     * @MongoDB\Int
      */
     private $nationalRank;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="partyId", type="integer", nullable=true)
+     * @MongoDB\Int
      */
     private $partyId;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="partyName", type="string", length=64, nullable=true)
+     * @MongoDB\String
      */
     private $partyName;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="militaryUnitId", type="integer", nullable=true)
+     * @MongoDB\Int
      */
     private $militaryUnitId;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="militaryUnitName", type="string", length=64, nullable=true)
+     * @MongoDB\String
      */
     private $militaryUnitName;
 
-    /**
-     * @var json_array
-     *
-     * @ORM\Column(name="achievements", type="json_array", nullable=true)
-     */
-    private $achievements;
+    #TODO
+    // *
+    //  * @var json_array
+    //  *
+    //  * @ORM\Column(name="achievements", type="json_array", nullable=true)
+     
+    // private $achievements;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(type="integer")
+     * @MongoDB\Int
      */
     private $smallBombs = 0;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(type="integer")
+     * @MongoDB\Int
      */
     private $bigBombs = 0;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=256)
+     * @MongoDB\String
      */
     private $lastUsedMsg = '';
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(type="integer")
+     * @MongoDB\Int
      */
     private $egovBattles = 0;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(type="integer")
+     * @MongoDB\Int
      */
     private $egovHits = 0;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=1024)
+     * @MongoDB\String
      */
     private $egovInfluence = '0';
 
@@ -193,23 +143,19 @@ class CitizenHistory {
     //counted
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(type="integer")
+     * @MongoDB\Int
      */
     private $division;
 
+
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="createdAt", type="datetime")
+     * @MongoDB\Date
      */
     private $createdAt;
 
+
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updatedAt", type="datetime")
+     * @MongoDB\Date
      */
     private $updatedAt;
 

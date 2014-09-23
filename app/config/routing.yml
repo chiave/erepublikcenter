@@ -43,6 +43,11 @@ chiave_stats:
     type:     annotation
     prefix:   /
 
+chiave_mu:
+    resource: "@ChiaveMilitaryUnitBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 chiave_static:
     resource: "@ChiaveStaticBundle/Controller/"
     type:     annotation

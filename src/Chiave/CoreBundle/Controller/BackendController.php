@@ -74,18 +74,16 @@ class BackendController extends Controller
         //     ->findOneByCitizenId(4241769)
         // ;
 
-        $this->container
-            ->get('erepublik_citizen_scrobbler')
-            ->showRawData(4241769)
-        ;
-
-        echo 'LOOOOOOOOOOL';
+        // $this->container
+        //     ->get('erepublik_citizen_scrobbler')
+        //     ->showRawData(4241769)
+        // ;
 
 
-        $this->container
-            ->get('egov_nationalraport_fetcher')
-            ->showRawData()
-        ;
+        // $this->container
+        //     ->get('egov_nationalraport_fetcher')
+        //     ->showRawData()
+        // ;
 
         //2494465 - djstrach
         //4241769 - aplhanumerix
