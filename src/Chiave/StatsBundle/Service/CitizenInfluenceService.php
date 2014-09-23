@@ -2,7 +2,7 @@
 
 namespace Chiave\StatsBundle\Service;
 
-use Chiave\ErepublikScrobblerBundle\Entity\CitizenHistory;
+use Chiave\ErepublikScrobblerBundle\Document\CitizenHistory;
 
 /**
  * class CitizenInfluenceService
@@ -120,7 +120,7 @@ class CitizenInfluenceService
     private function getEm()
     {
         return $this->container
-            ->get('doctrine.orm.entity_manager')
+            ->get('doctrine_mongodb')
         ;
     }
 }

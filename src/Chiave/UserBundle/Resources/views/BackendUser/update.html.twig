@@ -1,0 +1,16 @@
+{% extends "ChiaveCoreBundle::backendbase.html.twig" %}
+
+{% block title %}Gracze{% endblock %}
+{% block description %}tworzenie/edycja gracza{% endblock %}
+
+{% block active_name %}chiave_scrobbler_citizen_new{% endblock %}
+
+{% block body -%}
+
+    {{ form(form) }}
+
+    <a class="small button" href="{{ path('chiave_scrobbler_citizens') }}">
+        Powrót do listy graczy
+    </a>
+
+{% endblock %}

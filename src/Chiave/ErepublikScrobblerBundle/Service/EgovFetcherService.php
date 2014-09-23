@@ -366,14 +366,14 @@ class EgovFetcherService extends CurlUtils
     private function getEm()
     {
         return $this->container
-            ->get('doctrine.orm.entity_manager')
+            ->get('doctrine_mongodb')
         ;
     }
 
     private function getRepo($class = 'ChiaveMilitaryUnitBundle:MilitaryUnit')
     {
         return $this->container
-            ->get('doctrine.orm.entity_manager')
+            ->get('doctrine_mongodb')
             ->getRepository($class)
         ;
     }

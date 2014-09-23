@@ -1,0 +1,44 @@
+{% extends "ChiaveCoreBundle::backendbase.html.twig" %}
+
+{% block title %}Użytkownicy{% endblock %}
+{% block description %}lista kont w systemie{% endblock %}
+
+{% block active_name %}chiave_user_users{% endblock %}
+
+{% block body %}
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Login</th>
+                {# <th>Citizen ID</th> #}
+                {# <th>Citizen</th> #}
+                <th>
+                    <a class="tiny button success" href="{{ path('chiave_user_user_new') }}">
+                        Dodaj nowego usera
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ user.username }}</td>
+                {# <td>{{ user.citizenId }}</td> #}
+                {# <td>{{ user.citizen }}</td> #}
+                <td>
+                    <div{#  class="button-bar">
+                        <ul class="button-group">
+                            <li><a class="tiny button" href="{{ path('chiave_gallery_categories_edit', { 'id': category.id }) }}">Edytuj</a></li>
+                            <li><a class="tiny button alert delete_button" href="{{ path('chiave_gallery_categories_delete', { 'id': category.id }) }}">Usuń</a></li>
+                        </ul>
+                    </div> #}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

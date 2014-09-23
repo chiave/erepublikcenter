@@ -59,7 +59,7 @@ class ErepublikScrobblerCommand extends ContainerAwareCommand
 
         $cScrobbler = $this->getContainer()->get('erepublik_citizen_scrobbler');
         // $users = $this->getContainer()
-        //     ->get('doctrine.orm.entity_manager')
+        //     ->get('doctrine_mongodb')
         //     ->getRepository('ChiaveUserBundle:User')
         //     ->findAll()
         // ;

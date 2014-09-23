@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Chiave\ErepublikScrobblerBundle\Entity\Citizen;
+use Chiave\ErepublikScrobblerBundle\Document\Citizen;
 use Chiave\ErepublikScrobblerBundle\Form\CitizenType;
 
 /**

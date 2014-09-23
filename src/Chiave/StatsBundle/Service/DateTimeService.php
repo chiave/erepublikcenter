@@ -77,7 +77,7 @@ class DateTimeService
     private function getEm()
     {
         return $this->container
-            ->get('doctrine.orm.entity_manager')
+            ->get('doctrine_mongodb')
         ;
     }
 }

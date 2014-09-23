@@ -4,8 +4,8 @@ namespace Chiave\ErepublikScrobblerBundle\Service;
 
 use Chiave\ErepublikScrobblerBundle\Libraries\CurlUtils;
 
-use Chiave\ErepublikScrobblerBundle\Entity\Citizen;
-use Chiave\ErepublikScrobblerBundle\Entity\CitizenChange;
+use Chiave\ErepublikScrobblerBundle\Document\Citizen;
+use Chiave\ErepublikScrobblerBundle\Document\CitizenChange;
 
 /**
  * class ErepublikScrobblerService
@@ -71,6 +71,7 @@ class ErepublikScrobblerService extends CurlUtils
 
     public function updateCitizens() {
 
+
         $em = $this->getEm();
 
         $citizens = $em
@@ -91,6 +92,7 @@ class ErepublikScrobblerService extends CurlUtils
             ->getRepository('ChiaveErepublikScrobblerBundle:Citizen')
             ->findOneByCitizenId($citizenInGameId)
         ;
+
 
         if ($citizen == null) {
             echo '<error>There is no citizen in the system with such id!<error>';
@@ -134,8 +136,11 @@ class ErepublikScrobblerService extends CurlUtils
 
         $em = $this->getEm();
 
+        // TODO
+
         if(!$citizen->getAllHistory()->count()) {
             $zeroHistory = clone $history;
+            $zeroHistory->setCitizen($citizen->getId());
             $em->persist($zeroHistory);
         }
 
@@ -374,7 +379,8 @@ class ErepublikScrobblerService extends CurlUtils
     private function getEm()
     {
         return $this->container
-            ->get('doctrine.orm.entity_manager')
+            ->get('doctrine_mongodb')
+            ->getManager()
         ;
     }
 

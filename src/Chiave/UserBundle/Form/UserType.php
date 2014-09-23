@@ -1,12 +1,12 @@
 <?php
 
-namespace Chiave\ErepublikScrobblerBundle\Form;
+namespace Chiave\UserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CitizenType extends AbstractType
+class UserType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,7 +15,9 @@ class CitizenType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('citizenId')
+            ->add('username')
+            // ->add('citizenId')
+            ->add('email')
             ->add('submit',
                 'submit',
                 array(
@@ -31,7 +33,7 @@ class CitizenType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Chiave\ErepublikScrobblerBundle\Document\Citizen'
+            'data_class' => 'Chiave\UserBundle\Document\User'
         ));
     }
 
@@ -40,6 +42,6 @@ class CitizenType extends AbstractType
      */
     public function getName()
     {
-        return 'chiave_scrobbler_citizens';
+        return 'chiave_userbundle_users';
     }
 }

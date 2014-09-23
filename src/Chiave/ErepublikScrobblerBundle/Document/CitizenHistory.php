@@ -1,6 +1,6 @@
 <?php
 
-namespace Chiave\ErepublikScrobblerBundle\Entity;
+namespace Chiave\ErepublikScrobblerBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,8 +14,9 @@ class CitizenHistory {
      * @MongoDB\Id(strategy="auto")
      */
     private $id;
+
     /**
-     * @ODM\ReferenceMany(targetDocument="Citizen", inversedBy="citizen_id", 
+     * @MongoDB\ReferenceMany(targetDocument="Citizen", inversedBy="citizen_id") 
      */
     private $citizen;
 
@@ -100,7 +101,6 @@ class CitizenHistory {
     //  * @var json_array
     //  *
     //  * @ORM\Column(name="achievements", type="json_array", nullable=true)
-     
     // private $achievements;
 
     /**
@@ -178,10 +178,10 @@ class CitizenHistory {
     /**
      * Set citizen
      *
-     * @param \Chiave\ErepublikScrobblerBundle\Entity\Citizen $citizen
+     * @param \Chiave\ErepublikScrobblerBundle\Document\Citizen $citizen
      * @return CitizenHistory
      */
-    public function setCitizen(\Chiave\ErepublikScrobblerBundle\Entity\Citizen $citizen = null) {
+    public function setCitizen(\Chiave\ErepublikScrobblerBundle\Document\Citizen $citizen = null) {
         $this->citizen = $citizen;
 
         return $this;
@@ -190,7 +190,7 @@ class CitizenHistory {
     /**
      * Get citizen
      *
-     * @return \Chiave\ErepublikScrobblerBundle\Entity\Citizen
+     * @return \Chiave\ErepublikScrobblerBundle\Document\Citizen
      */
     public function getCitizen() {
         return $this->citizen;
@@ -794,7 +794,7 @@ class CitizenHistory {
     }
 
     /**
-     * @ORM\PrePersist
+     * @MongoDB\PrePersist
      */
     public function setInitialTimestamps() {
         $this->createdAt = new \DateTime('now');
@@ -823,7 +823,7 @@ class CitizenHistory {
     }
 
     /**
-     * @ORM\PreUpdate
+     * @MongoDB\PreUpdate
      */
     public function setUpdatedTimestamps() {
         $this->updatedAt = new \DateTime('now');

@@ -188,10 +188,10 @@ class RankingUser
     /**
      * Set citizen
      *
-     * @param \Chiave\ErepublikScrobblerBundle\Entity\Citizen $citizen
+     * @param \Chiave\ErepublikScrobblerBundle\Document\Citizen $citizen
      * @return RankingUser
      */
-    public function setCitizen(\Chiave\ErepublikScrobblerBundle\Entity\Citizen $citizen = null)
+    public function setCitizen(\Chiave\ErepublikScrobblerBundle\Document\Citizen $citizen = null)
     {
         $this->citizen = $citizen;
 
@@ -201,7 +201,7 @@ class RankingUser
     /**
      * Get citizen
      *
-     * @return \Chiave\ErepublikScrobblerBundle\Entity\Citizen
+     * @return \Chiave\ErepublikScrobblerBundle\Document\Citizen
      */
     public function getCitizen()
     {

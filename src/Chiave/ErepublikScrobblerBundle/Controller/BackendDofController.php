@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Chiave\ErepublikScrobblerBundle\Entity\CitizenHistory;
+use Chiave\ErepublikScrobblerBundle\Document\CitizenHistory;
 use Chiave\ErepublikScrobblerBundle\Form\DofType;
 
 /**

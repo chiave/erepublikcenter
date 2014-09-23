@@ -98,10 +98,10 @@ class Citizen
     /**
      * Add history
      *
-     * @param \Chiave\ErepublikScrobblerBundle\Entity\CitizenHistory $history
+     * @param \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory $history
      * @return Citizen
      */
-    public function addHistory(\Chiave\ErepublikScrobblerBundle\Entity\CitizenHistory $history)
+    public function addHistory(\Chiave\ErepublikScrobblerBundle\Document\CitizenHistory $history)
     {
         $this->history[] = $history;
 
@@ -111,9 +111,9 @@ class Citizen
     /**
      * Remove history
      *
-     * @param \Chiave\ErepublikScrobblerBundle\Entity\CitizenHistory $history
+     * @param \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory $history
      */
-    public function removeHistory(\Chiave\ErepublikScrobblerBundle\Entity\CitizenHistory $history)
+    public function removeHistory(\Chiave\ErepublikScrobblerBundle\Document\CitizenHistory $history)
     {
         $this->history->removeElement($history);
     }
@@ -131,7 +131,7 @@ class Citizen
     /**
      * Get single history from $modifyDays backward
      *
-     * @return \Chiave\ErepublikScrobblerBundle\Entity\CitizenHistory
+     * @return \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory
      */
     public function getHistory($modifyDays = 0)
     {
@@ -144,7 +144,7 @@ class Citizen
     /**
      * Get day from day $date
      *
-     * @return \Chiave\ErepublikScrobblerBundle\Entity\CitizenHistory
+     * @return \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory
      */
     public function getHistoryByDate($startDC = null, $modify = 1)
     {
@@ -170,7 +170,7 @@ class Citizen
         );
 
         if ($histories->isEmpty()) {
-            return new \Chiave\ErepublikScrobblerBundle\Entity\CitizenHistory($this);
+            return new \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory($this);
         }
 
         return $histories->last();
@@ -179,7 +179,7 @@ class Citizen
     /**
      * Add rankingUsers
      *
-     * @param \Chiave\StatsBundle\Entity\RankingUser $rankingUsers
+     * @param \Chiave\StatsBundle\Document\RankingUser $rankingUsers
      * @return Citizen
      */
     public function addRankingUser(\Chiave\StatsBundle\Entity\RankingUser $rankingUsers)
@@ -192,7 +192,7 @@ class Citizen
     /**
      * Remove rankingUsers
      *
-     * @param \Chiave\StatsBundle\Entity\RankingUser $rankingUsers
+     * @param \Chiave\StatsBundle\Document\RankingUser $rankingUsers
      */
     public function removeRankingUser(\Chiave\StatsBundle\Entity\RankingUser $rankingUsers)
     {

@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Chiave\ErepublikScrobblerBundle\Entity\Citizen;
+use Chiave\ErepublikScrobblerBundle\Document\Citizen;
 use Chiave\ErepublikScrobblerBundle\Form\CitizenType;
 
 /**
@@ -64,7 +64,6 @@ class BackendCitizenController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
                 $em->persist($citizen);
                 $em->flush();
 
@@ -223,6 +222,6 @@ class BackendCitizenController extends Controller
 
     private function getEm()
     {
-        return $this->getDoctrine()->getManager();
+        return $this->get('doctrine_mongodb')->getManager();
     }
 }

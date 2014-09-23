@@ -28,7 +28,7 @@ class BackendController extends Controller
         // $em = $this->getDoctrine()->getManager();
 
         // $citizen = $em
-        //     ->getRepository('Chiave\ErepublikScrobblerBundle\Entity\Citizen')
+        //     ->getRepository('Chiave\ErepublikScrobblerBundle\Document\Citizen')
         //     ->findOneByCitizenId(4241769)
         // ;
         // // var_dump($citizen);
@@ -70,7 +70,7 @@ class BackendController extends Controller
 
         // // // RAW DATA FOR USER
         // $citizen = $em
-        //     ->getRepository('Chiave\ErepublikScrobblerBundle\Entity\Citizen')
+        //     ->getRepository('Chiave\ErepublikScrobblerBundle\Document\Citizen')
         //     ->findOneByCitizenId(4241769)
         // ;
 
@@ -113,8 +113,8 @@ class BackendController extends Controller
 
         // var_dump(
         //      $this->container
-        //         ->get('doctrine.orm.entity_manager')
-        //         ->getClassMetadata('Chiave\ErepublikScrobblerBundle\Entity\Citizen')
+        //         ->get('doctrine_mongodb')
+        //         ->getClassMetadata('Chiave\ErepublikScrobblerBundle\Document\Citizen')
         //         ->getFieldNames()
         // );
 
@@ -137,8 +137,8 @@ class BackendController extends Controller
 
         // var_dump(
         //      $this->container
-        //         ->get('doctrine.orm.entity_manager')
-        //         ->getClassMetadata('Chiave\ErepublikScrobblerBundle\Entity\Citizen')
+        //         ->get('doctrine_mongodb')
+        //         ->getClassMetadata('Chiave\ErepublikScrobblerBundle\Document\Citizen')
         //         ->getFieldNames()
         // );
 
