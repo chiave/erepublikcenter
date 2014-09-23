@@ -134,9 +134,7 @@ class CitizenHistory {
     private $egovInfluence = '0';
 
     /**
-     * @var smallint
-     *
-     * @ORM\Column(type="smallint")
+     * @MongoDB\Int
      */
     private $dof = 0;
 
