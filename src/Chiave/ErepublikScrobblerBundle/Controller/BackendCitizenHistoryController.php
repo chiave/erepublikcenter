@@ -32,7 +32,7 @@ class BackendCitizenHistoryController extends Controller
      */
     public function showAction($citizenId)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine_mongodb')->getManager();
 
         $citizen = $em
             ->getRepository('ChiaveErepublikScrobblerBundle:Citizen')

@@ -129,7 +129,7 @@ class ErepublikScrobblerService extends CurlUtils
         $history->setPartyName($this->getParty());
         $history->setMilitaryUnitId($this->getMilitaryUnitId());
         $history->setMilitaryUnitName($this->getMilitaryUnit());
-        $history->setAchievements($this->getMedals());
+        // $history->setAchievements($this->getMedals());
         $history->setSmallBombs($this->getSmallBombs());
         $history->setBigBombs($this->getBigBombs());
         $history->setLastUsedMsg($this->getLastUsedMsg());
@@ -140,7 +140,6 @@ class ErepublikScrobblerService extends CurlUtils
 
         if(!$citizen->getAllHistory()->count()) {
             $zeroHistory = clone $history;
-            $zeroHistory->setCitizen($citizen->getId());
             $em->persist($zeroHistory);
         }
 

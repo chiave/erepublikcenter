@@ -6,7 +6,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @MongoDB\Document
+ * @MongoDB\Document 
+ * @MongoDB\HasLifecycleCallbacks
  */
 class CitizenHistory {
 
@@ -16,7 +17,7 @@ class CitizenHistory {
     private $id;
 
     /**
-     * @MongoDB\ReferenceMany(targetDocument="Citizen", inversedBy="citizen_id") 
+     * @MongoDB\ReferenceOne(targetDocument="Citizen", inversedBy="citizen_id") 
      */
     private $citizen;
 
@@ -96,12 +97,11 @@ class CitizenHistory {
      */
     private $militaryUnitName;
 
-    #TODO
+
     // *
-    //  * @var json_array
-    //  *
-    //  * @ORM\Column(name="achievements", type="json_array", nullable=true)
-    // private $achievements;
+    //  * MongoDB\Collection
+     
+    // // private $achievements;
 
     /**
      * @MongoDB\Int
