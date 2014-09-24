@@ -57,28 +57,25 @@ class BackendDofController extends Controller {
         $startDate = $timeMaster->getDateByDay($data['startDay']);
         $endDate = $timeMaster->getDateByDay($data['endDay'])->modify('+1 day');
 
-        $query = $this->getEm()
-                ->getRepository('ChiaveErepublikScrobblerBundle:CitizenHistory')
-                ->createQueryBuilder('ch')
-                ->where('ch.createdAt >= :startDate')
-                ->andWhere('ch.createdAt < :endDate')
-                ->setParameter('startDate', $startDate)
-                ->setParameter('endDate', $endDate);
-
-        if ($data['div'] != null) {
-            $query->andWhere('ch.division = :div')
-                    ->setParameter('div', $data['div']);
-        }
-        if ($data['status'] !== '') {
-            $query->andWhere('ch.dof = :status')
-                    ->setParameter('status', $data['status']);
-        }
-
-        $query->andWhere('ch.egovBattles != 0')
-                ->orderBy('ch.nick', 'ASC')
+        $query = $this->getEm()->createQueryBuilder('ChiaveErepublikScrobblerBundle:CitizenHistory')
+                ->field('createdAt')->gte($startDate)
+                ->field('createdAt')->lt($endDate)
         ;
 
-        $histories = $query->getQuery()->getResult();
+
+        if ($data['div'] != null) {
+            $query->field('division')->equal($data['div']);
+        }
+        if ($data['status'] !== '') {
+            $query->field('dof')->equal($data['status']);
+        }
+
+        $query->field('egovBattles')->notEqual(0)
+                ->sort('nick', 'asc')
+
+        ;
+
+        $histories = $query->getQuery()->execute();
 
         $results = array();
 
@@ -174,7 +171,7 @@ class BackendDofController extends Controller {
     }
 
     private function getEm() {
-        return $this->getDoctrine()->getManager();
+        return $this->get('doctrine_mongodb')->getManager();
     }
 
 }

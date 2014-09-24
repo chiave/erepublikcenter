@@ -80,10 +80,10 @@ class BackendController extends Controller
         // ;
 
 
-        // $this->container
-        //     ->get('egov_nationalraport_fetcher')
-        //     ->showRawData()
-        // ;
+        $this->container
+            ->get('egov_nationalraport_fetcher')
+            ->countPastDataStats(14)
+        ;
 
         //2494465 - djstrach
         //4241769 - aplhanumerix

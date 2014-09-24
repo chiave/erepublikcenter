@@ -41,6 +41,41 @@ class EgovFetcherService extends CurlUtils
         return $data;
     }
 
+    public function countPastDataStats($modifyDays = 0,$citizen_id = 4241769 ,$countryCode = 35) {
+
+        $em = $this->getEm();
+        
+        $battles = 0;
+        $hits = 0;
+        $influence = 0;
+
+        for (; $modifyDays >= 0 ; $modifyDays--) { 
+        
+
+            $data = $this->getNationalRaportArray($modifyDays, $countryCode);
+            // var_dump($data);
+            // die;
+
+            foreach ($data['minisoldiersStats'] as $soldier) {
+                        if($soldier['citizen'] == $citizen_id){
+                            $battles = $battles + $soldier['battles'];
+                            $hits = $hits + $soldier['hits'];
+                            $influence = $influence + $soldier['influence'];
+                        }        
+            }
+        }
+        $history = $mu->getHistory();
+
+        $history->setBattles($battles);
+        $history->setHits($hits);
+        $history->setInfluence($influence);
+
+        $em->persist($history);
+        $em->flush();
+
+    }
+
+
     public function updateMilitaryUnits() {
         $em = $this->getEm();
         $nationalRaport = $this->getNationalRaportArray();
@@ -91,10 +126,14 @@ class EgovFetcherService extends CurlUtils
             $history->setEgovHits($citizenFreshData['hits']);
             $history->setEgovInfluence($citizenFreshData['influence']);
 
+
+
             $em->persist($history);
             $em->flush();
         }
     }
+
+
 
     public function muExists()
     {
@@ -365,8 +404,7 @@ class EgovFetcherService extends CurlUtils
 
     private function getEm()
     {
-        return $this->container
-            ->get('doctrine_mongodb')
+        return $this->container->get('doctrine_mongodb')->getManager();
         ;
     }
 
