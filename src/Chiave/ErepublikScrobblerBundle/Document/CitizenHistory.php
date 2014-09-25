@@ -17,7 +17,7 @@ class CitizenHistory {
     private $id;
 
     /**
-     * @MongoDB\ReferenceOne(targetDocument="Citizen", inversedBy="citizen_id") 
+     * @MongoDB\ReferenceOne(targetDocument="Citizen", inversedBy="history", simple=true)
      */
     private $citizen;
 

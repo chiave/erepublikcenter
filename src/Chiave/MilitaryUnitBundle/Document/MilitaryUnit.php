@@ -167,7 +167,7 @@ class MilitaryUnit
         );
 
         if ($histories->isEmpty()) {
-            return new \Chiave\MilitaryUnitBundle\Entity\MilitaryUnitHistory($this);
+            return new \Chiave\MilitaryUnitBundle\Document\MilitaryUnitHistory($this);
         }
 
         return $histories->first();

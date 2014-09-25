@@ -26,7 +26,8 @@ class Citizen
      *  targetDocument="CitizenHistory", 
      *  mappedBy="citizen", 
      *  cascade="all",
-     *  sort={"createdAt": "DESC"}
+     *  sort={"createdAt": "DESC"},
+     *  simple=true
      * )
      */
     private $history;
@@ -104,6 +105,7 @@ class Citizen
     public function addHistory(\Chiave\ErepublikScrobblerBundle\Document\CitizenHistory $history)
     {
         $this->history[] = $history;
+        $history->setCitizen($this);
 
         return $this;
     }

@@ -1,12 +1,13 @@
 <?php
 
-namespace Chiave\MilitaryUnitBundle\Entity;
+namespace Chiave\MilitaryUnitBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @MongoDB\Document
+ * @MongoDB\HasLifecycleCallbacks
  */
 class MilitaryUnitHistory
 {
@@ -16,8 +17,7 @@ class MilitaryUnitHistory
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MilitaryUnit", inversedBy="history")
-     * @ORM\JoinColumn(name="militaryUnit_id", referencedColumnName="id")
+     * @MongoDB\ReferenceOne(targetDocument="MilitaryUnit", inversedBy="history")
      **/
     private $militaryUnit;
 
@@ -204,7 +204,7 @@ class MilitaryUnitHistory
     }
 
     /**
-     * @ORM\PrePersist
+     * @MongoDB\PrePersist
      */
     public function setInitialTimestamps()
     {

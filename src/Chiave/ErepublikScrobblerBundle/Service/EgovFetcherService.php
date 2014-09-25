@@ -4,8 +4,8 @@ namespace Chiave\ErepublikScrobblerBundle\Service;
 
 use Chiave\ErepublikScrobblerBundle\Libraries\CurlUtils;
 
-use Chiave\MilitaryUnitBundle\Entity\MilitaryUnit;
-use Chiave\MilitaryUnitBundle\Entity\MilitaryUnitHistory;
+use Chiave\MilitaryUnitBundle\Document\MilitaryUnit;
+use Chiave\MilitaryUnitBundle\Document\MilitaryUnitHistory;
 
 /**
  * class EgovFetcherService
@@ -53,8 +53,6 @@ class EgovFetcherService extends CurlUtils
         
 
             $data = $this->getNationalRaportArray($modifyDays, $countryCode);
-            // var_dump($data);
-            // die;
 
             foreach ($data['minisoldiersStats'] as $soldier) {
                         if($soldier['citizen'] == $citizen_id){
@@ -63,16 +61,35 @@ class EgovFetcherService extends CurlUtils
                             $influence = $influence + $soldier['influence'];
                         }        
             }
-        }
-        $history = $mu->getHistory();
 
-        $history->setBattles($battles);
-        $history->setHits($hits);
-        $history->setInfluence($influence);
+        $citizenrepo = $em->getRepository("Chiave\ErepublikScrobblerBundle\Document\Citizen");
+        $citizen = $citizenrepo->findOneByCitizenId($citizen_id);
+        // var_dump($citizen);
 
-        $em->persist($history);
+
+
+        // $repo = $em->getRepository("Chiave\ErepublikScrobblerBundle\Document\CitizenHistory");
+        // $results = $repo->createQueryBuilder()
+        //     ->field("citizen.id")->equals($citizen->getId())
+        //     ->sort("createdAt","desc")
+        //     ->limit(1)
+        //     ->getQuery()
+        //     ->execute();
+
+        // foreach ($results as $result) {
+        //     var_dump($result);
+        //     die;
+        // }
+
+        $results = $citizen->getHistory();
+
+        $results->setEgovBattles($results->getEgovBattles()+$battles);
+        $results->setEgovHits($results->getEgovHits()+$hits);
+        $results->setEgovInfluence($results->getEgovInfluence()+$influence);
+
+        $em->persist($results);
         $em->flush();
-
+        }
     }
 
 
