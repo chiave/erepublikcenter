@@ -84,7 +84,7 @@ class EgovFetcherService extends CurlUtils {
                     if ($sd['citizen'] == $citizen->getCitizenId()) {
                         $eday = $this->container
                                 ->get('date_time')
-                                ->getErepublikDate($period);
+                                ->getErepublikDate($i);
 
                         $history = $this->getQb('ChiaveErepublikScrobblerBundle:CitizenHistory')
                                 ->field('citizen')->equals($citizen->getId())

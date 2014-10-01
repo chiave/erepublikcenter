@@ -53,22 +53,21 @@ class BackendDofController extends BaseController {
         ;
 
         $searchForm = $this->createSearchForm($data);
-        var_dump($data);
-
+//        var_dump($data);
 //        $startDate = $timeMaster->getDateByDay($data['startDay']);
 //        $endDate = $timeMaster->getDateByDay($data['endDay'])->modify('+1 day');
         $qb = $this->getQb('ChiaveErepublikScrobblerBundle:CitizenHistory');
-        $qb = new \Doctrine\ODM\MongoDB\Query\Builder;
+//        $qb = new \Doctrine\ODM\MongoDB\Query\Builder;
         $qb
                 ->field('eday')->gte((int) $data['startDay'])
                 ->field('eday')->lte((int) $data['endDay'])
         ;
 
 
-        $qb->addAnd(
-                $qb->expr()->field('eday')->gte((int) $data['startDay'])
-                        ->lte((int) $data['startDay'])
-        );
+//        $qb->addAnd(
+//                $qb->expr()->field('eday')->gte((int) $data['startDay'])
+//                        ->lte((int) $data['startDay'])
+//        );
 //
 //
 //

@@ -110,7 +110,9 @@ class ErepublikScrobblerService extends CurlUtils {
             return null;
         }
 
-        $history = $citizen->getHistory();
+        $eDay = $this->container->get('date_time')->getErepublikDate();
+
+        $history = $citizen->getHistory($eDay);
 
         $history->setNick($this->getName());
         $history->setAvatarUrl($this->getAvatar());
@@ -137,7 +139,7 @@ class ErepublikScrobblerService extends CurlUtils {
         // TODO
 
         if (!$citizen->getAllHistory()->count()) {
-            $yestereday = $history->getEday() - 1;
+            $yestereday = $eDay - 1;
             $zeroHistory = clone $history;
             $zeroHistory->setEday($yestereday);
             $em->persist($zeroHistory);
@@ -146,10 +148,10 @@ class ErepublikScrobblerService extends CurlUtils {
         $em->persist($history);
         $em->flush();
 
-        if (!$citizen->getAllHistory()->count()) {
-            $zeroHistory->setCreatedAt($history->getCreatedAt()->modify('-1 day'));
-            $em->flush();
-        }
+//        if (!$citizen->getAllHistory()->count()) {
+//            $zeroHistory->setCreatedAt($history->getCreatedAt()->modify('-1 day'));
+//            $em->flush();
+//        }
 
         return $history;
     }

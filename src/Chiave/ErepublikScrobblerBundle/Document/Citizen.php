@@ -125,49 +125,62 @@ class Citizen {
      *
      * @return \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory
      */
-    public function getHistory($modifyDays = 0) {
-        $dayChange = new \DateTime('now');
-        $dayChange->modify("-$modifyDays days");
-
-        return $this->getHistoryByDate($dayChange);
-    }
-
-    /**
-     * Get day from day $date
-     *
-     * @return \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory
-     */
-    public function getHistoryByDate($startDC = null, $modify = 1) {
-//        if ($startDC == null) {
-//            $startDC = new \DateTime('now');
-//        }
-//
-//        if ($startDC->format('G') < 9) {
-//            $startDC->modify('-1 day');
-//        }
-//
-//        $startDC->setTime(9, 0);
-//
-//        $endDC = clone $startDC;
-//        $endDC->modify("+$modify day");
-        $date = new \DateTime('now');
-//        $date->modify("-$startDC days");
-
-        $erepZeroDay = new \DateTime('2007-11-20 9:00:00');
-        $erepDay = $date->diff($erepZeroDay)->format('%a');
+    public function getHistory($eDay = null) {
+        if (!$eDay) {
+            $date = new \DateTime('now');
+            $erepZeroDay = new \DateTime('2007-11-20 9:00:00');
+            $eDay = $date->diff($erepZeroDay)->format('%a');
+        }
 
         $histories = $this->history->filter(
-                function($history) use ($erepDay) {
-            return $history->getEday() == $erepDay;
-        }
-        );
+                function($history) use ($eDay) {
+            return $history->getEday() == $eDay;
+        });
+
 
         if ($histories->isEmpty()) {
-            return new \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory($this, $erepDay);
+            return new CitizenHistory($this, $eDay);
         }
 
-        return $histories->last();
+        return $histories->first();
     }
+
+//    /**
+//     * Get day from day $date
+//     *
+//     * @return \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory
+//     */
+//    public function getHistoryByDate($startDC = null, $modify = 1) {
+////        if ($startDC == null) {
+////            $startDC = new \DateTime('now');
+////        }
+////
+////        if ($startDC->format('G') < 9) {
+////            $startDC->modify('-1 day');
+////        }
+////
+////        $startDC->setTime(9, 0);
+////
+////        $endDC = clone $startDC;
+////        $endDC->modify("+$modify day");
+//        $date = new \DateTime('now');
+////        $date->modify("-$startDC days");
+//
+//        $erepZeroDay = new \DateTime('2007-11-20 9:00:00');
+//        $erepDay = $date->diff($erepZeroDay)->format('%a');
+//
+//        $histories = $this->history->filter(
+//                function($history) use ($erepDay) {
+//            return $history->getEday() == $erepDay;
+//        }
+//        );
+//
+//        if ($histories->isEmpty()) {
+//            return new \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory($this, $erepDay);
+//        }
+//
+//        return $histories->last();
+//    }
 
     /**
      * Add rankingUsers
