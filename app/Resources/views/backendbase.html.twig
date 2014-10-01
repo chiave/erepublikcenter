@@ -96,6 +96,12 @@
 
                         {% if app.debug %}
                             <li><h6><strong>DEV only:</strong></h6></li>
+                            <li {% if active == "super_players_scrobble" %}class="active"{% endif %}>
+                                <a href="{{ path('super_players_scrobble') }}">fetch players</a>
+                            </li>
+                            <li {% if active == "super_history_scrobble" %}class="active"{% endif %}>
+                                <a href="{{ path('super_history_scrobble') }}">fetch history for all</a>
+                            </li>
                             <li></li>
 
                         {% endif %}

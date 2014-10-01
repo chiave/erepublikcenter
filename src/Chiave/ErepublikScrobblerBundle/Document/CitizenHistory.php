@@ -6,7 +6,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @MongoDB\Document 
+ * @MongoDB\Document
  * @MongoDB\HasLifecycleCallbacks
  */
 class CitizenHistory {
@@ -17,10 +17,14 @@ class CitizenHistory {
     private $id;
 
     /**
+     * @MongoDB\Int
+     */
+    private $eday;
+
+    /**
      * @MongoDB\ReferenceOne(targetDocument="Citizen", inversedBy="history", simple=true)
      */
     private $citizen;
-
 
     /**
      * @MongoDB\String
@@ -100,7 +104,6 @@ class CitizenHistory {
 
     // *
     //  * MongoDB\Collection
-     
     // // private $achievements;
 
     /**
@@ -145,20 +148,19 @@ class CitizenHistory {
      */
     private $division;
 
-
     /**
      * @MongoDB\Date
      */
     private $createdAt;
-
 
     /**
      * @MongoDB\Date
      */
     private $updatedAt;
 
-    public function __construct($citizen) {
+    public function __construct($citizen, $eday) {
         $this->citizen = $citizen;
+        $this->eday = $eday;
     }
 
     public function __toString() {
@@ -173,6 +175,24 @@ class CitizenHistory {
      */
     public function getId() {
         return $this->id;
+    }
+
+    /**
+     *
+     * @param integer $eday
+     * @return
+     */
+    public function setEday($eday) {
+        $this->eday = $eday;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getEday() {
+        return $this->eday;
     }
 
     /**
@@ -859,9 +879,18 @@ class CitizenHistory {
      * @return integer
      */
     public function getEgovQWeaponHit($weaponsQuality = 7) {
-        $hit = $this->egovHits * $this->getHit();
+        $hit = $this->egovHits * $this->getHit($weaponsQuality);
 
         return round($hit);
+    }
+
+    /**
+     * Count egovHit
+     *
+     * @return integer
+     */
+    public function getTanksToPay($dofAmount = 1.5) {
+        return ($this->egovHits / 10) * $dofAmount;
     }
 
     /**

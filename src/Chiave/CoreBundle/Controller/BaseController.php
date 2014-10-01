@@ -50,7 +50,7 @@ class BaseController extends Controller {
      * @return mixed
      */
     public function getManager() {
-        return $this->getManager();
+        return $this->getDoctrine()->getManager();
     }
 
     /**
@@ -69,8 +69,8 @@ class BaseController extends Controller {
      * No matter if m*sql or mongo is used.
      *
      * @param string $alias - alias for class
-     * return Doctrine\ODM\MongoDB\Query\Builder
-     * @return \Doctrine\ORM\QueryBuilder instance with an 'a' alias
+     * @return Doctrine\ODM\MongoDB\Query\Builder
+     * return \Doctrine\ORM\QueryBuilder instance with an 'a' alias
      */
     public function getQb($alias, $queryName = 'a') {
 //        new \Doctrine\ORM\QueryBuilder

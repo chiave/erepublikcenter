@@ -3,9 +3,9 @@
 namespace Chiave\ErepublikScrobblerBundle\Service;
 
 use Chiave\ErepublikScrobblerBundle\Libraries\CurlUtils;
-
 use Chiave\MilitaryUnitBundle\Document\MilitaryUnit;
 use Chiave\MilitaryUnitBundle\Document\MilitaryUnitHistory;
+use Chiave\ErepublikScrobblerBundle\Document\Citizen;
 
 /**
  * class EgovFetcherService
@@ -14,20 +14,17 @@ use Chiave\MilitaryUnitBundle\Document\MilitaryUnitHistory;
  *
  * @author  Alphanumerix <>
  */
-class EgovFetcherService extends CurlUtils
-{
+class EgovFetcherService extends CurlUtils {
 
     protected $container;
 
-    public function setContainer($container)
-    {
+    public function setContainer($container) {
         $this->container = $container;
     }
 
-    //remember to add country code and erepublik day at the and
+//remember to add country code and erepublik day at the and
     CONST URL_EGOV_JSON = 'http://www.egov4you.info/operations/reportJson/';
     CONST URL_MU_PROFILE = 'http://www.erepublik.com/en/main/group-show/';
-
 
     private $_xpath;
     private $_id;
@@ -41,66 +38,133 @@ class EgovFetcherService extends CurlUtils
         return $data;
     }
 
-    public function countPastDataStats($modifyDays = 0,$citizen_id = 4241769 ,$countryCode = 35) {
+    public function fetchBluerosePlayers($period = 0) {
+//        #NOTICE: First egov scrobblable day is 1712
+        $dm = $this->getEm();
 
-        $em = $this->getEm();
-        
-        $battles = 0;
-        $hits = 0;
-        $influence = 0;
+        for (; $period >= 0; $period--) {
+            $allData = $this->getNationalRaportArray($period);
+            $data = $allData['minisoldiersStats'];
+            foreach ($data as $sd) {
+                if ($sd['unit'] == 125 || $sd['army'] == 125) {
+                    $citizen = $this
+                            ->getRepo('ChiaveErepublikScrobblerBundle:Citizen')
+                            ->findOneByCitizenId($sd['citizen']);
+                    if (!($citizen instanceof Citizen)) {
+                        $citizen = new Citizen();
+                        $citizen->setCitizenId($sd['citizen']);
 
-        for (; $modifyDays >= 0 ; $modifyDays--) { 
-        
+                        $dm->persist($citizen);
 
-            $data = $this->getNationalRaportArray($modifyDays, $countryCode);
+                        $firstHistory = $this->container
+                                ->get('erepublik_citizen_scrobbler')
+                                ->updateCitizenHistory($citizen);
 
-            foreach ($data['minisoldiersStats'] as $soldier) {
-                        if($soldier['citizen'] == $citizen_id){
-                            $battles = $battles + $soldier['battles'];
-                            $hits = $hits + $soldier['hits'];
-                            $influence = $influence + $soldier['influence'];
-                        }        
+                        $dm->flush();
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    public function fetchOldHistory($period = 0) {
+//        #NOTICE: First egov scrobblable day is 1712
+        $dm = $this->getEm();
+        $citizens = $this->getRepo('ChiaveErepublikScrobblerBundle:Citizen')
+                ->findAll();
+
+        for ($i = 0; $i <= $period; $i++) {
+            $allData = $this->getNationalRaportArray($i);
+            $data = $allData['minisoldiersStats'];
+
+            foreach ($data as $sd) {
+                foreach ($citizens as $citizen) {
+                    if ($sd['citizen'] == $citizen->getCitizenId()) {
+                        $eday = $this->container
+                                ->get('date_time')
+                                ->getErepublikDate($period);
+
+                        $history = $this->getQb('ChiaveErepublikScrobblerBundle:CitizenHistory')
+                                ->field('citizen')->equals($citizen->getId())
+                                ->field('eday')->equals((int) $eday)
+                                ->limit(1)
+                                ->getQuery()
+                                ->getSingleResult();
+
+                        if (!($history instanceof \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory)) {
+                            $history = new \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory($citizen, $eday);
+                        }
+
+                        $history->setEgovBattles($sd['battles']);
+                        $history->setEgovHits($sd['hits']);
+                        $history->setEgovInfluence($sd['influence']);
+                        $history->setCitizen($citizen);
+                        $dm->persist($history);
+                    }
+                }
             }
 
-        $citizenrepo = $em->getRepository("Chiave\ErepublikScrobblerBundle\Document\Citizen");
-        $citizen = $citizenrepo->findOneByCitizenId($citizen_id);
-        // var_dump($citizen);
-
-
-
-        // $repo = $em->getRepository("Chiave\ErepublikScrobblerBundle\Document\CitizenHistory");
-        // $results = $repo->createQueryBuilder()
-        //     ->field("citizen.id")->equals($citizen->getId())
-        //     ->sort("createdAt","desc")
-        //     ->limit(1)
-        //     ->getQuery()
-        //     ->execute();
-
-        // foreach ($results as $result) {
-        //     var_dump($result);
-        //     die;
-        // }
-
-        $results = $citizen->getHistory();
-
-        $results->setEgovBattles($results->getEgovBattles()+$battles);
-        $results->setEgovHits($results->getEgovHits()+$hits);
-        $results->setEgovInfluence($results->getEgovInfluence()+$influence);
-
-        $em->persist($results);
-        $em->flush();
+            $dm->flush();
         }
     }
 
+//    public function countPastDataStats($modifyDays = 0, $citizen_id = 4241769, $countryCode = 35) {
+//
+//        $em = $this->getEm();
+//
+//        $battles = 0;
+//        $hits = 0;
+//        $influence = 0;
+//
+//        for (; $modifyDays >= 0; $modifyDays--) {
+//
+//
+//            $data = $this->getNationalRaportArray($modifyDays, $countryCode);
+//
+//            foreach ($data['minisoldiersStats'] as $soldier) {
+//                if ($soldier['citizen'] == $citizen_id) {
+//                    $battles = $battles + $soldier['battles'];
+//                    $hits = $hits + $soldier['hits'];
+//                    $influence = $influence + $soldier['influence'];
+//                }
+//            }
+//
+//            $citizenrepo = $em->getRepository("Chiave\ErepublikScrobblerBundle\Document\Citizen");
+//            $citizen = $citizenrepo->findOneByCitizenId($citizen_id);
+//            // var_dump($citizen);
+//            // $repo = $em->getRepository("Chiave\ErepublikScrobblerBundle\Document\CitizenHistory");
+//            // $results = $repo->createQueryBuilder()
+//            //     ->field("citizen.id")->equals($citizen->getId())
+//            //     ->sort("createdAt","desc")
+//            //     ->limit(1)
+//            //     ->getQuery()
+//            //     ->execute();
+//            // foreach ($results as $result) {
+//            //     var_dump($result);
+//            //     die;
+//            // }
+//
+//            $results = $citizen->getHistory();
+//
+//            $results->setEgovBattles($results->getEgovBattles() + $battles);
+//            $results->setEgovHits($results->getEgovHits() + $hits);
+//            $results->setEgovInfluence($results->getEgovInfluence() + $influence);
+//
+//            $em->persist($results);
+//            $em->flush();
+//        }
+//}
 
     public function updateMilitaryUnits() {
         $em = $this->getEm();
         $nationalRaport = $this->getNationalRaportArray();
 
-        foreach($nationalRaport['miniarmiesStats'] as $muFreshData) {
+        foreach ($nationalRaport['miniarmiesStats'] as $muFreshData) {
             $mu = $this->getRepo()->findOneByUnitId($muFreshData['unit']);
 
-            if($mu == null) {
+            if ($mu == null) {
                 $mu = new MilitaryUnit($muFreshData['unit']);
 
                 $em->persist($mu);
@@ -123,19 +187,18 @@ class EgovFetcherService extends CurlUtils
         $em = $this->getEm();
         $nationalRaport = $this->getNationalRaportArray();
 
-        foreach($nationalRaport['minisoldiersStats'] as $citizenFreshData) {
+        foreach ($nationalRaport['minisoldiersStats'] as $citizenFreshData) {
             $citizen = $this
-                ->getRepo('ChiaveErepublikScrobblerBundle:Citizen')
-                ->findOneByCitizenId($citizenFreshData['citizen']);
+                    ->getRepo('ChiaveErepublikScrobblerBundle:Citizen')
+                    ->findOneByCitizenId($citizenFreshData['citizen']);
 
-            if($citizen == null) {
-                //TODO: Continue for now,
-                //  create new citizen if part of bluerose in the future
+            if ($citizen == null) {
+//TODO: Continue for now,
+//  create new citizen if part of bluerose in the future
                 continue;
-                // $citizen = new MilitaryUnit($citizenFreshData['unit']);
-
-                // $em->persist($citizen);
-                // $em->flush();
+// $citizen = new MilitaryUnit($citizenFreshData['unit']);
+// $em->persist($citizen);
+// $em->flush();
             }
 
             $history = $citizen->getHistory();
@@ -150,10 +213,7 @@ class EgovFetcherService extends CurlUtils
         }
     }
 
-
-
-    public function muExists()
-    {
+    public function muExists() {
         $query = $this->_xpath->query("//div[@class='header_content']/h2/span");
 
         if ($query && $query->item(0) && $query->item(0)->nodeValue) {
@@ -163,9 +223,8 @@ class EgovFetcherService extends CurlUtils
         return false;
     }
 
-    //militaryunits pages requre login-in ;) dead-end, tank needed...
-    public function parseMUProfile($id)
-    {
+//militaryunits pages requre login-in ;) dead-end, tank needed...
+    public function parseMUProfile($id) {
         $this->_prepare($id);
 
         if (!$this->muExists()) {
@@ -175,197 +234,21 @@ class EgovFetcherService extends CurlUtils
         echo $this->getName();
     }
 
-    public function getId()
-    {
+    public function getId() {
         return $this->_id;
     }
 
-    public function getName()
-    {
+    public function getName() {
         return trim($this->_xpath->query("//div[@class='header_content']/h2/span")
-            ->item(0)->nodeValue
+                        ->item(0)->nodeValue
         );
     }
 
-    // public function getAvatar($size = 'large')
-    // {
-    //     return trim($this->_getImage(
-    //         $this->_xpath->query("//img[@class='citizen_avatar']/@style")
-    //         ->item(0)->nodeValue, $size
-    //     ));
-
-    // }
-
-    // public function getLvl()
-    // {
-    //     return trim($this->_xpath->query("//div[@class='citizen_experience']/strong[@class='citizen_level']")
-    //         ->item(0)->nodeValue
-    //     );
-    // }
-
-    // public function getExp()
-    // {
-    //     return trim($this->_formatNumber($this->_getBeforeSlash(
-    //         $this->_xpath->query("//div[@class='citizen_experience']/div/p")
-    //         ->item(0)->nodeValue
-    //     )));
-    // }
-
-    // public function getStr()
-    // {
-    //     return trim($this->_formatNumber(
-    //         $this->_xpath->query("//div[@class='citizen_military'][1]/h4")
-    //         ->item(0)->nodeValue
-    //     ));
-    // }
-
-    // public function getRank()
-    // {
-    //     return trim($this->_xpath->query("//div[@class='citizen_military'][2]/h4/a")
-    //         ->item(0)->nodeValue
-    //     );
-    // }
-
-    // public function getRankImage()
-    // {
-    //     return trim($this->_xpath->query("//div[@class='citizen_military'][2]/h4/img/@src")
-    //         ->item(0)->nodeValue
-    //     );
-    // }
-
-    // public function getRankPoints()
-    // {
-    //     return trim($this->_formatNumber($this->_getBeforeSlash(
-    //         $this->_xpath->query("//div[@class='citizen_military'][2]/div[@class='stat']/small[2]/strong")
-    //         ->item(0)->nodeValue
-    //     )));
-    // }
-
-    // public function getTruePatriot()
-    // {
-    //     $query = $this->_xpath->query("//div[@class='citizen_military'][3]/div[@class='stat']/small[2]/strong")
-    //                 ->item(0)
-    //     ;
-
-    //     if ($query) {
-    //         return $this->_formatNumber(
-    //             $this->_getBeforeSlash(
-    //                $query->nodeValue
-    //         ));
-    //     }
-
-    //     return null;
-    // }
-
-    // public function getEBirthday()
-    // {
-    //     $eBirthday = trim($this->_xpath->query("//div[@class='citizen_info']/div[@class='citizen_second']/p[2]")
-    //         ->item(0)->nodeValue);
-    //     $dt = new \DateTime();
-    //     $dt = $dt->createFromFormat('M d, Y', $eBirthday);
-    //     return $dt;
-    // }
-
-
-    // public function getCountry()
-    // {
-    //     return trim($this->_xpath->query("//div[@class='citizen_sidebar']/div[@class='citizen_info']/a[1]")
-    //         ->item(0)->nodeValue
-    //     );
-    // }
-
-    // public function getRegion()
-    // {
-    //     return trim($this->_xpath->query("//div[@class='citizen_sidebar']/div[@class='citizen_info']/a[2]")
-    //         ->item(0)->nodeValue
-    //     );
-    // }
-
-    // public function getCitizenship()
-    // {
-    //     return trim($this->_xpath->query("//div[@class='citizen_sidebar']/div[@class='citizen_info']/a[3]")
-    //         ->item(0)->nodeValue
-    //     );
-    // }
-
-    // public function getNationalRank()
-    // {
-    //     return trim($this->_xpath->query("//div[@class='citizen_second']/small[3]/strong")
-    //         ->item(0)->nodeValue
-    //     );
-
-    // }
-
-    // public function getParty()
-    // {
-    //     $partyString = $this->_xpath->query("//div[@class='citizen_activity']/div[@class='place'][1]/div/span/a")
-    //         ->item(0)
-    //     ;
-
-    //     if ($partyString) {
-    //         return trim($partyString->nodeValue);
-    //     }
-
-    //     return null;
-    // }
-
-    // public function getPartyId()
-    // {
-    //     $partyString = $this->_xpath->query("//div[@class='citizen_activity']/div[@class='place'][1]/div/span/a/@href")
-    //         ->item(0)
-    //     ;
-
-    //     if ($partyString) {
-    //         $party = $partyString->nodeValue;
-    //         preg_match('/(\d+)/', $party, $id);
-    //         return $id[1];
-    //     }
-
-    //     return null;
-    // }
-
-    // public function getMilitaryUnit()
-    // {
-    //     $mu = $this->_xpath->query("//div[@class='citizen_activity']/div[@class='place'][2]/div[@class='one_newspaper']/a")
-    //         ->item(0)
-    //     ;
-
-    //     if ($mu) {
-    //         return trim($mu->nodeValue);
-    //     }
-
-    //     return null;
-    // }
-
-    // public function getMilitaryUnitId()
-    // {
-    //     $mu = $this->_xpath->query("//div[@class='citizen_activity']/div[@class='place'][2]/div[@class='one_newspaper']/a/@href")->item(0);
-
-    //     if ($mu) {
-    //         $result = $mu->nodeValue;
-    //         $id = explode('/', $result);
-    //         return end($id);
-    //     }
-
-    //     return null;
-    // }
-
-    // public function getMedals()
-    // {
-    //     $allMedals = $this->_xpath->query("//ul[@id='achievment']/li");
-    //     $medals = array();
-    //     foreach ($allMedals as $medal) {
-    //         $type = $this->_xpath->query(".//span/p/strong", $medal)
-    //             ->item(0)->nodeValue;
-    //         $amount = $this->_xpath->query(".//div[@class='counter']", $medal);
-    //         $medals[$type] = ($amount->length > 0 ? (int)$amount->item(0)->nodeValue : 0);
-    //     }
-    //     return $medals;
-    // }
-
-
-
-
+    /**
+     * @param integer $modifyDays = 0
+     * @param integer $countryCode = 35
+     * @return array
+     */
     public function getNationalRaportArray($modifyDays = 0, $countryCode = 35) {
 
         $erepDay = $this->container->get('date_time')->getErepublikDate($modifyDays);
@@ -378,40 +261,35 @@ class EgovFetcherService extends CurlUtils
     }
 
     /**
-    *
-    * Convert recursively an object to an array
-    *
-    * @param    object  $object The object to convert
-    * @return      array
-    *
-    */
-    private function objectToArray($object)
-    {
-        if(!is_object($object) && !is_array($object))
-        {
+     *
+     * Convert recursively an object to an array
+     *
+     * @param    object  $object The object to convert
+     * @return      array
+     *
+     */
+    private function objectToArray($object) {
+        if (!is_object($object) && !is_array($object)) {
             return $object;
         }
-        if(is_object($object))
-        {
+        if (is_object($object)) {
             $object = get_object_vars($object);
         }
         return array_map(
-            array(
-                'Chiave\ErepublikScrobblerBundle\Service\EgovFetcherService',
-                'objectToArray'
-            ),
-            $object
+                array(
+            'Chiave\ErepublikScrobblerBundle\Service\EgovFetcherService',
+            'objectToArray'
+                ), $object
         );
     }
 
-    private function getData($url)
-    {
+    private function getData($url) {
         $ch = curl_init();
         $timeout = 5;
 
-        curl_setopt($ch,CURLOPT_URL,$url);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 
         $data = curl_exec($ch);
         curl_close($ch);
@@ -419,22 +297,98 @@ class EgovFetcherService extends CurlUtils
         return $this->objectToArray(json_decode($data));
     }
 
-    private function getEm()
-    {
+    private function getEm() {
         return $this->container->get('doctrine_mongodb')->getManager();
-        ;
     }
 
-    private function getRepo($class = 'ChiaveMilitaryUnitBundle:MilitaryUnit')
-    {
+    private function getRepo($class = 'ChiaveMilitaryUnitBundle:MilitaryUnit') {
         return $this->container
-            ->get('doctrine_mongodb')
-            ->getRepository($class)
+                        ->get('doctrine_mongodb')
+                        ->getRepository($class)
         ;
     }
 
-    private function _prepare($id)
-    {
+    /**
+     * @param string $alias
+     * @return mixed
+     */
+    public function get($alias) {
+        return $this->container->get($alias);
+    }
+
+    /**
+     * Get doctrine.
+     * No matter if m*sql or mongo is used.
+     *
+     * @return mixed
+     */
+    protected function getDoctrine() {
+        if ($this->container->has('doctrine_mongodb')) {
+            return $this->container->get('doctrine_mongodb');
+        }
+
+        return $this->container->get('doctrine');
+    }
+
+    /**
+     * Get manager.
+     * No matter if m*sql or mongo is used.
+     *
+     * @return mixed
+     */
+    protected function getManager() {
+        return $this->getManager();
+    }
+
+    /**
+     * getQb
+     * No matter if m*sql or mongo is used.
+     *
+     * @param string $alias - alias for class
+     * @return \Doctrine\ORM\QueryBuilder instance with an 'a' alias
+     */
+    protected function getQb($alias, $queryName = 'a') {
+//        new \Doctrine\ORM\QueryBuilder
+        return $this->getDoctrine()
+                        ->getRepository($alias)
+                        ->createQueryBuilder($queryName)
+        ;
+    }
+
+    /**
+     * add Flash Message
+     * supported types:
+     *      default     - blue
+     *      success     - green
+     *      warning     - orange
+     *      info        - light blue
+     *      alert       - red
+     *      secondary   - gray
+     *
+     * @param string $message - autotranslated, if translation exists
+     * @param string $type = 'notice'
+     */
+    protected function addFlashMsg($message, $type = 'default') {
+        $this->container
+                ->get('session')
+                ->getFlashBag()
+                ->add($type, $this->trans($message))
+        ;
+    }
+
+    /**
+     * Translate string
+     *
+     * @param string $message - translated, if translation exists
+     */
+    protected function trans($message) {
+        return $this->container
+                        ->get('translator')
+                        ->trans($message)
+        ;
+    }
+
+    private function _prepare($id) {
         $html = $this->_get(self::URL_MU_PROFILE . $id);
         $dom = new \DOMDocument();
         @$dom->loadHTML($html);
@@ -442,26 +396,24 @@ class EgovFetcherService extends CurlUtils
         $this->_id = $id;
     }
 
-    private function _formatNumber($number)
-    {
+    private function _formatNumber($number) {
         return str_replace(',', '', $number);
     }
 
-    private function _getBeforeSlash($string)
-    {
+    private function _getBeforeSlash($string) {
         $temp = explode('/', $string);
         return trim($temp[0]);
     }
 
-    private function _getImage($string, $size)
-    {
+    private function _getImage($string, $size) {
         preg_match('@((?:https?\:\/\/)(?:[a-zA-Z]{1}(?:[\w\-]+\.)+(?:[\w]{2,5}))(?:\:[\d]{1,5})?\/(?:[^\s\/]+\/)*(?:[^\s]+\.(?:jpe?g|gif|png))(?:\?\w+=\w+(?:&\w+=\w+)*)?)@', $string, $matches);
         if ($size == 'large')
             return str_replace('_142x142', '', $matches[1]);
         else if ($size == 'medium')
             return $matches[1];
-        else if ($size == 'small');
-            return str_replace('_142x142', '_55x55', $matches[1]);
+        else if ($size == 'small')
+            ;
+        return str_replace('_142x142', '_55x55', $matches[1]);
     }
-}
 
+}

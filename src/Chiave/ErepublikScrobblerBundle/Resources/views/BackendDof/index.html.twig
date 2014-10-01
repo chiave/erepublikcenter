@@ -18,6 +18,7 @@
         <thead>
             <tr>
                 <th></th>
+                <th>eday</th>
                 <th>Nick</th>
                 <th>Dywizja</th>
                 <th>Hity (egov)</th>
@@ -25,6 +26,7 @@
                 <th>
                     Q broni<br />
                     egovHits * hit q7</th>
+                <th>wysokość dofa</th>
                 <th>dof</th>
                 <th>
                 </th>
@@ -35,8 +37,9 @@
             {% for history in histories %}
                 <tr>
                     <td>{{ loop.index }}</td>
+                    <td>{{ history.eday }}</td>
                     <td>
-                        <img src="{{ history.smallAvatarUrl }}" />
+                        <img src="{{ history.smallAvatarUrl }}" /><br/>
                         {{ history.nick }}
                     </td>
                     <td>{{ history.divisionText }}</th>
@@ -48,6 +51,7 @@
                             <br />(różne)
                         {% endif %}
                     </td>
+                    <td>{{ history.tanksToPay }}</td>
                     <td>
                         <a class="button split tiny
                            {% if history.dof == 1 %}
@@ -100,7 +104,7 @@
 {% block javascripts -%}
 
     <script type="text/javascript">
-        $('.dof_button').click(function(e) {
+        $('.dof_button').click(function (e) {
             e.preventDefault();
 
             var clicked = $(this);
@@ -108,7 +112,7 @@
 
             $.post(
                     $(this).attr('href'),
-                    function(data) {
+                    function (data) {
                         if (data.success) {
                             // $(toChange).remove();
                             //console.log($(clicked).attr('data-status'));

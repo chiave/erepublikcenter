@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @MongoDB\Document
  */
-class Citizen
-{
+class Citizen {
+
     /**
      * @MongoDB\Id(strategy="auto")
      */
@@ -20,11 +20,10 @@ class Citizen
      */
     private $citizenId;
 
-
-    /** 
+    /**
      * @MongoDB\ReferenceMany(
-     *  targetDocument="CitizenHistory", 
-     *  mappedBy="citizen", 
+     *  targetDocument="CitizenHistory",
+     *  mappedBy="citizen",
      *  cascade="all",
      *  sort={"createdAt": "DESC"},
      *  simple=true
@@ -32,10 +31,10 @@ class Citizen
      */
     private $history;
 
-    /** 
+    /**
      * @MongoDB\ReferenceMany(
-     *   targetDocument="Chiave\StatsBundle\Document\RankingUser", 
-     *   mappedBy="citizen", 
+     *   targetDocument="Chiave\StatsBundle\Document\RankingUser",
+     *   mappedBy="citizen",
      *   cascade="all",
      *   sort={"createdAt": "DESC"}
      *  )
@@ -47,12 +46,10 @@ class Citizen
      */
     private $createdAt;
 
-
     /**
      * @MongoDB\Date
      */
     private $updatedAt;
-
 
     public function __construct() {
         $this->history = new ArrayCollection();
@@ -67,8 +64,7 @@ class Citizen
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -78,8 +74,7 @@ class Citizen
      * @param integer $citizenId
      * @return User
      */
-    public function setCitizenId($citizenId)
-    {
+    public function setCitizenId($citizenId) {
         $this->citizenId = $citizenId;
 
         return $this;
@@ -90,11 +85,9 @@ class Citizen
      *
      * @return integer
      */
-    public function getCitizenId()
-    {
+    public function getCitizenId() {
         return $this->citizenId;
     }
-
 
     /**
      * Add history
@@ -102,8 +95,7 @@ class Citizen
      * @param \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory $history
      * @return Citizen
      */
-    public function addHistory(\Chiave\ErepublikScrobblerBundle\Document\CitizenHistory $history)
-    {
+    public function addHistory(\Chiave\ErepublikScrobblerBundle\Document\CitizenHistory $history) {
         $this->history[] = $history;
         $history->setCitizen($this);
 
@@ -115,8 +107,7 @@ class Citizen
      *
      * @param \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory $history
      */
-    public function removeHistory(\Chiave\ErepublikScrobblerBundle\Document\CitizenHistory $history)
-    {
+    public function removeHistory(\Chiave\ErepublikScrobblerBundle\Document\CitizenHistory $history) {
         $this->history->removeElement($history);
     }
 
@@ -125,8 +116,7 @@ class Citizen
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAllHistory()
-    {
+    public function getAllHistory() {
         return $this->history;
     }
 
@@ -135,8 +125,7 @@ class Citizen
      *
      * @return \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory
      */
-    public function getHistory($modifyDays = 0)
-    {
+    public function getHistory($modifyDays = 0) {
         $dayChange = new \DateTime('now');
         $dayChange->modify("-$modifyDays days");
 
@@ -148,31 +137,33 @@ class Citizen
      *
      * @return \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory
      */
-    public function getHistoryByDate($startDC = null, $modify = 1)
-    {
-        if($startDC == null) {
-            $startDC = new \DateTime('now');
-        }
+    public function getHistoryByDate($startDC = null, $modify = 1) {
+//        if ($startDC == null) {
+//            $startDC = new \DateTime('now');
+//        }
+//
+//        if ($startDC->format('G') < 9) {
+//            $startDC->modify('-1 day');
+//        }
+//
+//        $startDC->setTime(9, 0);
+//
+//        $endDC = clone $startDC;
+//        $endDC->modify("+$modify day");
+        $date = new \DateTime('now');
+//        $date->modify("-$startDC days");
 
-            if($startDC->format('G') < 9) {
-                $startDC->modify('-1 day');
-            }
-
-            $startDC->setTime(9, 0);
-
-        $endDC = clone $startDC;
-        $endDC->modify("+$modify day");
+        $erepZeroDay = new \DateTime('2007-11-20 9:00:00');
+        $erepDay = $date->diff($erepZeroDay)->format('%a');
 
         $histories = $this->history->filter(
-            function($history) use ($startDC, $endDC) {
-                return $history->getCreatedAt() >= $startDC &&
-                    $history->getCreatedAt() <= $endDC
-                ;
-            }
+                function($history) use ($erepDay) {
+            return $history->getEday() == $erepDay;
+        }
         );
 
         if ($histories->isEmpty()) {
-            return new \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory($this);
+            return new \Chiave\ErepublikScrobblerBundle\Document\CitizenHistory($this, $erepDay);
         }
 
         return $histories->last();
@@ -184,8 +175,7 @@ class Citizen
      * @param \Chiave\StatsBundle\Document\RankingUser $rankingUsers
      * @return Citizen
      */
-    public function addRankingUser(\Chiave\StatsBundle\Entity\RankingUser $rankingUsers)
-    {
+    public function addRankingUser(\Chiave\StatsBundle\Entity\RankingUser $rankingUsers) {
         $this->rankingUsers[] = $rankingUsers;
 
         return $this;
@@ -196,8 +186,7 @@ class Citizen
      *
      * @param \Chiave\StatsBundle\Document\RankingUser $rankingUsers
      */
-    public function removeRankingUser(\Chiave\StatsBundle\Entity\RankingUser $rankingUsers)
-    {
+    public function removeRankingUser(\Chiave\StatsBundle\Entity\RankingUser $rankingUsers) {
         $this->rankingUsers->removeElement($rankingUsers);
     }
 
@@ -206,8 +195,7 @@ class Citizen
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getRankingUsers()
-    {
+    public function getRankingUsers() {
         return $this->rankingUsers;
     }
 
@@ -217,8 +205,7 @@ class Citizen
      * @param \DateTime $createdAt
      * @return Pages
      */
-    public function setCreatedAt($createdAt)
-    {
+    public function setCreatedAt($createdAt) {
         $this->createdAt = $createdAt;
 
         return $this;
@@ -229,16 +216,14 @@ class Citizen
      *
      * @return \DateTime
      */
-    public function getCreatedAt()
-    {
+    public function getCreatedAt() {
         return $this->createdAt;
     }
 
     /**
      * @MongoDB\PrePersist
      */
-    public function setInitialTimestamps()
-    {
+    public function setInitialTimestamps() {
         $this->createdAt = new \DateTime('now');
         $this->updatedAt = new \DateTime('now');
     }
@@ -249,8 +234,7 @@ class Citizen
      * @param \DateTime $updatedAt
      * @return Pages
      */
-    public function setUpdatedAt($updatedAt)
-    {
+    public function setUpdatedAt($updatedAt) {
         $this->updatedAt = $updatedAt;
 
         return $this;
@@ -261,16 +245,15 @@ class Citizen
      *
      * @return \DateTime
      */
-    public function getUpdatedAt()
-    {
+    public function getUpdatedAt() {
         return $this->updatedAt;
     }
 
     /**
      * @MongoDB\PreUpdate
      */
-    public function setUpdatedTimestamps()
-    {
+    public function setUpdatedTimestamps() {
         $this->updatedAt = new \DateTime('now');
     }
+
 }
