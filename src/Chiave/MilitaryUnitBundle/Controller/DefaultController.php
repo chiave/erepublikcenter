@@ -2,18 +2,18 @@
 
 namespace Chiave\MilitaryUnitBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class DefaultController extends Controller
-{
+class DefaultController extends BaseController {
+
     /**
      * @Route("/hello/{name}")
      * @Template()
      */
-    public function indexAction($name)
-    {
+    public function indexAction($name) {
         return array('name' => $name);
     }
+
 }

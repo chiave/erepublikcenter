@@ -43,7 +43,7 @@ class BaseListener {
      * @return mixed
      */
     public function getManager() {
-        return $this->getDoctrine()->getManager();
+        return $this->getManager();
     }
 
     /**
@@ -54,7 +54,7 @@ class BaseListener {
      * @return mixed
      */
     public function getRepo($alias) {
-        return $this->getDoctrine()->getManager()->getRepository($alias);
+        return $this->getManager()->getRepository($alias);
     }
 
     /**

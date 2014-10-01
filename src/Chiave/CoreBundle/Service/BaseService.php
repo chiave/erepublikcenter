@@ -49,7 +49,7 @@ class BaseService {
      * @return mixed
      */
     protected function getManager() {
-        return $this->getDoctrine()->getManager();
+        return $this->getManager();
     }
 
     /**
@@ -60,7 +60,7 @@ class BaseService {
      * @return mixed
      */
     protected function getRepo($alias) {
-        return $this->getDoctrine()->getManager()->getRepository($alias);
+        return $this->getManager()->getRepository($alias);
     }
 
     /**

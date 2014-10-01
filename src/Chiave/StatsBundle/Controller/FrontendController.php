@@ -5,36 +5,33 @@ namespace Chiave\StatsBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class FrontendController extends Controller
-{
+class FrontendController extends BaseController {
+
     /**
      * @Route("/zbiorki")
      * @Template()
      */
-    public function gatheringAction()
-    {
+    public function gatheringAction() {
         $em = $this->get('doctrine_mongodb')->getManager();
 
         $militaryUnits = $em
-            ->getRepository('ChiaveMilitaryUnitBundle:MilitaryUnit')
-            ->findAll()
+                ->getRepository('ChiaveMilitaryUnitBundle:MilitaryUnit')
+                ->findAll()
         ;
 
         $citizens = $em
-            ->getRepository('ChiaveErepublikScrobblerBundle:Citizen')
-            ->findAll()
+                ->getRepository('ChiaveErepublikScrobblerBundle:Citizen')
+                ->findAll()
         ;
 
         // $dayChange = $this->container->get('date_time')->getDayChange(1);
         // $now = new \DateTime('now');
-
         // $citizenHistories = $em
         //     ->getRepository('ChiaveErepublikScrobblerBundle:CitizenHistory')
         //     ->createQueryBuilder('ch')
@@ -62,18 +59,16 @@ class FrontendController extends Controller
      * @Route("/ranking")
      * @Template()
      */
-    public function rankingAction()
-    {
+    public function rankingAction() {
         $em = $this->getEm();
 
         $lastRankingTime = $this->container->get('date_time')->getRankingTime();
 
         $rankings = $em
-            ->getRepository('ChiaveStatsBundle:Ranking')
-            ->findBy(
-                array(),
-                array('createdAt' => 'DESC')
-            )
+                ->getRepository('ChiaveStatsBundle:Ranking')
+                ->findBy(
+                array(), array('createdAt' => 'DESC')
+                )
         ;
 
         $ranking = $rankings[0];
@@ -83,8 +78,8 @@ class FrontendController extends Controller
         );
     }
 
-    private function getEm()
-    {
-        return $this->getDoctrine()->getManager();
+    private function getEm() {
+        return $this->getManager();
     }
+
 }

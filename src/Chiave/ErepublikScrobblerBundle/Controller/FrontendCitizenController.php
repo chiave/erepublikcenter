@@ -5,13 +5,11 @@ namespace Chiave\ErepublikScrobblerBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Chiave\ErepublikScrobblerBundle\Document\Citizen;
 use Chiave\ErepublikScrobblerBundle\Form\CitizenType;
 
@@ -20,8 +18,8 @@ use Chiave\ErepublikScrobblerBundle\Form\CitizenType;
  *
  * @Route("/")
  */
-class FrontendCitizenController extends Controller
-{
+class FrontendCitizenController extends BaseController {
+
     /**
      * Lists all citizens.
      *
@@ -29,13 +27,12 @@ class FrontendCitizenController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
+    public function indexAction() {
+        $em = $this->getManager();
 
         $citizens = $em
-            ->getRepository('ChiaveErepublikScrobblerBundle:Citizen')
-            ->findAll()
+                ->getRepository('ChiaveErepublikScrobblerBundle:Citizen')
+                ->findAll()
         ;
 
         return array(
@@ -52,39 +49,30 @@ class FrontendCitizenController extends Controller
     // public function createAction(Request $request)
     // {
     //     $citizen = new Citizen();
-
     //     $form = $this->createCitizenForm(
     //         $citizen,
     //         'chiave_scrobbler_citizen_create'
     //         );
-
     //     $form->handleRequest($request);
-
     //     if ($form->isValid()) {
-    //         $em = $this->getDoctrine()->getManager();
-
+    //         $em = $this->getManager();
     //         $citizen = $this
     //             ->get('erepublik_citizen_scrobbler')
     //             ->updateCitizen(
     //                 $citizen
     //             )
     //         ;
-
     //         // $em->persist($citizen);
-
     //         // $em->flush();
-
     //         return $this->redirect(
     //             $this->generateUrl('chiave_scrobbler_citizens')
     //         );
     //     }
-
     //     return array(
     //         'citizen' => $citizen,
     //         'form'   => $form->createView(),
     //     );
     // }
-
     // /**
     //  * @Route("/new", name="chiave_scrobbler_citizen_new")
     //  * @Method("GET")
@@ -94,18 +82,15 @@ class FrontendCitizenController extends Controller
     // public function newAction(Request $request)
     // {
     //     $citizen = new Citizen();
-
     //     $form = $this->createCitizenForm(
     //         $citizen,
     //         'chiave_scrobbler_citizen_create'
     //         );
-
     //     return array(
     //         'citizen' => $citizen,
     //         'form'   => $form->createView(),
     //     );
     // }
-
     // /**
     //  * Displays a form to edit an existing category.
     //  *
@@ -116,25 +101,20 @@ class FrontendCitizenController extends Controller
     //  */
     // public function editAction($id)
     // {
-    //     $em = $this->getDoctrine()->getManager();
-
+    //     $em = $this->getManager();
     //     $category = $em->getRepository('ChiaveGalleryBundle:Categories')->find($id);
-
     //     if (!$category) {
     //         throw $this->createNotFoundException('Unable to find Categories.');
     //     }
-
     //     $form = $this->createCategoryForm(
     //         $category,
     //         'chiave_gallery_categories_update'
     //         );
-
     //     return array(
     //         'category'      => $category,
     //         'form'   => $form->createView(),
     //     );
     // }
-
     // /**
     //  * Edits an existing category.
     //  *
@@ -145,32 +125,25 @@ class FrontendCitizenController extends Controller
     //  */
     // public function updateAction(Request $request, $id)
     // {
-    //     $em = $this->getDoctrine()->getManager();
-
+    //     $em = $this->getManager();
     //     $category = $em->getRepository('ChiaveGalleryBundle:Categories')->find($id);
-
     //     if (!$category) {
     //         throw $this->createNotFoundException('Unable to find Categories.');
     //     }
-
     //     $form = $this->createCategoryForm(
     //         $category,
     //         'chiave_gallery_categories_update'
     //         );
     //     $form->handleRequest($request);
-
     //     if ($form->isValid()) {
     //         $em->flush();
-
     //         return $this->redirect($this->generateUrl('chiave_gallery_categories_edit', array('id' => $id)));
     //     }
-
     //     return array(
     //         'category' => $category,
     //         'form'   => $form->createView(),
     //     );
     // }
-
     // /**
     //  * Deletes category.
     //  *
@@ -182,23 +155,18 @@ class FrontendCitizenController extends Controller
     // {
     //     $result = new \stdClass();
     //     $result->success = false;
-
-    //     $em = $this->getDoctrine()->getManager();
+    //     $em = $this->getManager();
     //     $category = $em->getRepository('ChiaveGalleryBundle:Categories')->find($id);
-
     //     if (!$category) {
     //         // throw $this->createNotFoundException('Unable to find Categories.');
     //         $result->error = 'Unable to find Categories.';
     //     } else {
     //         $em->remove($category);
     //         $em->flush();
-
     //         $result->success = true;
     //     }
-
     //     return new JsonResponse($result);
     // }
-
     // /**
     // * Creates a form for citizen.
     // *

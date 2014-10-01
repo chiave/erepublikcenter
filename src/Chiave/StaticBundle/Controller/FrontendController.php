@@ -2,10 +2,10 @@
 
 namespace Chiave\StaticBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-class FrontendController extends Controller {
+class FrontendController extends BaseController {
 
     /**
      * Static pages render action

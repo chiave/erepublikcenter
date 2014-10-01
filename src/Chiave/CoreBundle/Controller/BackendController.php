@@ -3,6 +3,7 @@
 namespace Chiave\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 
-class BackendController extends Controller {
+class BackendController extends BaseController {
 //    /**
 //     * login Action
 //     *
@@ -50,7 +51,7 @@ class BackendController extends Controller {
     public function dashboardAction() {
 
 
-        // $em = $this->getDoctrine()->getManager();
+        // $em = $this->getManager();
         // $citizen = $em
         //     ->getRepository('Chiave\ErepublikScrobblerBundle\Entity\Citizen')
         //     ->findOneByCitizenId(4241769)

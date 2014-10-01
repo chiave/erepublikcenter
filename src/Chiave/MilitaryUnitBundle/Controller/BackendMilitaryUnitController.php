@@ -5,13 +5,11 @@ namespace Chiave\MilitaryUnitBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Chiave\MilitaryUnitBundle\Entity\MilitaryUnit;
 use Chiave\MilitaryUnitBundle\Form\MilitaryUnitType;
 
@@ -21,8 +19,8 @@ use Chiave\MilitaryUnitBundle\Form\MilitaryUnitType;
  * @Route("/admin/militaryUnit")
  * @Security("has_role('ROLE_ADMIN')")
  */
-class BackendMilitaryUnitController extends Controller
-{
+class BackendMilitaryUnitController extends BaseController {
+
     /**
      * Lists all militaryUnits.
      *
@@ -30,13 +28,12 @@ class BackendMilitaryUnitController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
+    public function indexAction() {
+        $em = $this->getManager();
 
         $militaryUnits = $em
-            ->getRepository('ChiaveMilitaryUnitBundle:MilitaryUnit')
-            ->findAll()
+                ->getRepository('ChiaveMilitaryUnitBundle:MilitaryUnit')
+                ->findAll()
         ;
 
         return array(
@@ -53,39 +50,30 @@ class BackendMilitaryUnitController extends Controller
     // public function createAction(Request $request)
     // {
     //     $citizen = new Citizen();
-
     //     $form = $this->createCitizenForm(
     //         $citizen,
     //         'chiave_scrobbler_citizen_create'
     //         );
-
     //     $form->handleRequest($request);
-
     //     if ($form->isValid()) {
-    //         $em = $this->getDoctrine()->getManager();
-
+    //         $em = $this->getManager();
     //         $citizen = $this
     //             ->get('erepublik_citizen_scrobbler')
     //             ->updateCitizen(
     //                 $citizen
     //             )
     //         ;
-
     //         // $em->persist($citizen);
-
     //         // $em->flush();
-
     //         return $this->redirect(
     //             $this->generateUrl('chiave_scrobbler_citizens')
     //         );
     //     }
-
     //     return array(
     //         'citizen' => $citizen,
     //         'form'   => $form->createView(),
     //     );
     // }
-
     // /**
     //  * @Route("/new", name="chiave_scrobbler_citizen_new")
     //  * @Method("GET")
@@ -95,12 +83,10 @@ class BackendMilitaryUnitController extends Controller
     // public function newAction(Request $request)
     // {
     //     $citizen = new Citizen();
-
     //     $form = $this->createCitizenForm(
     //         $citizen,
     //         'chiave_scrobbler_citizen_create'
     //         );
-
     //     return array(
     //         'citizen' => $citizen,
     //         'form'   => $form->createView(),
@@ -115,9 +101,8 @@ class BackendMilitaryUnitController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("ChiaveMilitaryUnitBundle:BackendMilitaryUnit:update.html.twig")
      */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
+    public function editAction($id) {
+        $em = $this->getManager();
 
         $militaryUnit = $em->getRepository('ChiaveMilitaryUnitBundle:MilitaryUnit')->find($id);
 
@@ -126,13 +111,12 @@ class BackendMilitaryUnitController extends Controller
         }
 
         $form = $this->createMUForm(
-            $militaryUnit,
-            'chiave_militaryunit_update'
-            );
+                $militaryUnit, 'chiave_militaryunit_update'
+        );
 
         return array(
-            'militaryUnit'  => $militaryUnit,
-            'form'          => $form->createView(),
+            'militaryUnit' => $militaryUnit,
+            'form' => $form->createView(),
         );
     }
 
@@ -144,9 +128,8 @@ class BackendMilitaryUnitController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Template()
      */
-    public function updateAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
+    public function updateAction(Request $request, $id) {
+        $em = $this->getManager();
 
         $militaryUnit = $em->getRepository('ChiaveMilitaryUnitBundle:MilitaryUnit')->find($id);
 
@@ -155,9 +138,8 @@ class BackendMilitaryUnitController extends Controller
         }
 
         $form = $this->createMUForm(
-            $militaryUnit,
-            'chiave_militaryunit_update'
-            );
+                $militaryUnit, 'chiave_militaryunit_update'
+        );
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -167,8 +149,8 @@ class BackendMilitaryUnitController extends Controller
         }
 
         return array(
-            'militaryUnit'  => $militaryUnit,
-            'form'          => $form->createView(),
+            'militaryUnit' => $militaryUnit,
+            'form' => $form->createView(),
         );
     }
 
@@ -183,44 +165,37 @@ class BackendMilitaryUnitController extends Controller
     // {
     //     $result = new \stdClass();
     //     $result->success = false;
-
-    //     $em = $this->getDoctrine()->getManager();
+    //     $em = $this->getManager();
     //     $citizen = $em->getRepository('ChiaveErepublikScrobblerBundle:Citizen')->find($id);
-
     //     if (!$citizen) {
     //         // throw $this->createNotFoundException('Unable to find Categories.');
     //         $result->error = 'Unable to find Citizen.';
     //     } else {
     //         $em->remove($citizen);
     //         $em->flush();
-
     //         $result->success = true;
     //     }
-
     //     return new JsonResponse($result);
     // }
 
     /**
-    * Creates a form for militaryUnit.
-    *
-    * @param MilitaryUnit $militaryUnit
-    * @param string $route
-    *
-    * @return \Symfony\Component\Form\Form Form for militaryUnit
-    */
-    public function createMUForm(MilitaryUnit $militaryUnit, $route)
-    {
+     * Creates a form for militaryUnit.
+     *
+     * @param MilitaryUnit $militaryUnit
+     * @param string $route
+     *
+     * @return \Symfony\Component\Form\Form Form for militaryUnit
+     */
+    public function createMUForm(MilitaryUnit $militaryUnit, $route) {
         return $this->createForm(
-            new MilitaryUnitType(),
-            $militaryUnit,
-            array(
-                'action' => $this->generateUrl(
-                    $route,
-                    array(
+                        new MilitaryUnitType(), $militaryUnit, array(
+                    'action' => $this->generateUrl(
+                            $route, array(
                         'id' => $militaryUnit->getId(),
                     )),
-                'method' => 'post',
-            )
+                    'method' => 'post',
+                        )
         );
     }
+
 }

@@ -5,13 +5,11 @@ namespace Chiave\ErepublikScrobblerBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Chiave\ErepublikScrobblerBundle\Document\Citizen;
 use Chiave\ErepublikScrobblerBundle\Form\CitizenType;
 
@@ -21,8 +19,8 @@ use Chiave\ErepublikScrobblerBundle\Form\CitizenType;
  * @Route("/admin/citizens")
  * @Security("has_role('ROLE_ADMIN')")
  */
-class BackendCitizenController extends Controller
-{
+class BackendCitizenController extends BaseController {
+
     /**
      * Lists all citizens.
      *
@@ -30,13 +28,12 @@ class BackendCitizenController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getEm();
 
         $citizens = $em
-            ->getRepository('ChiaveErepublikScrobblerBundle:Citizen')
-            ->findAll()
+                ->getRepository('ChiaveErepublikScrobblerBundle:Citizen')
+                ->findAll()
         ;
 
         return array(
@@ -50,35 +47,33 @@ class BackendCitizenController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("ChiaveErepublikScrobblerBundle:BackendCitizen:update.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $em = $this->getEm();
 
         $citizen = new Citizen();
 
         $form = $this->createCitizenForm(
-            $citizen,
-            'chiave_scrobbler_citizen_create'
-            );
+                $citizen, 'chiave_scrobbler_citizen_create'
+        );
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-                $em->persist($citizen);
-                $em->flush();
+            $em->persist($citizen);
+            $em->flush();
 
-                $firstHistory = $this->container
+            $firstHistory = $this->container
                     ->get('erepublik_citizen_scrobbler')
-                ->updateCitizenHistory($citizen);
+                    ->updateCitizenHistory($citizen);
 
-                return $this->redirect(
-                    $this->generateUrl('chiave_scrobbler_citizens')
+            return $this->redirect(
+                            $this->generateUrl('chiave_scrobbler_citizens')
             );
         }
 
         return array(
             'citizen' => $citizen,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -88,18 +83,16 @@ class BackendCitizenController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("ChiaveErepublikScrobblerBundle:BackendCitizen:update.html.twig")
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request) {
         $citizen = new Citizen();
 
         $form = $this->createCitizenForm(
-            $citizen,
-            'chiave_scrobbler_citizen_create'
-            );
+                $citizen, 'chiave_scrobbler_citizen_create'
+        );
 
         return array(
             'citizen' => $citizen,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -113,25 +106,20 @@ class BackendCitizenController extends Controller
     //  */
     // public function editAction($id)
     // {
-    //     $em = $this->getDoctrine()->getManager();
-
+    //     $em = $this->getManager();
     //     $category = $em->getRepository('ChiaveGalleryBundle:Categories')->find($id);
-
     //     if (!$category) {
     //         throw $this->createNotFoundException('Unable to find Categories.');
     //     }
-
     //     $form = $this->createCategoryForm(
     //         $category,
     //         'chiave_gallery_categories_update'
     //         );
-
     //     return array(
     //         'category'      => $category,
     //         'form'   => $form->createView(),
     //     );
     // }
-
     // *
     //  * Edits an existing category.
     //  *
@@ -139,29 +127,22 @@ class BackendCitizenController extends Controller
     //  * @Method("POST")
     //  * @Security("has_role('ROLE_ADMIN')")
     //  * @Template()
-
     // public function updateAction(Request $request, $id)
     // {
-    //     $em = $this->getDoctrine()->getManager();
-
+    //     $em = $this->getManager();
     //     $category = $em->getRepository('ChiaveGalleryBundle:Categories')->find($id);
-
     //     if (!$category) {
     //         throw $this->createNotFoundException('Unable to find Categories.');
     //     }
-
     //     $form = $this->createCategoryForm(
     //         $category,
     //         'chiave_gallery_categories_update'
     //         );
     //     $form->handleRequest($request);
-
     //     if ($form->isValid()) {
     //         $em->flush();
-
     //         return $this->redirect($this->generateUrl('chiave_gallery_categories_edit', array('id' => $id)));
     //     }
-
     //     return array(
     //         'category' => $category,
     //         'form'   => $form->createView(),
@@ -175,8 +156,7 @@ class BackendCitizenController extends Controller
      * @Method("POST")
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $result = new \stdClass();
         $result->success = false;
 
@@ -197,31 +177,27 @@ class BackendCitizenController extends Controller
     }
 
     /**
-    * Creates a form for citizen.
-    *
-    * @param User $citizen
-    * @param string $route
-    *
-    * @return \Symfony\Component\Form\Form Form for citizen
-    */
-    public function createCitizenForm(Citizen $citizen, $route)
-    {
+     * Creates a form for citizen.
+     *
+     * @param User $citizen
+     * @param string $route
+     *
+     * @return \Symfony\Component\Form\Form Form for citizen
+     */
+    public function createCitizenForm(Citizen $citizen, $route) {
         return $this->createForm(
-            new CitizenType(),
-            $citizen,
-            array(
-                'action' => $this->generateUrl(
-                    $route,
-                    array(
+                        new CitizenType(), $citizen, array(
+                    'action' => $this->generateUrl(
+                            $route, array(
                         'id' => $citizen->getId(),
                     )),
-                'method' => 'post',
-            )
+                    'method' => 'post',
+                        )
         );
     }
 
-    private function getEm()
-    {
+    private function getEm() {
         return $this->get('doctrine_mongodb')->getManager();
     }
+
 }
