@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @MongoDB\Document
  */
-class MilitaryUnit
-{
+class MilitaryUnit {
+
     /**
      * @MongoDB\Id(strategy="auto")
      */
@@ -25,10 +25,10 @@ class MilitaryUnit
      */
     private $name = 'EDIT ME';
 
-    /** 
+    /**
      * @MongoDB\ReferenceMany(
-     *   targetDocument="MilitaryUnitHistory", 
-     *   mappedBy="militaryUnit", 
+     *   targetDocument="MilitaryUnitHistory",
+     *   mappedBy="militaryUnit",
      *   cascade="all",
      *   sort={"createdAt": "DESC"}
      *  )
@@ -55,8 +55,7 @@ class MilitaryUnit
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -66,8 +65,7 @@ class MilitaryUnit
      * @param integer $unitId
      * @return MilitaryUnit
      */
-    public function setUnitId($unitId)
-    {
+    public function setUnitId($unitId) {
         $this->unitId = $unitId;
 
         return $this;
@@ -78,8 +76,7 @@ class MilitaryUnit
      *
      * @return integer
      */
-    public function getUnitId()
-    {
+    public function getUnitId() {
         return $this->unitId;
     }
 
@@ -89,8 +86,7 @@ class MilitaryUnit
      * @param string $name
      * @return MilitaryUnit
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -101,19 +97,15 @@ class MilitaryUnit
      *
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
     /**
-     * Add history
-     *
      * @param \Chiave\MilitaryUnitBundle\Entity\MilitaryUnitHistory $history
      * @return MilitaryUnit
      */
-    public function addHistory(\Chiave\MilitaryUnitBundle\Entity\MilitaryUnitHistory $history)
-    {
+    public function addHistory(MilitaryUnitHistory $history) {
         $this->history[] = $history;
 
         return $this;
@@ -124,8 +116,7 @@ class MilitaryUnit
      *
      * @param \Chiave\MilitaryUnitBundle\Entity\MilitaryUnitHistory $history
      */
-    public function removeHistory(\Chiave\MilitaryUnitBundle\Entity\MilitaryUnitHistory $history)
-    {
+    public function removeHistory(MilitaryUnitHistory $history) {
         $this->history->removeElement($history);
     }
 
@@ -134,8 +125,7 @@ class MilitaryUnit
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAllHistory()
-    {
+    public function getAllHistory() {
         return $this->history;
     }
 
@@ -144,26 +134,25 @@ class MilitaryUnit
      *
      * @return \Chiave\MilitaryUnitBundle\Entity\MilitaryUnitHistory
      */
-    public function getHistory($modifyDays = 0)
-    {
+    public function getHistory($modifyDays = 0) {
         //same logic as in DateTimeService:getDayChange()
-            $startDC = new \DateTime('now');
-            $startDC->modify("-$modifyDays days");
-            if($startDC->format('G') < 9) {
-                $startDC->modify('-1 day');
-            }
+        $startDC = new \DateTime('now');
+        $startDC->modify("-$modifyDays days");
+        if ($startDC->format('G') < 9) {
+            $startDC->modify('-1 day');
+        }
 
-            $startDC->setTime(9, 0);
+        $startDC->setTime(9, 0);
 
         $endDC = clone $startDC;
         $endDC->modify('+1 day');
 
         $histories = $this->history->filter(
-            function($history) use ($startDC, $endDC) {
-                return $history->getCreatedAt() >= $startDC &&
+                function($history) use ($startDC, $endDC) {
+            return $history->getCreatedAt() >= $startDC &&
                     $history->getCreatedAt() <= $endDC
-                ;
-            }
+            ;
+        }
         );
 
         if ($histories->isEmpty()) {
@@ -179,8 +168,7 @@ class MilitaryUnit
      * @param \DateTime $createdAt
      * @return Pages
      */
-    public function setCreatedAt($createdAt)
-    {
+    public function setCreatedAt($createdAt) {
         $this->createdAt = $createdAt;
 
         return $this;
@@ -191,16 +179,14 @@ class MilitaryUnit
      *
      * @return \DateTime
      */
-    public function getCreatedAt()
-    {
+    public function getCreatedAt() {
         return $this->createdAt;
     }
 
     /**
      * @MongoDB\PrePersist
      */
-    public function setInitialTimestamps()
-    {
+    public function setInitialTimestamps() {
         $this->createdAt = new \DateTime('now');
         $this->updatedAt = new \DateTime('now');
     }
@@ -211,8 +197,7 @@ class MilitaryUnit
      * @param \DateTime $updatedAt
      * @return Pages
      */
-    public function setUpdatedAt($updatedAt)
-    {
+    public function setUpdatedAt($updatedAt) {
         $this->updatedAt = $updatedAt;
 
         return $this;
@@ -223,16 +208,15 @@ class MilitaryUnit
      *
      * @return \DateTime
      */
-    public function getUpdatedAt()
-    {
+    public function getUpdatedAt() {
         return $this->updatedAt;
     }
 
     /**
      * @MongoDB\PreUpdate
      */
-    public function setUpdatedTimestamps()
-    {
+    public function setUpdatedTimestamps() {
         $this->updatedAt = new \DateTime('now');
     }
+
 }

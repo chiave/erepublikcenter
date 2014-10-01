@@ -1,0 +1,24 @@
+#services:
+## SERVICES
+#    name_service:
+#        class:  Chiave\SomeClassBundle\Service\SomeServiceService
+#        calls:
+#            - [setContainer, [@service_container]]
+#
+## FORMS
+#    user.edit.profile.form.type:
+#        class: Chiave\UserBundle\Form\ProfileFormType
+#        arguments: [%fos_user.model.user.class%]
+#        tags:
+#            - { name: form.type, alias: chiave_user_profile }
+#
+## CONTROLLERS
+#    user.registering:
+#        class: Chiave\UserBundle\Controller\RegistrationController
+#
+## LISTENERS
+#    user.registration_listener:
+#        class: Chiave\UserBundle\Listener\RegistrationListener
+#        arguments: []
+#        tags:
+#            - { name: kernel.event_subscriber }

@@ -1,0 +1,199 @@
+.login {
+    display: block;
+    float: none;
+    margin: 15% auto;
+    text-align: left;
+    width: 200px;
+}
+
+.records_list th:last-child {
+    min-width: 170px;
+}
+
+.record_detailed {
+    width: 100%;
+    text-align: left;
+}
+.record_detailed tr:first-child{
+    text-align: center;
+}
+.record_detailed tr:first-child th:last-child {
+    min-width: 70%;
+    max-width: 80%;
+}
+/*.fullWidth {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: initial;
+}*/
+
+.mainContent {
+    min-height: 100%;
+    height: 100%;
+    position: relative;
+}
+.row {
+    max-width: 100%;
+}
+
+.top-bar {
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+}
+
+.mainPanes {
+    padding-top: 45px;
+    min-height: 100%;
+}
+
+.leftPane {
+    padding:0;
+    background: none repeat scroll 0 center rgb(245, 245, 245);
+    border: 1px solid #DDDDDD;
+}
+
+.rightPane {
+    /*float: left;*/
+    /*position: absolute;*/
+    /*max-width: 90%;*/
+}
+
+.slided {
+    /*width: 5em;*/
+}
+
+.sidebar {
+    margin:0;
+}
+
+.sidebar li {
+    padding-left: 20px;
+}
+.sidebar li.divider {
+    padding: 0 !important;
+}
+
+
+.sidebar li.active {
+    /* background for sidebar maybe? */
+}
+
+.sidebar  li.active a:first-child {
+}
+
+.header-intro {
+    background: url("../images/background.png") no-repeat scroll 0 0 / 100% 95% rgba(0, 0, 0, 0);
+    padding: 10px 20px;
+}
+
+.header-intro h1 {
+    padding-left: 1em;
+}
+
+.header-intro h4 {
+    padding-left: 6em;
+}
+
+th .button {
+    margin: 0;
+}
+
+.entry {
+    background: none repeat scroll 0 0 #F8F8F8;
+    border: 1px solid #E6E6E6;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+#search {
+    float: left;
+    margin-right: 10px;
+    width: 75%;
+}
+
+#searchSubmit {
+    height: 37px;
+    width: 20%;
+}
+
+.count {
+    width: 100%
+}
+
+/*.embedFormWrapper {
+    width: 100%;
+    position: relative;
+}
+
+.embedFormWrapper > div {
+    float: left;
+    position: absolute;
+}*/
+
+/* Images everywhere */
+
+form img {
+    float: right;
+    overflow: hidden;
+    width: 64px;
+    height: 64px;
+}
+
+td img {
+    width: 64px;
+    height: 64px;
+}
+
+a.th img {
+    max-height: 64px;
+    max-width: 166px;
+}
+
+.formError {
+    color: #FF0000;
+    font-size: small;
+}
+
+#googleMap {
+    margin: 14px 0;
+}
+
+/* InfoToolTip */
+
+td{
+    position: relative;
+}
+.infoToolTip{
+    position: absolute;
+    z-index:3;
+    top:90%;
+    left:0;
+    background: rgb(65, 65, 65);
+    padding: 10px;
+    color: rgb(211, 211, 211);
+    transition: all 300ms;
+    opacity:0;
+    display:none;
+}
+
+td:HOVER>div.infoToolTip{
+    opacity:1;
+    display:block;
+}
+
+/* Pagination centered */
+
+ul.pagination {
+    text-align: center;
+}
+
+ul.pagination li {
+    float: none;
+    display: inline-block;
+}
+
+.nobr {
+    white-space: nowrap;
+}

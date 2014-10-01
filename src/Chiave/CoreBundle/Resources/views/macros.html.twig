@@ -1,0 +1,57 @@
+{% macro admin_menu(active = "") %}
+<li class="nav-header">{{ 'admin.sidebar' | trans }}</li>
+<li {% if active == 'menucolumn_menu_index' %}class="active"{% endif %}>
+    <a href="{{ path('admin_menu_column_menu') }}">{{'menuEditor' | trans }}</a>
+</li>
+<li {% if active == 'menucolumn_sitemap' %}class="active"{% endif %}>
+    <a href="{{ path('admin_menu_sitemap') }}">{{'sitemapEditor' | trans }}</a>
+</li>
+
+<li class="nav-header">{{ 'pages' | trans }}</li>
+<li {% if active == 'cms_page_new' %}class="active"{% endif %}>
+<a href="{{ path('coshi_cms_backend_page_new')}}">{{ 'page.new' | trans }}</a>
+</li>
+
+<li {% if active == 'cms_page_index' %}class="active"{% endif %}>
+<a href="{{ path('coshi_cms_backend_page_index')}}">{{ 'page.index' | trans }}</a>
+</li>
+
+<li class="nav-header">{{ 'media' | trans }}</li>
+<li {% if active == 'cms_media_check' %}class="active"{% endif %}>
+<a href="{{ path('coshi_cms_backend_files_raport')}}">{{ 'page.missingFiles' | trans }}</a>
+</li>
+<li {% if active == 'cms_media_manager' %}class="active"{% endif %}>
+<a href="{{ path('coshi_app_media_media_upload_index')}}">{{ 'page.mediaManager' | trans }}</a>
+</li>
+
+<li class="nav-header">{{ 'generatePackage' | trans }}</li>
+<li id="generate-package">
+<a data-toggle="modal"
+    data-target="#addmodal"
+    href="{{ url('coshi_cms_backend_pages_pregenerate_xml')}}">
+        {{ 'page.generateXml' | trans }}
+</a>
+</li>
+{#
+<li>
+<a href="{{ path('coshi_cms_backend_pages_generate_complete_pdf')}}">{{ 'page.generateCompletePdf' | trans }}</a>
+</li>
+#}
+{#
+<li class="nav-header">{{ 'elements' | trans }}</li>
+<li>
+#}
+{% endmacro %}
+
+{% macro columnsort(field) %}
+    <a href="{{ path(
+            app.request.get('_route'),
+            {'orderBy':field, 'orderType':'ASC'} ) }}">
+            <i class="icon-chevron-up" > </i>
+    </a>
+    <a href="{{ path(
+            app.request.get('_route'),
+            {'orderBy':field, 'orderType':'DESC'} ) }}">
+            <i class="icon-chevron-down" > </i>
+    </a>
+{% endmacro %}

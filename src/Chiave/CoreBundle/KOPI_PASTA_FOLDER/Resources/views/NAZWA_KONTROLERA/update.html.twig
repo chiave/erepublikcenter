@@ -1,0 +1,75 @@
+{% extends "::backendbase.html.twig" %}
+
+{% block title %}{{'TYTUŁ' | trans}}{% endblock %}
+{% block description %}{{'OPIS' | trans}}{% endblock %}
+
+{% block active_name %}admin_tournaments{% endblock %}
+
+{% block body -%}
+
+    {{ form_start(form) }}
+    {#
+        <fieldset>
+            <legend>{{'tournament.tournament' | trans}}</legend>
+
+            <div class="row">
+                <div class="medium-6 columns">
+                    {{ form_row(form.game) }}
+                </div>
+                <div class="medium-6 columns">
+                    {{ form_row(form.name) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="medium-9 columns">
+                    {{ form_row(form.description) }}
+                </div>
+                <div class="medium-3 columns">
+                    {{ form_row(form.prize) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="medium-6 columns">
+                    {{ form_row(form.url) }}
+                </div>
+                <div class="medium-6 columns">
+                    {{ form_row(form.maxContestants) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="medium-6 columns">
+                    {{ form_row(form.startAt) }}
+                </div>
+                <div class="medium-6 columns">
+                    {{ form_row(form.type) }}
+                </div>
+            </div>
+            <fieldset id="rules" data-prototype="{{ form_widget(form.rules.vars.prototype)|e }}">
+                <legend>{{'tournament.rules' | trans}}</legend>
+                {% for rule in form.rules %}
+                    <div class="row
+                         {% if loop.index > 5 %} grayed {% endif %}">
+                        {{ form_row(rule.tier) }}
+                        <div class="medium-4 columns">
+                            {{ form_row(rule.tierText, {value: rule.tier.vars.value}) }}
+                        </div>
+                        <div class="medium-4 columns">
+                            {{ form_row(rule.mode) }}
+                        </div>
+                        <div class="medium-4 columns">
+                            {{ form_row(rule.endAt) }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </fieldset>
+        </fieldset>
+    #}
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+    </script>
+{% endblock %}

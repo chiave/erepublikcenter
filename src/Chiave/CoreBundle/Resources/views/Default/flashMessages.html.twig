@@ -1,0 +1,37 @@
+{# Available alertBox classes - round, radius #}
+{% for flashMessage in app.session.flashbag.get('default') %}
+    <div class="alert-box" data-alert="">
+        {{ flashMessage }}
+        <a class="close" href="">×</a>
+    </div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('success') %}
+    <div class="alert-box success" data-alert="">
+        {{ flashMessage }}
+        <a class="close" href="">×</a>
+    </div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('warning') %}
+    <div class="alert-box warning" data-alert="">
+        {{ flashMessage }}
+        <a class="close" href="">×</a>
+    </div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('info') %}
+    <div class="alert-box info" data-alert="">
+        {{ flashMessage }}
+        <a class="close" href="">×</a>
+    </div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('alert') %}
+    <div class="alert-box alert" data-alert="">
+        {{ flashMessage }}
+        <a class="close" href="">×</a>
+    </div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('secondary') %}
+    <div class="alert-box secondary" data-alert="">
+        {{ flashMessage }}
+        <a class="close" href="">×</a>
+    </div>
+{% endfor %}

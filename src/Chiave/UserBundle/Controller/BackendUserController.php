@@ -5,13 +5,11 @@ namespace Chiave\UserBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Chiave\UserBundle\Document\User;
 use Chiave\UserBundle\Form\UserType;
 
@@ -21,8 +19,8 @@ use Chiave\UserBundle\Form\UserType;
  * @Route("/admin/users")
  * @Security("has_role('ROLE_ADMIN')")
  */
-class BackendUserController extends Controller
-{
+class BackendUserController extends BaseController {
+
     /**
      * Lists all users.
      *
@@ -30,13 +28,12 @@ class BackendUserController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
+    public function indexAction() {
+        $em = $this->getManager();
 
         $users = $em
-            ->getRepository('ChiaveUserBundle:User')
-            ->findAll()
+                ->getRepository('ChiaveUserBundle:User')
+                ->findAll()
         ;
 
         return array(
@@ -50,14 +47,12 @@ class BackendUserController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("ChiaveUserBundle:BackendUser:update.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $user = new User();
 
         $form = $this->createUserForm(
-            $user,
-            'chiave_user_user_create'
-            );
+                $user, 'chiave_user_user_create'
+        );
 
         $form->handleRequest($request);
 
@@ -67,13 +62,13 @@ class BackendUserController extends Controller
 
         if ($form->isValid()) {
             $data = $form->getData();
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->getManager();
 
             $citizen = $this
-                ->get('erepublik_citizen_scrobbler')
-                ->updateCitizen(
+                    ->get('erepublik_citizen_scrobbler')
+                    ->updateCitizen(
                     $user
-                )
+                    )
             ;
 
             $user->setCitizen($citizen);
@@ -87,13 +82,13 @@ class BackendUserController extends Controller
             $userManager->updateUser($user, true);
 
             return $this->redirect(
-                $this->generateUrl('chiave_user_users')
+                            $this->generateUrl('chiave_user_users')
             );
         }
 
         return array(
             'user' => $user,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -103,18 +98,16 @@ class BackendUserController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("ChiaveUserBundle:BackendUser:update.html.twig")
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request) {
         $user = new User();
 
         $form = $this->createUserForm(
-            $user,
-            'chiave_user_user_create'
-            );
+                $user, 'chiave_user_user_create'
+        );
 
         return array(
             'user' => $user,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -126,9 +119,8 @@ class BackendUserController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("ChiaveGalleryBundle:BackendCategories:update.html.twig")
      */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
+    public function editAction($id) {
+        $em = $this->getManager();
 
         $category = $em->getRepository('ChiaveGalleryBundle:Categories')->find($id);
 
@@ -137,13 +129,12 @@ class BackendUserController extends Controller
         }
 
         $form = $this->createCategoryForm(
-            $category,
-            'chiave_gallery_categories_update'
-            );
+                $category, 'chiave_gallery_categories_update'
+        );
 
         return array(
-            'category'      => $category,
-            'form'   => $form->createView(),
+            'category' => $category,
+            'form' => $form->createView(),
         );
     }
 
@@ -155,9 +146,8 @@ class BackendUserController extends Controller
      * @Security("has_role('ROLE_ADMIN')")
      * @Template()
      */
-    public function updateAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
+    public function updateAction(Request $request, $id) {
+        $em = $this->getManager();
 
         $category = $em->getRepository('ChiaveGalleryBundle:Categories')->find($id);
 
@@ -166,9 +156,8 @@ class BackendUserController extends Controller
         }
 
         $form = $this->createCategoryForm(
-            $category,
-            'chiave_gallery_categories_update'
-            );
+                $category, 'chiave_gallery_categories_update'
+        );
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -179,7 +168,7 @@ class BackendUserController extends Controller
 
         return array(
             'category' => $category,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -190,12 +179,11 @@ class BackendUserController extends Controller
      * @Method("POST")
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $result = new \stdClass();
         $result->success = false;
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getManager();
         $category = $em->getRepository('ChiaveGalleryBundle:Categories')->find($id);
 
         if (!$category) {
@@ -212,26 +200,23 @@ class BackendUserController extends Controller
     }
 
     /**
-    * Creates a form for user.
-    *
-    * @param User $user
-    * @param string $route
-    *
-    * @return \Symfony\Component\Form\Form Form for user
-    */
-    public function createUserForm(User $user, $route)
-    {
+     * Creates a form for user.
+     *
+     * @param User $user
+     * @param string $route
+     *
+     * @return \Symfony\Component\Form\Form Form for user
+     */
+    public function createUserForm(User $user, $route) {
         return $this->createForm(
-            new UserType(),
-            $user,
-            array(
-                'action' => $this->generateUrl(
-                    $route,
-                    array(
+                        new UserType(), $user, array(
+                    'action' => $this->generateUrl(
+                            $route, array(
                         'id' => $user->getId(),
                     )),
-                'method' => 'post',
-            )
+                    'method' => 'post',
+                        )
         );
     }
+
 }

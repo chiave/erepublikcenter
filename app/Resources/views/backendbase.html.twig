@@ -8,10 +8,22 @@
         <!--title>{% block description %}strona główna{% endblock %}</title-->
     {% block stylesheets %}{% endblock %}
 
-    <link rel="stylesheet" href="{{ asset('bundles/chiavecore/css/foundation.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/chiavecore/css/backend.css') }}" />
-    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="{{ asset('bundles/chiavecore/js/modernizr.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('bundles/chiavecore/foundation/css/normalize.css' ) }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('bundles/chiavecore/foundation/css/foundation.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('bundles/chiavecore/css/admin.css') }}" />
+
+    <link rel="stylesheet" href="{{ asset('bundles/florianbelhommefoundation/css/foundationtosymfony.css') }}" type="text/css" />
+    <link href="{{ asset('bundles/chiavecore/datetimepicker/jquery.datetimepicker.css') }}" type="text/css" rel="stylesheet">
+
+    <script src="{{ asset('bundles/chiavecore/foundation/js/vendor/jquery.js') }}"></script>
+
+    <script src="{{ asset('bundles/chiavecore/js/chiaveBackendFunctions.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/chiavecore/foundation/js/foundation.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/chiavecore/foundation/js/vendor/modernizr.js') }}"></script>
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+
 </head>
 <body>
     <nav class="top-bar" data-topbar>
@@ -35,74 +47,150 @@
         </section>
     </nav>
 
-    <section role="main">
-        <div class="row header-intro">
-            <header>
-                <h1>{{ block('title')}}</h1>
-                <h4>{{ block('description') }}</h4>
-            </header>
-        </div>
+    <div class="row mainContent" role="main" {#data-equalizer#}>
+        <div class="mainPanes">
+            <div class="medium-2 columns leftPane" {#data-equalizer-watch#}>
+                <nav class="sidebar">
+                    <ul class="side-nav">
 
-        {% set active = block('active_name') %}
-            <div class="row">
-                <div class="medium-3 columns">
-                    <nav class="sidebar">
-                        <ul class="side-nav">
-                            <li><h5><strong>Menu</strong></h5></li>
-                            <li class="divider"></li>
-                            <li><h6><strong>Użytkownicy</strong></h6></li>
-                            <li {% if active == "chiave_user_users" %}class="active"{% endif %}>
-                                <a href="{{ path('chiave_user_user_new') }}">Dodaj</a>
-                            </li>
-                            <li {% if active == "chiave_user_users" %}class="active"{% endif %}>
-                                <a href="{{ path('chiave_user_users') }}">Zarządzaj</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li><h6><strong>Gracze</strong></h6></li>
-                            <li {% if active == "chiave_scrobbler_citizen_new" %}class="active"{% endif %}>
-                                <a href="{{ path('chiave_scrobbler_citizen_new') }}">Dodaj</a>
-                            </li>
-                            <li {% if active == "chiave_scrobbler_citizens" %}class="active"{% endif %}>
-                                <a href="{{ path('chiave_scrobbler_citizens') }}">Zarządzaj</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li><h6><strong>Bojówki</strong></h6></li>
-                            <li {% if active == "chiave_militaryunits" %}class="active"{% endif %}>
-                                <a href="{{ path('chiave_militaryunits') }}">Zarządzaj</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li><h6><strong>DOF</strong></h6></li>
-                            <li {% if active == "chiave_dofs" %}class="active"{% endif %}>
-                                <a href="{{ path('chiave_dofs') }}">Zarządzaj</a>
-                            </li>
-                            {# <li {% if active == "cms_articles" %}class="active"{% endif %}>
-                                <a href="{{ path('cms_articles') }}">Wpisy</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li {% if active == "cms_mails" %}class="active"{% endif %}>
-                                <a href="{{ path('cms_mails') }}">Wiadomości</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li {% if active == "cms_files" %}class="active"{% endif %}>
-                                <a href="{{ path('cms_files') }}">Pliki</a>
-                            </li> #}
-                        </ul>
-                    </nav>
+                        {% set active = block('active_name') %}
+
+                        <li><h5><strong>Menu</strong></h5></li>
+                        <li class="divider"></li>
+                        <li><h6><strong>Użytkownicy</strong></h6></li>
+                        <li {% if active == "chiave_user_users" %}class="active"{% endif %}>
+                            <a href="{{ path('chiave_user_user_new') }}">Dodaj</a>
+                        </li>
+                        <li {% if active == "chiave_user_users" %}class="active"{% endif %}>
+                            <a href="{{ path('chiave_user_users') }}">Zarządzaj</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><h6><strong>Gracze</strong></h6></li>
+                        <li {% if active == "chiave_scrobbler_citizen_new" %}class="active"{% endif %}>
+                            <a href="{{ path('chiave_scrobbler_citizen_new') }}">Dodaj</a>
+                        </li>
+                        <li {% if active == "chiave_scrobbler_citizens" %}class="active"{% endif %}>
+                            <a href="{{ path('chiave_scrobbler_citizens') }}">Zarządzaj</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><h6><strong>Bojówki</strong></h6></li>
+                        <li {% if active == "chiave_militaryunits" %}class="active"{% endif %}>
+                            <a href="{{ path('chiave_militaryunits') }}">Zarządzaj</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><h6><strong>DOF</strong></h6></li>
+                        <li {% if active == "chiave_dofs" %}class="active"{% endif %}>
+                            <a href="{{ path('chiave_dofs') }}">Zarządzaj</a>
+                        </li>
+                        {# <li {% if active == "cms_articles" %}class="active"{% endif %}>
+                            <a href="{{ path('cms_articles') }}">Wpisy</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li {% if active == "cms_mails" %}class="active"{% endif %}>
+                            <a href="{{ path('cms_mails') }}">Wiadomości</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li {% if active == "cms_files" %}class="active"{% endif %}>
+                            <a href="{{ path('cms_files') }}">Pliki</a>
+                        </li> #}
+
+                        {% if app.debug %}
+                            <li><h6><strong>DEV only:</strong></h6></li>
+                            <li></li>
+
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="medium-8 columns middlePane" {#data-equalizer-watch#}>
+                <div class="row header-intro">
+                    <header>
+                        <h1>{{ block('title')}}</h1>
+                        <h4>{{ block('description') }}</h4>
+                    </header>
                 </div>
-                <div class="medium-9 columns">
-                {% block body %}{% endblock %}
-            {% block javascripts %}{% endblock %}
+
+                <div class="row">
+                    <div class="columns">
+                        {{ include('ChiaveCoreBundle:Default:flashMessages.html.twig')}}
+
+                        {% block body %}
+                        {% endblock %}
+
+                        {% block content %}
+                            {% block fos_user_content %}
+                            {% endblock %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+            <div class="medium-2 columns rightPane" {#data-equalizer-watch#}>
+                {#                    {{ render(controller('ChiavePlayerBundle:AdminPanel:countProblems')) }}#}
+                <hr/>
+                {% block sidebar %}
+                {% endblock %}
+            </div>
         </div>
+
     </div>
-</section>
 
+    <div id="modal" class="reveal-modal small" data-reveal>
+        <h2>Awesome. I have it.</h2>
+        <p class="lead">Your couch. It is mine.</p>
+        <p>Im a cool paragraph that lives inside of an even cooler modal. Wins</p>
+        <a class="close-reveal-modal">&#215;</a>
+    </div>
 
-<script src="{{ asset('bundles/chiavecore/js/foundation.min.js') }}"></script>
-<script type="text/javascript">
-    $(document).foundation();
+    <script type="text/javascript" src="{{ asset('bundles/chiavecore/datetimepicker/jquery.datetimepicker.js') }}"></script>
 
-    $(function() {
-    });
-</script>
+    <script type="text/javascript">
+        $(document).foundation();
+
+        $(function () {
+        });
+    </script>
+
+    {% block datetimepicker %}
+        <script>
+            var $dateTimeParams = {
+                format: 'Y-m-d H:i',
+                lang: 'pl',
+                minDate: '0',
+                step: 30,
+                mask: true,
+                /*minDate: 0,
+                 maxDate: '+1970/01/03', //tommorow is maximum date calendar
+                 onClose: function(ct) {
+                 jQuery(this).find('.datetimepicker')
+                 .toggleClass('xdsoft_disabled');
+                 },*/
+            };
+            var $timeParams = {
+                format: 'H',
+                datepicker: false,
+                lang: 'pl',
+            };
+
+            /*$('.datetimepicker').datetimepicker('destroy')*/
+            function dtpickerBuild() {
+                $('.datetimepicker').datetimepicker($dateTimeParams);
+            }
+            dtpickerBuild();
+
+            {#$('.durationpicker').datetimepicker($timeParams);#}
+
+            {#          Not in use...           #}
+            {#                      ...yet      #}
+            {#function fixClasses() {
+                            $("form").find("[data-wrapper-class]").each(function() {
+                                var $classToSet = $(this).attr('data-wrapper-class');
+                                $(this).parent().addClass($classToSet);
+                                $(this).removeAttr('data-wrapper-class');
+                            });
+                        }#}
+        </script>
+    {% endblock %}
+    {% block javascripts %}
+    {% endblock %}
 </body>
 </html>

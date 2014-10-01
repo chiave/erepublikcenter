@@ -1,0 +1,11 @@
+{# http://stackoverflow.com/questions/8326482/twig-how-to-render-a-tree #}
+{% for item in tree %}
+    <li data-id="{{ item.id }}" >
+        <span>{{ item.name }}</span>
+        {% if item.childrens|length > 0 %}
+            <ul>
+                {% include "ChiaveCoreBundle::treebuilder.html.twig" with {'tree':item.childrens} only %}
+            </ul>
+        {% endif %}
+    </li>
+{% endfor %}

@@ -1,8 +1,28 @@
+chiave_core:
+    resource: "@ChiaveCoreBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 chiave_user:
     resource: "@ChiaveUserBundle/Controller/"
     type:     annotation
     prefix:   /
 
+chiave_es:
+    resource: "@ChiaveErepublikScrobblerBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+chiave_stats:
+    resource: "@ChiaveStatsBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+chiave_mu:
+    resource: "@ChiaveMilitaryUnitBundle/Controller/"
+    type:     annotation
+    prefix:   /
+    
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
@@ -27,26 +47,6 @@ login_check:
 
 logout:
     path:   /logout
-
-chiave_core:
-    resource: "@ChiaveCoreBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-chiave_es:
-    resource: "@ChiaveErepublikScrobblerBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-chiave_stats:
-    resource: "@ChiaveStatsBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-chiave_mu:
-    resource: "@ChiaveMilitaryUnitBundle/Controller/"
-    type:     annotation
-    prefix:   /
 
 chiave_static:
     resource: "@ChiaveStaticBundle/Controller/"

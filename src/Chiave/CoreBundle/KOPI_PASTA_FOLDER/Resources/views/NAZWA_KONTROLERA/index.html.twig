@@ -1,0 +1,109 @@
+{% extends "::backendbase.html.twig" %}
+
+{% block title %}{{'TYTUŁ*****' | trans}}{% endblock %}
+{% block description %}{{'OPIS****' | trans}}{% endblock %}
+
+{% block active_name %}admin_tournaments*****{% endblock %}
+
+{% block body %}
+
+    {% set loopFix = ((pagination.getCurrentPageNumber * pagination.getItemNumberPerPage) - pagination.getItemNumberPerPage) %}
+
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
+    <table class="plainTable">
+        <thead>
+            <tr>
+                <th></th>
+
+                <th
+                    {{'ID' | trans}}
+            </th>
+            {#                SORTOWANIE!!#}
+
+            <th
+                {% if pagination.isSorted('a.createdAt') %}
+                    class="sorted"
+                {% endif %}
+                >
+                {{ knp_pagination_sortable(
+                            pagination,
+                            'Stworzono' | trans,
+                            'a.createdAt'
+                        ) }}
+            </th>
+
+
+            <th>
+                <a class="tiny button success" href="{{ path(pagination.route|split('_')|first ~ '_new') }}">
+                    {{'Dodaj nowy' | trans}}
+                </a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entity in pagination %}
+            <tr>
+                <td>{{ loopFix + loop.index }}</td>
+                <td>{{entity.id}}</td>
+
+
+                <td><nobr>{{ entity.createdAt | localizeddate('medium', 'short', 'pl') }}<nobr></td>
+                <td>
+                    <div class="button-bar">
+                        <ul class="button-group">
+                            <li>
+                                <a class="tiny button success" href="{{ path(pagination.route|split('_')|first ~ '_update', { 'id': entity.id }) }}">Edytuj</a>
+                            </li>
+                            <li>
+                                <a class="tiny button alert delete_button" href="{{ path(pagination.route|split('_')|first ~ '_delete', { 'id': entity.id }) }}">Usuń</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+
+        {% endblock %}
+
+        {% block javascripts -%}
+
+            <script type="text/javascript">
+                $('.delete_button').click(function (e) {
+                    e.preventDefault();
+
+                    var toRemove = $(this).closest('tr');
+
+                    if (confirm('{{'Zamierzasz usunąć ten rekord. Jesteś pewnien?' | trans}}')) {
+                        $.post(
+                                $(this).attr('href'),
+                                $(this).attr('data-id'),
+                                function (data) {
+                                    if (data.success) {
+                                        $(toRemove).remove();
+                                        alert('{{'Rekord usunięty pomyślnie' | trans}}');
+                                    } else {
+                                        alert('{{'Wystąpił straszny błąd' | trans}}' + data.error + ' :(');
+                                    }
+                                });
+                    }
+                });
+
+
+
+            </script>
+        {% endblock %}
+
+        {% block datetimepicker %}
+            <script>
+
+            </script>
+        {% endblock %}

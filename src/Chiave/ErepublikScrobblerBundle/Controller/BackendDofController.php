@@ -58,8 +58,8 @@ class BackendDofController extends Controller {
         $endDate = $timeMaster->getDateByDay($data['endDay'])->modify('+1 day');
 
         $query = $this->getEm()->createQueryBuilder('ChiaveErepublikScrobblerBundle:CitizenHistory')
-                ->field('createdAt')->gte($startDate)
-                ->field('createdAt')->lt($endDate)
+                        ->field('createdAt')->gte($startDate)
+                        ->field('createdAt')->lt($endDate)
         ;
 
 
@@ -83,8 +83,8 @@ class BackendDofController extends Controller {
             $results[$history->getNick()] = null;
         }
 
-        var_dump($histories);
-        die;
+//        var_dump($histories);
+//        die;
 
         return array(
             'searchForm' => $searchForm->createView(),

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>GloryCup</title>
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta name="author" content="Łukasz Mikrut, Konrad Mietelski" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <link rel="stylesheet" href="{{ asset('css/reset.css') }}" type="text/css" />
+        <link rel="stylesheet" href="{{ asset('css/startpage.css') }}" type="text/css" />
+        <link href='http://fonts.googleapis.com/css?family=Bowlby+One+SC&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        {#         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />#}
+        <script src="{{ asset('js/iscroll.js') }}"></script>
+    </head>
+
+    <body>
+
+        <div id="page">
+
+            <div class="fullWrapper">
+                <div id="wrapper">
+                    <div id="scroll-content">
+                        <div class="gamesWrapper">
+                            {% for game in games %}
+                                <div class="gameItem">
+                                    <img class="noActive" src="{{ asset(game.basicLogo) }}" />
+                                    <img class="active" src="{{ asset(game.activeLogo) }}" />
+                                </div><!-- end gameItem -->
+                            {% endfor %}
+                        </div><!-- end gamesWrapper -->
+                    </div><!-- end scroll-content -->
+                </div><!-- end wrapper -->
+            </div><!-- end fullWrapper -->
+
+
+
+            {#         <div id="footer" class="maxWrapper black">#}
+            {#         	<div class="fullWrapper">#}
+            {#         		<p>All rights reserved, Kraków 2014</p>#}
+            {#         	</div><!--end fullWrapper -->#}
+            {#         </div><!-- end footer -->#}
+
+            {% block javascripts %}
+                <script>
+                    var myScroll;
+                    function loaded() {
+
+                        myScroll = new iScroll('wrapper', {
+                            keyBindings: true,
+                            click: true
+                        });
+                    }
+                    document.addEventListener('DOMContentLoaded', loaded, false);
+                </script>
+            {% endblock %}
+
+        </div><!-- end #page -->
+
+    </body>
+</html>
