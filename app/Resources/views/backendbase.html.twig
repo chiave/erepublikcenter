@@ -102,6 +102,9 @@
                             <li {% if active == "super_history_scrobble" %}class="active"{% endif %}>
                                 <a href="{{ path('super_history_scrobble') }}">fetch history for all</a>
                             </li>
+                            <li {% if active == "super_history_fixer" %}class="active"{% endif %}>
+                                <a href="{{ path('super_history_fixer') }}">fix something</a>
+                            </li>
                             <li></li>
 
                         {% endif %}

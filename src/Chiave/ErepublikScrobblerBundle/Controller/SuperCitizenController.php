@@ -52,4 +52,20 @@ class SuperCitizenController extends BaseController {
 //        );
     }
 
+    /**
+     * @Route("/fixer", name="super_history_fixer")
+     * @Method("GET")
+     * @Template()
+     */
+    public function fixerAction() {
+
+        $nf = $this->get('egov_nationalraport_fetcher');
+        $nf->fixer();
+        die;
+
+//        return array(
+//            'citizens' => $citizens,
+//        );
+    }
+
 }

@@ -77,26 +77,42 @@ class BackendDofController extends BaseController {
 //        if ($data['status'] !== '') {
 //            $query->field('dof')->equals($data['status']);
 //        }
-//        $qb
-////                ->field('egovBattles')->notEqual(0)
-//                ->sort('nick', 'asc')
-//                ->sort('eday', 'desc')
-//        ;
+        $qb
+                ->field('egovBattles')->notEqual(0)
+                ->sort('nick', 'asc')
+                ->sort('eday', 'desc')
+        ;
 
         $histories = $qb->getQuery()->execute();
 //        var_dump($histories);
 //        die;
-//        $results = array();
-//
-//        foreach ($histories as $history) {
-////            $results[$history->getNick()] = null;
-//        }
+        $results = array();
+
+        foreach ($histories as $history) {
+            $results[$history->getNick()]['id'] = $history->getCitizen()->getCitizenId();
+            $results[$history->getNick()]['nick'] = $history->getNick();
+            $results[$history->getNick()]['avatarUrl'] = $history->getSmallAvatarUrl();
+            $results[$history->getNick()]['div'] = $history->getDivisionText();
+            $results[$history->getNick()]['sumEgovHits'] = 0;
+            $results[$history->getNick()]['sumEgovInfluence'] = 0;
+            $results[$history->getNick()]['sumEgovQWeaponHit'] = 0;
+            $results[$history->getNick()]['sumTanksToPay'] = 0;
+//            $results[$history->getNick()]['dof'] = 0;
+        }
+        foreach ($histories as $history) {
+            $results[$history->getNick()]['sumEgovHits'] += $history->getEgovHits();
+            $results[$history->getNick()]['sumEgovInfluence'] += $history->getEgovInfluence();
+            $results[$history->getNick()]['sumEgovQWeaponHit'] += $history->getEgovQWeaponHit();
+            $results[$history->getNick()]['sumTanksToPay'] += $history->getTanksToPay();
+            $results[$history->getNick()]['histories'][] = $history;
+        }
 //        var_dump($results);
 //        die;
 
         return array(
             'searchForm' => $searchForm->createView(),
             'histories' => $histories,
+            'results' => $results,
         );
     }
 

@@ -18,8 +18,7 @@
         <thead>
             <tr>
                 <th></th>
-                <th>eday</th>
-                <th>Nick</th>
+                <th>Nick<br/>eday</th>
                 <th>Dywizja</th>
                 <th>Hity (egov)</th>
                 <th>Influ (egov)</th>
@@ -34,47 +33,26 @@
         </thead>
         <tbody>
             {#         {% for citizen in citizens %}#}
-            {% for history in histories %}
+            {% for result in results %}
                 <tr>
                     <td>{{ loop.index }}</td>
-                    <td>{{ history.eday }}</td>
                     <td>
-                        <img src="{{ history.smallAvatarUrl }}" /><br/>
-                        {{ history.nick }}
+                        <img src="{{ result['avatarUrl'] }}" /><br/>
+                        {{ result['nick'] }}
                     </td>
-                    <td>{{ history.divisionText }}</th>
-                    <td>{{ history.egovHits }}</th>
-                    <td>{{ history.egovInfluence }}</td>
+                    <td>{{ result['div'] }}</td>
+                    <td>{{ result['sumEgovHits'] }}</td>
+                    <td>{{ result['sumEgovInfluence'] }}</td>
                     <td>
-                        {{ history.egovQWeaponHit }}
-                        {% if history.egovInfluence != history.egovQWeaponHit %}
+                        {{ result['sumEgovQWeaponHit'] }}
+                        {% if result['sumEgovInfluence'] != result['sumEgovQWeaponHit'] %}
                             <br />(różne)
                         {% endif %}
                     </td>
-                    <td>{{ history.tanksToPay }}</td>
+                    <td>{{ result['sumTanksToPay'] }}</td>
+                    <td></td>
                     <td>
-                        <a class="button split tiny
-                           {% if history.dof == 1 %}
-                               success
-                           {% elseif history.dof == 0%}
-                               alert
-                           {% elseif history.dof == -1%}
-                               secondary
-                           {% else %}
-                               alert
-                           {% endif %}">
-                            {{ history.dofText }}
-                            <span data-dropdown="drop-status-{{history.id}}"></span>
-                        </a>
-                        <br />
-                        <ul id="drop-status-{{history.id}}" class="f-dropdown" data-dropdown-content>
-                            {# {% if history.dof != 1 %} #}<li><a href="{{ path('chiave_dof_change', { 'historyId': history.id, 'status':1 }) }}" class="dof_button" data-status='1'>Przyznaj</a></li>{# {% endif %} #}
-                            {# {% if history.dof != 0 %} #}<li><a href="{{ path('chiave_dof_change', { 'historyId': history.id, 'status':0 }) }}" class="dof_button" data-status='0'>Cofnij status</a></li>{# {% endif %} #}
-                            {# {% if history.dof != '-1' %} #}<li><a href="{{ path('chiave_dof_change', { 'historyId': history.id, 'status':'-1' }) }}" class="dof_button" data-status='-1'>Ukryj ten wpis </a></li>{# {% endif %} #}
-                        </ul>
-                    </td>
-                    <td>
-                        {% set citizenId = history.citizen.citizenId %}
+                        {% set citizenId = result['id'] %}
                         {#                     <div class="button-bar">#}
                         {#                         <ul class="button-group">#}
                         {#                             <li>#}
@@ -84,9 +62,9 @@
                         {#                     </div>#}
                         <a class="button split tiny" href="{{ citizenItems~citizenId }}" target="_blank">
                             Donuj
-                            <span data-dropdown="drop-interact-{{ history.id }}"></span>
+                            <span data-dropdown="drop-interact-{{ citizenId }}"></span>
                         </a>
-                        <ul id="drop-interact-{{ history.id }}" class="f-dropdown" data-dropdown-content>
+                        <ul id="drop-interact-{{ citizenId }}" class="f-dropdown" data-dropdown-content>
                             <li><a href="{{ citizenProfile~citizenId }}" target="_blank">Pokaż profil</a></li>
                             <li><a href="{{ citizenPM~citizenId }}" target="_blank">Ślij PM</a></li>
                             <li><a href="{{ citizenItems~citizenId }}" target="_blank">Wyślij przedmioty</a></li>
@@ -94,8 +72,45 @@
                         </ul>
                     </td>
                 </tr>
+                {% for history in result['histories'] %}
+                    <tr>
+                        <td></td>
+                        <td>{{ history.eday }}</td>
+                        <td></td>
+                        <td>{{ history.egovHits }}</td>
+                        <td>{{ history.egovInfluence }}</td>
+                        <td>
+                            {{ history.egovQWeaponHit }}
+                            {% if history.egovInfluence != history.egovQWeaponHit %}
+                                <br />(różne)
+                            {% endif %}
+                        </td>
+                        <td>{{ history.tanksToPay }}</td>
+                        <td>
+                            <a class="button split tiny
+                               {% if history.dof == 1 %}
+                                   success
+                               {% elseif history.dof == 0%}
+                                   alert
+                               {% elseif history.dof == -1%}
+                                   secondary
+                               {% else %}
+                                   alert
+                               {% endif %}">
+                                {{ history.dofText }}
+                                <span data-dropdown="drop-status-{{history.id}}"></span>
+                            </a>
+                            <br />
+                            <ul id="drop-status-{{history.id}}" class="f-dropdown" data-dropdown-content>
+                                <li><a href="{{ path('chiave_dof_change', { 'historyId': history.id, 'status':1 }) }}" class="dof_button" data-status='1'>Przyznaj</a></li>
+                                <li><a href="{{ path('chiave_dof_change', { 'historyId': history.id, 'status':0 }) }}" class="dof_button" data-status='0'>Cofnij status</a></li>
+                                <li><a href="{{ path('chiave_dof_change', { 'historyId': history.id, 'status':'-1' }) }}" class="dof_button" data-status='-1'>Ukryj ten wpis </a></li>
+                            </ul>
+                        </td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
             {% endfor %}
-            {#         {% endfor %}#}
         </tbody>
     </table>
 

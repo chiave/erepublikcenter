@@ -69,6 +69,22 @@ class EgovFetcherService extends CurlUtils {
         return $data;
     }
 
+    public function fixer() {
+        $dm = $this->getEm();
+        $citizens = $this->getRepo('ChiaveErepublikScrobblerBundle:Citizen')
+                ->findAll();
+        foreach ($citizens as $citizen) {
+            $histories = $citizen->getAllHistory();
+            $current = $citizen->getHistory();
+            foreach ($histories as $history) {
+                $history->setNick($current->getNick());
+                $history->setAvatarUrl($current->getAvatarUrl());
+                $history->setExperience($current->getExperience());
+            }
+            $dm->flush();
+        }
+    }
+
     public function fetchOldHistory($period = 0) {
 //        #NOTICE: First egov scrobblable day is 1712
         $dm = $this->getEm();
