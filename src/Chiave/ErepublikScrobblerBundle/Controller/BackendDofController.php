@@ -84,30 +84,47 @@ class BackendDofController extends BaseController {
         ;
 
         $histories = $qb->getQuery()->execute();
-//        var_dump($histories);
-//        die;
-        $results = array();
+
+        $results = array(
+             'stats' => array(
+                'sumCommonEgovHits' => 0,
+                'sumCommonEgovInfluence' => 0,
+                'sumCommonEanksToPay' => 0,
+            ),
+        );
 
         foreach ($histories as $history) {
-            $results[$history->getNick()]['id'] = $history->getCitizen()->getCitizenId();
-            $results[$history->getNick()]['nick'] = $history->getNick();
-            $results[$history->getNick()]['avatarUrl'] = $history->getSmallAvatarUrl();
-            $results[$history->getNick()]['div'] = $history->getDivisionText();
-            $results[$history->getNick()]['sumEgovHits'] = 0;
-            $results[$history->getNick()]['sumEgovInfluence'] = 0;
-            $results[$history->getNick()]['sumEgovQWeaponHit'] = 0;
-            $results[$history->getNick()]['sumTanksToPay'] = 0;
-//            $results[$history->getNick()]['dof'] = 0;
+            $results['players'][$history->getNick()]['id'] = $history->getCitizen()->getCitizenId();
+            $results['players'][$history->getNick()]['nick'] = $history->getNick();
+            $results['players'][$history->getNick()]['avatarUrl'] = $history->getSmallAvatarUrl();
+            $results['players'][$history->getNick()]['div'] = $history->getDivisionText();
+            $results['players'][$history->getNick()]['sumEgovHits'] = 0;
+            $results['players'][$history->getNick()]['sumEgovInfluence'] = 0;
+            $results['players'][$history->getNick()]['sumEgovQWeaponHit'] = 0;
+            $results['players'][$history->getNick()]['sumTanksToPay'] = 0;
+            $results['stats'][$history->getEday()] = array(
+                    'commonEgovHits' => 0,
+                    'commonEgovInfluence' => 0,
+                    'commonEgovQWeaponHit' => 0,
+                    'commonTanksToPay' => 0,
+                );
         }
         foreach ($histories as $history) {
-            $results[$history->getNick()]['sumEgovHits'] += $history->getEgovHits();
-            $results[$history->getNick()]['sumEgovInfluence'] += $history->getEgovInfluence();
-            $results[$history->getNick()]['sumEgovQWeaponHit'] += $history->getEgovQWeaponHit();
-            $results[$history->getNick()]['sumTanksToPay'] += $history->getTanksToPay();
-            $results[$history->getNick()]['histories'][] = $history;
+            $results['players'][$history->getNick()]['sumEgovHits'] += $history->getEgovHits();
+            $results['players'][$history->getNick()]['sumEgovInfluence'] += $history->getEgovInfluence();
+            $results['players'][$history->getNick()]['sumEgovQWeaponHit'] += $history->getEgovQWeaponHit();
+            $results['players'][$history->getNick()]['sumTanksToPay'] += $history->getTanksToPay();
+            $results['players'][$history->getNick()]['histories'][] = $history;
+
+            $results['stats']['sumCommonEgovHits'] += $history->getEgovHits();
+            $results['stats']['sumCommonEgovInfluence'] += $history->getEgovInfluence();
+            $results['stats']['sumCommonEanksToPay'] += $history->getTanksToPay();
+
+            $results['stats'][$history->getEday()]['commonEgovHits'] += $history->getEgovHits();
+            $results['stats'][$history->getEday()]['commonEgovInfluence'] += $history->getEgovInfluence();
+            $results['stats'][$history->getEday()]['commonTanksToPay'] += $history->getTanksToPay();
         }
-//        var_dump($results);
-//        die;
+        krsort($results['stats']);
 
         return array(
             'searchForm' => $searchForm->createView(),

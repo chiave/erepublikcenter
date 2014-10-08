@@ -17,6 +17,36 @@
     <table class="records_list">
         <thead>
             <tr>
+                <th>Eday</th>
+                <th>Hity (egov)</th>
+                <th>Influ (egov)</th>
+                <th>Wysokość dofa</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td></td>
+                    <td>{{ results['stats']['sumCommonEgovHits'] }}</td>
+                    <td>{{ results['stats']['sumCommonEgovInfluence'] }}</td>
+                    <td>{{ results['stats']['sumCommonEanksToPay'] }}</td>
+                </tr>
+            {% for eday, result in results['stats']
+                if eday != 'sumCommonEgovHits'
+                and eday != 'sumCommonEgovInfluence'
+                and eday != 'sumCommonEanksToPay'
+            %}                <tr>
+                    <td>{{ eday }}</td>
+                    <td>{{ result['commonEgovHits'] }}</td>
+                    <td>{{ result['commonEgovInfluence'] }}</td>
+                    <td>{{ result['commonTanksToPay'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="records_list">
+        <thead>
+            <tr>
                 <th></th>
                 <th>Nick<br/>eday</th>
                 <th>Dywizja</th>
@@ -33,7 +63,7 @@
         </thead>
         <tbody>
             {#         {% for citizen in citizens %}#}
-            {% for result in results %}
+            {% for result in results['players'] %}
                 <tr>
                     <td>{{ loop.index }}</td>
                     <td>
