@@ -15,12 +15,18 @@ class RankingUser
     private $id;
 
     /**
-     * @MongoDB\ReferenceMany(targetDocument="Ranking", inversedBy="ranking_id",
+     * @MongoDB\ReferenceMany(
+     *  targetDocument="Ranking",
+     *  inversedBy="ranking_id"
+     * )
      */
     private $ranking;
 
     /**
-     * @MongoDB\ReferenceMany(targetDocument="Chiave\ErepublikScrobblerBundle\Document\Citizen", inversedBy="ranking_id",
+     * @MongoDB\ReferenceMany(
+     *  targetDocument="Chiave\ErepublikScrobblerBundle\Document\Citizen",
+     *  inversedBy="ranking_id"
+     * )
      */
     private $citizen;
 
