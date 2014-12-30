@@ -4,7 +4,6 @@ namespace Chiave\ErepublikScrobblerBundle\Service;
 
 use Chiave\ErepublikScrobblerBundle\Libraries\CurlUtils;
 use Chiave\MilitaryUnitBundle\Document\MilitaryUnit;
-use Chiave\MilitaryUnitBundle\Document\MilitaryUnitHistory;
 use Chiave\ErepublikScrobblerBundle\Document\Citizen;
 
 /**
@@ -14,23 +13,24 @@ use Chiave\ErepublikScrobblerBundle\Document\Citizen;
  *
  * @author  Alphanumerix <>
  */
-class EgovFetcherService extends CurlUtils {
-
+class EgovFetcherService extends CurlUtils
+{
     protected $container;
 
-    public function setContainer($container) {
+    public function setContainer($container)
+    {
         $this->container = $container;
     }
 
 //remember to add country code and erepublik day at the and
-    CONST URL_EGOV_JSON = 'http://www.egov4you.info/operations/reportJson/';
-    CONST URL_MU_PROFILE = 'http://www.erepublik.com/en/main/group-show/';
+    const URL_EGOV_JSON = 'http://www.egov4you.info/operations/reportJson/';
+    const URL_MU_PROFILE = 'http://www.erepublik.com/en/main/group-show/';
 
     private $_xpath;
     private $_id;
 
-    public function showRawData($modifyDays = 0, $countryCode = 35) {
-
+    public function showRawData($modifyDays = 0, $countryCode = 35)
+    {
         $data = $this->getNationalRaportArray($modifyDays, $countryCode);
 
         var_dump($data);
@@ -38,8 +38,9 @@ class EgovFetcherService extends CurlUtils {
         return $data;
     }
 
-    public function fetchBluerosePlayers($period = 0) {
-//        #NOTICE: First egov scrobblable day is 1712
+    public function fetchBluerosePlayers($period = 0)
+    {
+        //        #NOTICE: First egov scrobblable day is 1712
         $dm = $this->getEm();
 
         for (; $period >= 0; $period--) {
@@ -69,7 +70,8 @@ class EgovFetcherService extends CurlUtils {
         return $data;
     }
 
-    public function fixer() {
+    public function fixer()
+    {
         $dm = $this->getEm();
         $citizens = $this->getRepo('ChiaveErepublikScrobblerBundle:Citizen')
                 ->findAll();
@@ -85,8 +87,9 @@ class EgovFetcherService extends CurlUtils {
         }
     }
 
-    public function fetchOldHistory($period = 0) {
-//        #NOTICE: First egov scrobblable day is 1712
+    public function fetchOldHistory($period = 0)
+    {
+        //        #NOTICE: First egov scrobblable day is 1712
         $dm = $this->getEm();
         $citizens = $this->getRepo('ChiaveErepublikScrobblerBundle:Citizen')
                 ->findAll();
@@ -173,7 +176,8 @@ class EgovFetcherService extends CurlUtils {
 //        }
 //}
 
-    public function updateMilitaryUnits() {
+    public function updateMilitaryUnits()
+    {
         $em = $this->getEm();
         $nationalRaport = $this->getNationalRaportArray();
 
@@ -199,7 +203,8 @@ class EgovFetcherService extends CurlUtils {
         }
     }
 
-    public function updateCitizens() {
+    public function updateCitizens()
+    {
         $em = $this->getEm();
         $nationalRaport = $this->getNationalRaportArray();
 
@@ -209,7 +214,7 @@ class EgovFetcherService extends CurlUtils {
                     ->findOneByCitizenId($citizenFreshData['citizen']);
 
             if ($citizen == null) {
-//TODO: Continue for now,
+                //TODO: Continue for now,
 //  create new citizen if part of bluerose in the future
                 continue;
 // $citizen = new MilitaryUnit($citizenFreshData['unit']);
@@ -222,14 +227,13 @@ class EgovFetcherService extends CurlUtils {
             $history->setEgovHits($citizenFreshData['hits']);
             $history->setEgovInfluence($citizenFreshData['influence']);
 
-
-
             $em->persist($history);
             $em->flush();
         }
     }
 
-    public function muExists() {
+    public function muExists()
+    {
         $query = $this->_xpath->query("//div[@class='header_content']/h2/span");
 
         if ($query && $query->item(0) && $query->item(0)->nodeValue) {
@@ -240,7 +244,8 @@ class EgovFetcherService extends CurlUtils {
     }
 
 //militaryunits pages requre login-in ;) dead-end, tank needed...
-    public function parseMUProfile($id) {
+    public function parseMUProfile($id)
+    {
         $this->_prepare($id);
 
         if (!$this->muExists()) {
@@ -250,26 +255,28 @@ class EgovFetcherService extends CurlUtils {
         echo $this->getName();
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return trim($this->_xpath->query("//div[@class='header_content']/h2/span")
                         ->item(0)->nodeValue
         );
     }
 
     /**
-     * @param integer $modifyDays = 0
-     * @param integer $countryCode = 35
+     * @param  integer $modifyDays  = 0
+     * @param  integer $countryCode = 35
      * @return array
      */
-    public function getNationalRaportArray($modifyDays = 0, $countryCode = 35) {
-
+    public function getNationalRaportArray($modifyDays = 0, $countryCode = 35)
+    {
         $erepDay = $this->container->get('date_time')->getErepublikDate($modifyDays);
 
-        $url = self::URL_EGOV_JSON . "$countryCode/$erepDay/";
+        $url = self::URL_EGOV_JSON."$countryCode/$erepDay/";
 
         $data = $this->getData($url);
 
@@ -280,26 +287,29 @@ class EgovFetcherService extends CurlUtils {
      *
      * Convert recursively an object to an array
      *
-     * @param    object  $object The object to convert
-     * @return      array
+     * @param  object $object The object to convert
+     * @return array
      *
      */
-    private function objectToArray($object) {
+    private function objectToArray($object)
+    {
         if (!is_object($object) && !is_array($object)) {
             return $object;
         }
         if (is_object($object)) {
             $object = get_object_vars($object);
         }
+
         return array_map(
                 array(
             'Chiave\ErepublikScrobblerBundle\Service\EgovFetcherService',
-            'objectToArray'
+            'objectToArray',
                 ), $object
         );
     }
 
-    private function getData($url) {
+    private function getData($url)
+    {
         $ch = curl_init();
         $timeout = 5;
 
@@ -313,11 +323,13 @@ class EgovFetcherService extends CurlUtils {
         return $this->objectToArray(json_decode($data));
     }
 
-    private function getEm() {
+    private function getEm()
+    {
         return $this->container->get('doctrine_mongodb')->getManager();
     }
 
-    private function getRepo($class = 'ChiaveMilitaryUnitBundle:MilitaryUnit') {
+    private function getRepo($class = 'ChiaveMilitaryUnitBundle:MilitaryUnit')
+    {
         return $this->container
                         ->get('doctrine_mongodb')
                         ->getRepository($class)
@@ -325,10 +337,11 @@ class EgovFetcherService extends CurlUtils {
     }
 
     /**
-     * @param string $alias
+     * @param  string $alias
      * @return mixed
      */
-    public function get($alias) {
+    public function get($alias)
+    {
         return $this->container->get($alias);
     }
 
@@ -338,7 +351,8 @@ class EgovFetcherService extends CurlUtils {
      *
      * @return mixed
      */
-    protected function getDoctrine() {
+    protected function getDoctrine()
+    {
         if ($this->container->has('doctrine_mongodb')) {
             return $this->container->get('doctrine_mongodb');
         }
@@ -352,7 +366,8 @@ class EgovFetcherService extends CurlUtils {
      *
      * @return mixed
      */
-    protected function getManager() {
+    protected function getManager()
+    {
         return $this->getManager();
     }
 
@@ -360,11 +375,12 @@ class EgovFetcherService extends CurlUtils {
      * getQb
      * No matter if m*sql or mongo is used.
      *
-     * @param string $alias - alias for class
+     * @param  string                     $alias - alias for class
      * @return \Doctrine\ORM\QueryBuilder instance with an 'a' alias
      */
-    protected function getQb($alias, $queryName = 'a') {
-//        new \Doctrine\ORM\QueryBuilder
+    protected function getQb($alias, $queryName = 'a')
+    {
+        //        new \Doctrine\ORM\QueryBuilder
         return $this->getDoctrine()
                         ->getRepository($alias)
                         ->createQueryBuilder($queryName)
@@ -382,9 +398,10 @@ class EgovFetcherService extends CurlUtils {
      *      secondary   - gray
      *
      * @param string $message - autotranslated, if translation exists
-     * @param string $type = 'notice'
+     * @param string $type    = 'notice'
      */
-    protected function addFlashMsg($message, $type = 'default') {
+    protected function addFlashMsg($message, $type = 'default')
+    {
         $this->container
                 ->get('session')
                 ->getFlashBag()
@@ -397,39 +414,45 @@ class EgovFetcherService extends CurlUtils {
      *
      * @param string $message - translated, if translation exists
      */
-    protected function trans($message) {
+    protected function trans($message)
+    {
         return $this->container
                         ->get('translator')
                         ->trans($message)
         ;
     }
 
-    private function _prepare($id) {
-        $html = $this->_get(self::URL_MU_PROFILE . $id);
+    private function _prepare($id)
+    {
+        $html = $this->_get(self::URL_MU_PROFILE.$id);
         $dom = new \DOMDocument();
         @$dom->loadHTML($html);
         $this->_xpath = new \DOMXPath($dom);
         $this->_id = $id;
     }
 
-    private function _formatNumber($number) {
+    private function _formatNumber($number)
+    {
         return str_replace(',', '', $number);
     }
 
-    private function _getBeforeSlash($string) {
+    private function _getBeforeSlash($string)
+    {
         $temp = explode('/', $string);
+
         return trim($temp[0]);
     }
 
-    private function _getImage($string, $size) {
+    private function _getImage($string, $size)
+    {
         preg_match('@((?:https?\:\/\/)(?:[a-zA-Z]{1}(?:[\w\-]+\.)+(?:[\w]{2,5}))(?:\:[\d]{1,5})?\/(?:[^\s\/]+\/)*(?:[^\s]+\.(?:jpe?g|gif|png))(?:\?\w+=\w+(?:&\w+=\w+)*)?)@', $string, $matches);
-        if ($size == 'large')
+        if ($size == 'large') {
             return str_replace('_142x142', '', $matches[1]);
-        else if ($size == 'medium')
+        } elseif ($size == 'medium') {
             return $matches[1];
-        else if ($size == 'small')
+        } elseif ($size == 'small')
             ;
+
         return str_replace('_142x142', '_55x55', $matches[1]);
     }
-
 }

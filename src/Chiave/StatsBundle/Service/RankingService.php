@@ -2,8 +2,8 @@
 
 namespace Chiave\StatsBundle\Service;
 
-use Chiave\StatsBundle\Entity\Ranking;
-use Chiave\StatsBundle\Entity\RankingUser;
+use Chiave\StatsBundle\Document\Ranking;
+use Chiave\StatsBundle\Document\RankingUser;
 
 /**
  * class RankingService
@@ -14,7 +14,6 @@ use Chiave\StatsBundle\Entity\RankingUser;
  */
 class RankingService
 {
-
     protected $container;
 
     public function setContainer($container)
@@ -49,7 +48,6 @@ class RankingService
 
         $startDate = $timeMaster->getDayChange(1);
         $endDate = $timeMaster->getDayChange();
-
 
         $query = $em
             ->getRepository('ChiaveErepublikScrobblerBundle:CitizenHistory')
@@ -94,8 +92,8 @@ class RankingService
         return $ranking;
     }
 
-    public function updateRankingUser($rankingUser, $history) {
-
+    public function updateRankingUser($rankingUser, $history)
+    {
         //TODO: It can be almost real-time if connected
         //          with egovFetcher
         //TODO: Move EgovFetcher to separate bundle
@@ -145,4 +143,3 @@ class RankingService
         ;
     }
 }
-

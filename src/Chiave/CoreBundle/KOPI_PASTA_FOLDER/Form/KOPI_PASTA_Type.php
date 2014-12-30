@@ -10,22 +10,22 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 // NAZWATYPU -> podaj ta nazwe co ma plik
 // NAZWAENCJI -> podaj nazwę encji
 
-class NAZWATYPU extends AbstractType {
-
+class KOPI_PASTA_Type extends AbstractType
+{
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder
                 ->add('name', null, array(
                     'attr' => array(
                         'placeholder' => 'Nazwa',
                         'label' => 'Nazwa',
-            )))
+            ), ))
                 ->add('submit', 'submit', array(
-                    'label' => 'Zapisz'
+                    'label' => 'Zapisz',
                         )
         );
     }
@@ -33,7 +33,8 @@ class NAZWATYPU extends AbstractType {
     /**
      * @param OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => 'Chiave\NAZWABUNDLA\Document\NAZWAENCJI',
         ));
@@ -42,8 +43,8 @@ class NAZWATYPU extends AbstractType {
     /**
      * @return string
      */
-    public function getName() {
-//        return 'chiave_gamerbundle_player';
+    public function getName()
+    {
+        //        return 'chiave_gamerbundle_player';
     }
-
 }

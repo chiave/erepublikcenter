@@ -11,8 +11,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  * @MongoDB\HasLifecycleCallbacks
  * @MongoDB\MappedSuperclass
  */
-class Base {
-
+class Base
+{
     /**
      * @MongoDB\Id(strategy="auto")
      */
@@ -33,7 +33,8 @@ class Base {
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -42,14 +43,16 @@ class Base {
      *
      * @return date $createdAt
      */
-    public function getCreatedAt() {
+    public function getCreatedAt()
+    {
         return $this->createdAt;
     }
 
     /**
      * @MongoDB\PrePersist
      */
-    public function setInitialTimestamps() {
+    public function setInitialTimestamps()
+    {
         $this->createdAt = new \DateTime('now');
         $this->updatedAt = new \DateTime('now');
     }
@@ -59,15 +62,16 @@ class Base {
      *
      * @return date $updatedAt
      */
-    public function getUpdatedAt() {
+    public function getUpdatedAt()
+    {
         return $this->updatedAt;
     }
 
     /**
      * @MongoDB\PreUpdate
      */
-    public function setUpdatedTimestamps() {
+    public function setUpdatedTimestamps()
+    {
         $this->updatedAt = new \DateTime('now');
     }
-
 }

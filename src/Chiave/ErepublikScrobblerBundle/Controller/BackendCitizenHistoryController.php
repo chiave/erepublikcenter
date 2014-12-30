@@ -2,16 +2,12 @@
 
 namespace Chiave\ErepublikScrobblerBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Chiave\ErepublikScrobblerBundle\Document\Citizen;
-use Chiave\ErepublikScrobblerBundle\Form\CitizenType;
 
 /**
  * Citizen controller.
@@ -19,8 +15,8 @@ use Chiave\ErepublikScrobblerBundle\Form\CitizenType;
  * @Route("/admin/citizens/histories")
  * @Security("has_role('ROLE_ADMIN')")
  */
-class BackendCitizenHistoryController extends BaseController {
-
+class BackendCitizenHistoryController extends BaseController
+{
     /**
      * Show all citizen changes.
      *
@@ -28,7 +24,8 @@ class BackendCitizenHistoryController extends BaseController {
      * @Method("GET")
      * @Template()
      */
-    public function showAction($citizenId) {
+    public function showAction($citizenId)
+    {
         $em = $this->get('doctrine_mongodb')->getManager();
 
         $citizen = $em
@@ -45,5 +42,4 @@ class BackendCitizenHistoryController extends BaseController {
                 // 'histories' => $histories,
         );
     }
-
 }

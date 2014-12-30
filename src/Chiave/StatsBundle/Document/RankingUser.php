@@ -1,6 +1,6 @@
 <?php
 
-namespace Chiave\StatsBundle\Entity;
+namespace Chiave\StatsBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
@@ -15,12 +15,12 @@ class RankingUser
     private $id;
 
     /**
-     * @ODM\ReferenceMany(targetDocument="Ranking", inversedBy="ranking_id", 
+     * @ODM\ReferenceMany(targetDocument="Ranking", inversedBy="ranking_id",
      */
     private $ranking;
 
     /**
-     * @ODM\ReferenceMany(targetDocument="Chiave\ErepublikScrobblerBundle\Document\Citizen", inversedBy="ranking_id", 
+     * @ODM\ReferenceMany(targetDocument="Chiave\ErepublikScrobblerBundle\Document\Citizen", inversedBy="ranking_id",
      */
     private $citizen;
 
@@ -54,8 +54,8 @@ class RankingUser
      */
     private $updatedAt;
 
-
-    public function __construct($citizen, $ranking) {
+    public function __construct($citizen, $ranking)
+    {
         $this->citizen = $citizen;
         $this->ranking = $ranking;
     }
@@ -73,7 +73,7 @@ class RankingUser
     /**
      * Set nick
      *
-     * @param string $nick
+     * @param  string      $nick
      * @return RankingUser
      */
     public function setNick($nick)
@@ -96,7 +96,7 @@ class RankingUser
     /**
      * Set egovBattles
      *
-     * @param integer $egovBattles
+     * @param  integer     $egovBattles
      * @return RankingUser
      */
     public function setEgovBattles($egovBattles)
@@ -119,7 +119,7 @@ class RankingUser
     /**
      * Set egovHits
      *
-     * @param integer $egovHits
+     * @param  integer     $egovHits
      * @return RankingUser
      */
     public function setEgovHits($egovHits)
@@ -142,7 +142,7 @@ class RankingUser
     /**
      * Set egovInfluence
      *
-     * @param string $egovInfluence
+     * @param  string      $egovInfluence
      * @return RankingUser
      */
     public function setEgovInfluence($egovInfluence)
@@ -165,10 +165,10 @@ class RankingUser
     /**
      * Set ranking
      *
-     * @param \Chiave\StatsBundle\Entity\Ranking $ranking
+     * @param  \Chiave\StatsBundle\Document\Ranking $ranking
      * @return RankingUser
      */
-    public function setRanking(\Chiave\StatsBundle\Entity\Ranking $ranking = null)
+    public function setRanking(\Chiave\StatsBundle\Document\Ranking $ranking = null)
     {
         $this->ranking = $ranking;
 
@@ -178,7 +178,7 @@ class RankingUser
     /**
      * Get ranking
      *
-     * @return \Chiave\StatsBundle\Entity\Ranking
+     * @return \Chiave\StatsBundle\Document\Ranking
      */
     public function getRanking()
     {
@@ -188,7 +188,7 @@ class RankingUser
     /**
      * Set citizen
      *
-     * @param \Chiave\ErepublikScrobblerBundle\Document\Citizen $citizen
+     * @param  \Chiave\ErepublikScrobblerBundle\Document\Citizen $citizen
      * @return RankingUser
      */
     public function setCitizen(\Chiave\ErepublikScrobblerBundle\Document\Citizen $citizen = null)
@@ -211,7 +211,7 @@ class RankingUser
     /**
      * Set createdAt
      *
-     * @param \DateTime $createdAt
+     * @param  \DateTime $createdAt
      * @return Pages
      */
     public function setCreatedAt($createdAt)
@@ -243,7 +243,7 @@ class RankingUser
     /**
      * Set updatedAt
      *
-     * @param \DateTime $updatedAt
+     * @param  \DateTime $updatedAt
      * @return Pages
      */
     public function setUpdatedAt($updatedAt)

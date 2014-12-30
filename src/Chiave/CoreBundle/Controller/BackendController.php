@@ -2,18 +2,14 @@
 
 namespace Chiave\CoreBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 
-class BackendController extends BaseController {
-//    /**
+class BackendController extends BaseController
+{
+    //    /**
 //     * login Action
 //     *
 //     * @Route("/login", name="login")
@@ -48,9 +44,8 @@ class BackendController extends BaseController {
      * @Route("/admin", name="admin_dashboard")
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function dashboardAction() {
-
-
+    public function dashboardAction()
+    {
         // $em = $this->getManager();
         // $citizen = $em
         //     ->getRepository('Chiave\ErepublikScrobblerBundle\Entity\Citizen')
@@ -139,5 +134,4 @@ class BackendController extends BaseController {
                         'ChiaveCoreBundle:Admin:dashboard.html.twig'
         );
     }
-
 }

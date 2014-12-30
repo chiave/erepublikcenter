@@ -3,14 +3,13 @@
 namespace Chiave\ErepublikScrobblerBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @MongoDB\Document
  * @MongoDB\HasLifecycleCallbacks
  */
-class CitizenHistory {
-
+class CitizenHistory
+{
     /**
      * @MongoDB\Id(strategy="auto")
      */
@@ -101,7 +100,6 @@ class CitizenHistory {
      */
     private $militaryUnitName;
 
-
     // *
     //  * MongoDB\Collection
     // // private $achievements;
@@ -158,12 +156,14 @@ class CitizenHistory {
      */
     private $updatedAt;
 
-    public function __construct($citizen, $eday) {
+    public function __construct($citizen, $eday)
+    {
         $this->citizen = $citizen;
         $this->eday = $eday;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->nick;
         // return $this->influence ? $this->influence : '0';
     }
@@ -173,7 +173,8 @@ class CitizenHistory {
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -182,7 +183,8 @@ class CitizenHistory {
      * @param integer $eday
      * @return
      */
-    public function setEday($eday) {
+    public function setEday($eday)
+    {
         $this->eday = $eday;
 
         return $this;
@@ -191,17 +193,19 @@ class CitizenHistory {
     /**
      * @return integer
      */
-    public function getEday() {
+    public function getEday()
+    {
         return $this->eday;
     }
 
     /**
      * Set citizen
      *
-     * @param \Chiave\ErepublikScrobblerBundle\Document\Citizen $citizen
+     * @param  \Chiave\ErepublikScrobblerBundle\Document\Citizen $citizen
      * @return CitizenHistory
      */
-    public function setCitizen(\Chiave\ErepublikScrobblerBundle\Document\Citizen $citizen = null) {
+    public function setCitizen(\Chiave\ErepublikScrobblerBundle\Document\Citizen $citizen = null)
+    {
         $this->citizen = $citizen;
 
         return $this;
@@ -212,17 +216,19 @@ class CitizenHistory {
      *
      * @return \Chiave\ErepublikScrobblerBundle\Document\Citizen
      */
-    public function getCitizen() {
+    public function getCitizen()
+    {
         return $this->citizen;
     }
 
     /**
      * Set nick
      *
-     * @param string $nick
+     * @param  string $nick
      * @return Player
      */
-    public function setNick($nick) {
+    public function setNick($nick)
+    {
         $this->nick = $nick;
 
         return $this;
@@ -233,17 +239,19 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getNick() {
+    public function getNick()
+    {
         return $this->nick;
     }
 
     /**
      * Set avatarUrl
      *
-     * @param string $avatarUrl
+     * @param  string $avatarUrl
      * @return Player
      */
-    public function setAvatarUrl($avatarUrl) {
+    public function setAvatarUrl($avatarUrl)
+    {
         $this->avatarUrl = $avatarUrl;
 
         return $this;
@@ -254,7 +262,8 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getAvatarUrl() {
+    public function getAvatarUrl()
+    {
         return $this->avatarUrl;
     }
 
@@ -263,7 +272,8 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getLargeAvatarUrl() {
+    public function getLargeAvatarUrl()
+    {
         return $this->avatarUrl;
     }
 
@@ -272,12 +282,13 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getMediumAvatarUrl() {
+    public function getMediumAvatarUrl()
+    {
         $filename = $this->avatarUrl;
         $extension_pos = strrpos($filename, '.');
 
-        return substr($filename, 0, $extension_pos) .
-                '_142x142' . substr($filename, $extension_pos);
+        return substr($filename, 0, $extension_pos).
+                '_142x142'.substr($filename, $extension_pos);
     }
 
     /**
@@ -285,21 +296,23 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getSmallAvatarUrl() {
+    public function getSmallAvatarUrl()
+    {
         $filename = $this->avatarUrl;
         $extension_pos = strrpos($filename, '.');
 
-        return substr($filename, 0, $extension_pos) .
-                '_55x55' . substr($filename, $extension_pos);
+        return substr($filename, 0, $extension_pos).
+                '_55x55'.substr($filename, $extension_pos);
     }
 
     /**
      * Set experience
      *
-     * @param string $experience
+     * @param  string $experience
      * @return Player
      */
-    public function setExperience($experience) {
+    public function setExperience($experience)
+    {
         $this->experience = $experience;
         $this->division = $this->getDivision();
 
@@ -311,39 +324,45 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getExperience() {
+    public function getExperience()
+    {
         return $this->experience;
     }
 
-    public function getLevel() {
+    public function getLevel()
+    {
         $levelData = $this->getLevelData($this->getExperience());
 
         return $levelData['level'];
     }
 
-    public function getHp() {
+    public function getHp()
+    {
         $levelData = $this->getLevelData($this->getExperience());
 
         return $levelData['hp'];
     }
 
-    public function getDivision() {
+    public function getDivision()
+    {
         $levelData = $this->getLevelData($this->getExperience());
 
         return $this->countDivision($levelData['level']);
     }
 
-    public function getDivisionText($mode = 'arabic') {
+    public function getDivisionText($mode = 'arabic')
+    {
         return $this->romanNumerals($this->getDivision());
     }
 
     /**
      * Set strength
      *
-     * @param integer $strength
+     * @param  integer $strength
      * @return Player
      */
-    public function setStrength($strength) {
+    public function setStrength($strength)
+    {
         $this->strength = $strength;
 
         return $this;
@@ -354,17 +373,19 @@ class CitizenHistory {
      *
      * @return integer
      */
-    public function getStrength() {
+    public function getStrength()
+    {
         return $this->strength;
     }
 
     /**
      * Set rankPoints
      *
-     * @param string $rankPoints
+     * @param  string $rankPoints
      * @return Player
      */
-    public function setRankPoints($rankPoints) {
+    public function setRankPoints($rankPoints)
+    {
         $this->rankPoints = $rankPoints;
 
         return $this;
@@ -375,23 +396,27 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getRankPoints() {
+    public function getRankPoints()
+    {
         return $this->rankPoints;
     }
 
-    public function getRankLevel() {
+    public function getRankLevel()
+    {
         $rankData = $this->getRankData($this->getRankPoints());
 
         return $rankData['level'];
     }
 
-    public function getRankImageUrl() {
+    public function getRankImageUrl()
+    {
         $rankData = $this->getRankData($this->getRankPoints());
 
         return $rankData['image'];
     }
 
-    public function getRankName() {
+    public function getRankName()
+    {
         $rankData = $this->getRankData($this->getRankPoints());
 
         return $rankData['name'];
@@ -400,10 +425,11 @@ class CitizenHistory {
     /**
      * Set truePatriot
      *
-     * @param string $truePatriot
+     * @param  string         $truePatriot
      * @return CitizenHistory
      */
-    public function setTruePatriot($truePatriot) {
+    public function setTruePatriot($truePatriot)
+    {
         $this->truePatriot = $truePatriot;
 
         return $this;
@@ -414,17 +440,19 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getTruePatriot() {
+    public function getTruePatriot()
+    {
         return $this->truePatriot;
     }
 
     /**
      * Set ebirth
      *
-     * @param \DateTime $ebirth
+     * @param  \DateTime      $ebirth
      * @return CitizenHistory
      */
-    public function setEbirth($ebirth) {
+    public function setEbirth($ebirth)
+    {
         $this->ebirth = $ebirth;
 
         return $this;
@@ -435,17 +463,19 @@ class CitizenHistory {
      *
      * @return \DateTime
      */
-    public function getEbirth() {
+    public function getEbirth()
+    {
         return $this->ebirth;
     }
 
     /**
      * Set country
      *
-     * @param string $country
+     * @param  string         $country
      * @return CitizenHistory
      */
-    public function setCountry($country) {
+    public function setCountry($country)
+    {
         $this->country = $country;
 
         return $this;
@@ -456,17 +486,19 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getCountry() {
+    public function getCountry()
+    {
         return $this->country;
     }
 
     /**
      * Set region
      *
-     * @param string $region
+     * @param  string         $region
      * @return CitizenHistory
      */
-    public function setRegion($region) {
+    public function setRegion($region)
+    {
         $this->region = $region;
 
         return $this;
@@ -477,17 +509,19 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getRegion() {
+    public function getRegion()
+    {
         return $this->region;
     }
 
     /**
      * Set citizenship
      *
-     * @param string $citizenship
+     * @param  string         $citizenship
      * @return CitizenHistory
      */
-    public function setCitizenship($citizenship) {
+    public function setCitizenship($citizenship)
+    {
         $this->citizenship = $citizenship;
 
         return $this;
@@ -498,17 +532,19 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getCitizenship() {
+    public function getCitizenship()
+    {
         return $this->citizenship;
     }
 
     /**
      * Set nationalRank
      *
-     * @param integer $nationalRank
+     * @param  integer        $nationalRank
      * @return CitizenHistory
      */
-    public function setNationalRank($nationalRank) {
+    public function setNationalRank($nationalRank)
+    {
         $this->nationalRank = $nationalRank;
 
         return $this;
@@ -519,17 +555,19 @@ class CitizenHistory {
      *
      * @return integer
      */
-    public function getNationalRank() {
+    public function getNationalRank()
+    {
         return $this->nationalRank;
     }
 
     /**
      * Set partyId
      *
-     * @param integer $partyId
+     * @param  integer        $partyId
      * @return CitizenHistory
      */
-    public function setPartyId($partyId) {
+    public function setPartyId($partyId)
+    {
         $this->partyId = $partyId;
 
         return $this;
@@ -540,17 +578,19 @@ class CitizenHistory {
      *
      * @return integer
      */
-    public function getPartyId() {
+    public function getPartyId()
+    {
         return $this->partyId;
     }
 
     /**
      * Set partyName
      *
-     * @param string $partyName
+     * @param  string         $partyName
      * @return CitizenHistory
      */
-    public function setPartyName($partyName) {
+    public function setPartyName($partyName)
+    {
         $this->partyName = $partyName;
 
         return $this;
@@ -561,17 +601,19 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getPartyName() {
+    public function getPartyName()
+    {
         return $this->partyName;
     }
 
     /**
      * Set militaryUnitId
      *
-     * @param integer $militaryUnitId
+     * @param  integer        $militaryUnitId
      * @return CitizenHistory
      */
-    public function setMilitaryUnitId($militaryUnitId) {
+    public function setMilitaryUnitId($militaryUnitId)
+    {
         $this->militaryUnitId = $militaryUnitId;
 
         return $this;
@@ -582,17 +624,19 @@ class CitizenHistory {
      *
      * @return integer
      */
-    public function getMilitaryUnitId() {
+    public function getMilitaryUnitId()
+    {
         return $this->militaryUnitId;
     }
 
     /**
      * Set militaryUnitName
      *
-     * @param string $militaryUnitName
+     * @param  string         $militaryUnitName
      * @return CitizenHistory
      */
-    public function setMilitaryUnitName($militaryUnitName) {
+    public function setMilitaryUnitName($militaryUnitName)
+    {
         $this->militaryUnitName = $militaryUnitName;
 
         return $this;
@@ -603,17 +647,19 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getMilitaryUnitName() {
+    public function getMilitaryUnitName()
+    {
         return $this->militaryUnitName;
     }
 
     /**
      * Set achievements
      *
-     * @param array $achievements
+     * @param  array          $achievements
      * @return CitizenHistory
      */
-    public function setAchievements($achievements) {
+    public function setAchievements($achievements)
+    {
         $this->achievements = $achievements;
 
         return $this;
@@ -624,17 +670,19 @@ class CitizenHistory {
      *
      * @return array
      */
-    public function getAchievements() {
+    public function getAchievements()
+    {
         return $this->achievements;
     }
 
     /**
      * Set smallBombs
      *
-     * @param integer $smallBombs
+     * @param  integer        $smallBombs
      * @return CitizenHistory
      */
-    public function setSmallBombs($smallBombs) {
+    public function setSmallBombs($smallBombs)
+    {
         $this->smallBombs = $smallBombs;
 
         return $this;
@@ -645,17 +693,19 @@ class CitizenHistory {
      *
      * @return integer
      */
-    public function getSmallBombs() {
+    public function getSmallBombs()
+    {
         return $this->smallBombs;
     }
 
     /**
      * Set bigBombs
      *
-     * @param integer $bigBombs
+     * @param  integer        $bigBombs
      * @return CitizenHistory
      */
-    public function setBigBombs($bigBombs) {
+    public function setBigBombs($bigBombs)
+    {
         $this->bigBombs = $bigBombs;
 
         return $this;
@@ -666,17 +716,19 @@ class CitizenHistory {
      *
      * @return integer
      */
-    public function getBigBombs() {
+    public function getBigBombs()
+    {
         return $this->bigBombs;
     }
 
     /**
      * Set lastUsedMsg
      *
-     * @param string $lastUsedMsg
+     * @param  string         $lastUsedMsg
      * @return CitizenHistory
      */
-    public function setLastUsedMsg($lastUsedMsg) {
+    public function setLastUsedMsg($lastUsedMsg)
+    {
         $this->lastUsedMsg = $lastUsedMsg;
 
         return $this;
@@ -687,17 +739,19 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getLastUsedMsg() {
+    public function getLastUsedMsg()
+    {
         return $this->lastUsedMsg;
     }
 
     /**
      * Set egovBattles
      *
-     * @param integer $egovBattles
+     * @param  integer        $egovBattles
      * @return CitizenHistory
      */
-    public function setEgovBattles($egovBattles) {
+    public function setEgovBattles($egovBattles)
+    {
         $this->egovBattles = $egovBattles;
 
         return $this;
@@ -708,17 +762,19 @@ class CitizenHistory {
      *
      * @return integer
      */
-    public function getEgovBattles() {
+    public function getEgovBattles()
+    {
         return $this->egovBattles;
     }
 
     /**
      * Set egovHits
      *
-     * @param integer $egovHits
+     * @param  integer        $egovHits
      * @return CitizenHistory
      */
-    public function setEgovHits($egovHits) {
+    public function setEgovHits($egovHits)
+    {
         $this->egovHits = $egovHits;
 
         return $this;
@@ -729,17 +785,19 @@ class CitizenHistory {
      *
      * @return integer
      */
-    public function getEgovHits() {
+    public function getEgovHits()
+    {
         return $this->egovHits;
     }
 
     /**
      * Set egovInfluence
      *
-     * @param string $egovInfluence
+     * @param  string         $egovInfluence
      * @return CitizenHistory
      */
-    public function setEgovInfluence($egovInfluence) {
+    public function setEgovInfluence($egovInfluence)
+    {
         $this->egovInfluence = $egovInfluence;
 
         return $this;
@@ -750,17 +808,19 @@ class CitizenHistory {
      *
      * @return string
      */
-    public function getEgovInfluence() {
+    public function getEgovInfluence()
+    {
         return $this->egovInfluence;
     }
 
     /**
      * Set dof
      *
-     * @param smallint $dof
+     * @param  smallint       $dof
      * @return CitizenHistory
      */
-    public function setDof($dof) {
+    public function setDof($dof)
+    {
         $this->dof = $dof;
 
         return $this;
@@ -771,7 +831,8 @@ class CitizenHistory {
      *
      * @return smallint
      */
-    public function getDof() {
+    public function getDof()
+    {
         return $this->dof;
     }
 
@@ -780,7 +841,8 @@ class CitizenHistory {
      *
      * @return smallint
      */
-    public function getDofText() {
+    public function getDofText()
+    {
         if ($this->dof == 1) {
             return 'wydany';
         } elseif ($this->dof == 0) {
@@ -795,10 +857,11 @@ class CitizenHistory {
     /**
      * Set createdAt
      *
-     * @param \DateTime $createdAt
+     * @param  \DateTime $createdAt
      * @return Pages
      */
-    public function setCreatedAt($createdAt) {
+    public function setCreatedAt($createdAt)
+    {
         $this->createdAt = $createdAt;
 
         return $this;
@@ -809,14 +872,16 @@ class CitizenHistory {
      *
      * @return \DateTime
      */
-    public function getCreatedAt() {
+    public function getCreatedAt()
+    {
         return $this->createdAt;
     }
 
     /**
      * @MongoDB\PrePersist
      */
-    public function setInitialTimestamps() {
+    public function setInitialTimestamps()
+    {
         $this->createdAt = new \DateTime('now');
         $this->updatedAt = new \DateTime('now');
     }
@@ -824,10 +889,11 @@ class CitizenHistory {
     /**
      * Set updatedAt
      *
-     * @param \DateTime $updatedAt
+     * @param  \DateTime $updatedAt
      * @return Pages
      */
-    public function setUpdatedAt($updatedAt) {
+    public function setUpdatedAt($updatedAt)
+    {
         $this->updatedAt = $updatedAt;
 
         return $this;
@@ -838,18 +904,21 @@ class CitizenHistory {
      *
      * @return \DateTime
      */
-    public function getUpdatedAt() {
+    public function getUpdatedAt()
+    {
         return $this->updatedAt;
     }
 
     /**
      * @MongoDB\PreUpdate
      */
-    public function setUpdatedTimestamps() {
+    public function setUpdatedTimestamps()
+    {
         $this->updatedAt = new \DateTime('now');
     }
 
-    public function getDate() {
+    public function getDate()
+    {
         $date = $this->getCreatedAt();
 
         $erepZeroDay = new \DateTime('2007-11-20 9:00:00');
@@ -863,7 +932,8 @@ class CitizenHistory {
      *
      * @return integer
      */
-    public function getHit($weaponsQuality = 7) {
+    public function getHit($weaponsQuality = 7)
+    {
         $hit = 10 *
                 (1 + $this->getStrength() / 400) *
                 (1 + $this->getRankLevel() / 5) *
@@ -878,7 +948,8 @@ class CitizenHistory {
      *
      * @return integer
      */
-    public function getEgovQWeaponHit($weaponsQuality = 7) {
+    public function getEgovQWeaponHit($weaponsQuality = 7)
+    {
         $hit = $this->egovHits * $this->getHit($weaponsQuality);
 
         return round($hit);
@@ -889,7 +960,8 @@ class CitizenHistory {
      *
      * @return integer
      */
-    public function getTanksToPay($dofAmount = 1.5) {
+    public function getTanksToPay($dofAmount = 1.5)
+    {
         return ($this->egovHits / 10) * $dofAmount;
     }
 
@@ -898,7 +970,8 @@ class CitizenHistory {
      *
      * @return integer
      */
-    public function getInfluence() {
+    public function getInfluence()
+    {
         if ($this->getCreatedAt()) {
             $endRankPoints = $this->getRankPoints();
             $startRankPoints = $this->citizen
@@ -912,19 +985,21 @@ class CitizenHistory {
         return 0;
     }
 
-    private function countDivision($level) {
+    private function countDivision($level)
+    {
         if ($level >= 70) {
             return 4;
-        } else if ($level >= 50) {
+        } elseif ($level >= 50) {
             return 3;
-        } else if ($level >= 35) {
+        } elseif ($level >= 35) {
             return 2;
         }
 
         return 1;
     }
 
-    private function romanNumerals($num) {
+    private function romanNumerals($num)
+    {
         $n = intval($num);
         $res = '';
 
@@ -941,7 +1016,7 @@ class CitizenHistory {
             'IX' => 9,
             'V' => 5,
             'IV' => 4,
-            'I' => 1);
+            'I' => 1, );
 
         foreach ($roman_numerals as $roman => $number) {
             $matches = intval($n / $number);
@@ -952,13 +1027,15 @@ class CitizenHistory {
         return $res;
     }
 
-    private function getWeaponsFirePower($weaponsQuality) {
+    private function getWeaponsFirePower($weaponsQuality)
+    {
         $weaponsFirepowerArray = $this->getWeaponsFirepowerArray();
 
         return $weaponsFirepowerArray[$weaponsQuality];
     }
 
-    private function getWeaponsFirepowerArray() {
+    private function getWeaponsFirepowerArray()
+    {
         return array(
             1 => 20,
             2 => 40,
@@ -970,7 +1047,8 @@ class CitizenHistory {
         );
     }
 
-    private function getRankData($rankPoints) {
+    private function getRankData($rankPoints)
+    {
         $rankArray = $this->getRankArray();
 
         foreach ($rankArray as $key => $value) {
@@ -983,7 +1061,8 @@ class CitizenHistory {
         return -1;
     }
 
-    private function getRankArray() {
+    private function getRankArray()
+    {
         return array(
             10000000000 => array('level' => 69, 'image' => 'http//wiki.erepublik.com/images/6/63/Icon_rank_Titan%2A%2A%2A.png', 'name' => '69. Titan***'),
             4000000000 => array('level' => 68, 'image' => 'http://wiki.erepublik.com/images/9/96/Icon_rank_Titan%2A%2A.png', 'name' => '68. Titan**'),
@@ -1058,9 +1137,11 @@ class CitizenHistory {
         ;
     }
 
-    private function getLevelData($experience) {
+    private function getLevelData($experience)
+    {
         if ($experience >= 15000) {
             $level = ((int) ($experience / 5000)) + 25;
+
             return array('level' => $level, 'hp' => 500);
         } else {
             $levelArray = $this->getLevelArray();
@@ -1072,7 +1153,8 @@ class CitizenHistory {
         }
     }
 
-    private function getLevelArray() {
+    private function getLevelArray()
+    {
         return array(
             10000 => array('level' => 27, 'hp' => 500),
             7000 => array('level' => 26, 'hp' => 500),
@@ -1104,5 +1186,4 @@ class CitizenHistory {
                 )
         ;
     }
-
 }

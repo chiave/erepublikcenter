@@ -2,12 +2,13 @@
 
 namespace Chiave\ErepublikScrobblerBundle\Libraries;
 
-class CurlUtils {
+class CurlUtils
+{
+    protected $_curl;
 
-  protected $_curl;
-
-  public function __construct() {
-    $options = array(
+    public function __construct()
+    {
+        $options = array(
       CURLOPT_HEADER => false,
       CURLOPT_COOKIE => true,
       CURLOPT_COOKIEFILE => 'app/cache/cookies.txt',
@@ -21,40 +22,45 @@ class CurlUtils {
       CURLOPT_TIMEOUT => 60,
       CURLOPT_VERBOSE => false,
     );
-    $this->_curl = curl_init();
-    curl_setopt_array($this->_curl, $options);
-  }
+        $this->_curl = curl_init();
+        curl_setopt_array($this->_curl, $options);
+    }
 
-  public function __destruct() {
-    curl_close($this->_curl);
-  }
+    public function __destruct()
+    {
+        curl_close($this->_curl);
+    }
 
-  protected function _post($url, $referrer, $data) {
-    $options = array(
+    protected function _post($url, $referrer, $data)
+    {
+        $options = array(
       CURLOPT_URL => $url,
       CURLOPT_REFERER => $referrer,
       CURLOPT_POST => true,
       CURLOPT_POSTFIELDS => $data,
     );
-    curl_setopt_array($this->_curl, $options);
-    $return = curl_exec($this->_curl);
-    if (!$return) {
-      echo curl_error($this->_curl);
-    }
-    return $return;
-  }
+        curl_setopt_array($this->_curl, $options);
+        $return = curl_exec($this->_curl);
+        if (!$return) {
+            echo curl_error($this->_curl);
+        }
 
-  protected function _get($url, $referrer = '') {
-    $options = array(
+        return $return;
+    }
+
+    protected function _get($url, $referrer = '')
+    {
+        $options = array(
       CURLOPT_URL => $url,
       CURLOPT_REFERER => $referrer,
-      CURLOPT_POST => false
+      CURLOPT_POST => false,
     );
-    curl_setopt_array($this->_curl, $options);
-    $return = curl_exec($this->_curl);
-    if (!$return) {
-      echo curl_error($this->_curl);
+        curl_setopt_array($this->_curl, $options);
+        $return = curl_exec($this->_curl);
+        if (!$return) {
+            echo curl_error($this->_curl);
+        }
+
+        return $return;
     }
-    return $return;
-  }
 }

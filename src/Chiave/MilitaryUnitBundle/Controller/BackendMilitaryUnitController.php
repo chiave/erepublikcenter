@@ -3,14 +3,13 @@
 namespace Chiave\MilitaryUnitBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Chiave\MilitaryUnitBundle\Entity\MilitaryUnit;
+use Chiave\MilitaryUnitBundle\Document\MilitaryUnit;
 use Chiave\MilitaryUnitBundle\Form\MilitaryUnitType;
 
 /**
@@ -19,8 +18,8 @@ use Chiave\MilitaryUnitBundle\Form\MilitaryUnitType;
  * @Route("/admin/militaryUnit")
  * @Security("has_role('ROLE_ADMIN')")
  */
-class BackendMilitaryUnitController extends BaseController {
-
+class BackendMilitaryUnitController extends BaseController
+{
     /**
      * Lists all militaryUnits.
      *
@@ -28,7 +27,8 @@ class BackendMilitaryUnitController extends BaseController {
      * @Method("GET")
      * @Template()
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $em = $this->getManager();
 
         $militaryUnits = $em
@@ -101,7 +101,8 @@ class BackendMilitaryUnitController extends BaseController {
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("ChiaveMilitaryUnitBundle:BackendMilitaryUnit:update.html.twig")
      */
-    public function editAction($id) {
+    public function editAction($id)
+    {
         $em = $this->getManager();
 
         $militaryUnit = $em->getRepository('ChiaveMilitaryUnitBundle:MilitaryUnit')->find($id);
@@ -128,7 +129,8 @@ class BackendMilitaryUnitController extends BaseController {
      * @Security("has_role('ROLE_ADMIN')")
      * @Template()
      */
-    public function updateAction(Request $request, $id) {
+    public function updateAction(Request $request, $id)
+    {
         $em = $this->getManager();
 
         $militaryUnit = $em->getRepository('ChiaveMilitaryUnitBundle:MilitaryUnit')->find($id);
@@ -182,11 +184,12 @@ class BackendMilitaryUnitController extends BaseController {
      * Creates a form for militaryUnit.
      *
      * @param MilitaryUnit $militaryUnit
-     * @param string $route
+     * @param string       $route
      *
      * @return \Symfony\Component\Form\Form Form for militaryUnit
      */
-    public function createMUForm(MilitaryUnit $militaryUnit, $route) {
+    public function createMUForm(MilitaryUnit $militaryUnit, $route)
+    {
         return $this->createForm(
                         new MilitaryUnitType(), $militaryUnit, array(
                     'action' => $this->generateUrl(
@@ -197,5 +200,4 @@ class BackendMilitaryUnitController extends BaseController {
                         )
         );
     }
-
 }

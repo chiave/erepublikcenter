@@ -52,7 +52,7 @@ class ErepublikScrobblerCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-    // $output->writeln('<info>foo</info>');            // green text
+        // $output->writeln('<info>foo</info>');            // green text
     // $output->writeln('<comment>foo</comment>');      // yellow text
     // $output->writeln('<question>foo</question>');    // black text on a cyan background
     // $output->writeln('<error>foo</error>');          // white text on a red background

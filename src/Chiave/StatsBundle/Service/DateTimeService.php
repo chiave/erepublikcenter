@@ -11,15 +11,17 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author  Alphanumerix <>
  */
-class DateTimeService {
-
+class DateTimeService
+{
     protected $container;
 
-    public function setContainer($container) {
+    public function setContainer($container)
+    {
         $this->container = $container;
     }
 
-    public function getDayChange($modifyDays = 0) {
+    public function getDayChange($modifyDays = 0)
+    {
         $dayChange = new \DateTime('now');
         $dayChange->modify("-$modifyDays days");
 
@@ -32,7 +34,8 @@ class DateTimeService {
         return $dayChange;
     }
 
-    public function getDateByDay($day) {
+    public function getDateByDay($day)
+    {
         $date = new \DateTime('now');
 
         $erepZeroDay = new \DateTime('2007-11-20 9:00:00');
@@ -41,14 +44,16 @@ class DateTimeService {
         return $this->getDayChange($today - $day);
     }
 
-    public function getDayByDate($date) {
+    public function getDayByDate($date)
+    {
         $erepZeroDay = new \DateTime('2007-11-20 9:00:00');
         $diff = $date->diff($erepZeroDay)->format('%a');
 
         return $erepZeroDay->modify("+$diff days");
     }
 
-    public function getErepublikDate($modifyDays = 0, $response = false) {
+    public function getErepublikDate($modifyDays = 0, $response = false)
+    {
         $date = new \DateTime('now');
         $date->modify("-$modifyDays days");
 
@@ -62,7 +67,8 @@ class DateTimeService {
         return $erepDay;
     }
 
-    public function getRankingTime($modifyWeeks = 0) {
+    public function getRankingTime($modifyWeeks = 0)
+    {
         $date = new \DateTime('now');
         $date->modify("-$modifyWeeks weeks");
 
@@ -75,10 +81,10 @@ class DateTimeService {
         return $result->modify('+9 hours');
     }
 
-    private function getEm() {
+    private function getEm()
+    {
         return $this->container
                         ->get('doctrine_mongodb')
         ;
     }
-
 }

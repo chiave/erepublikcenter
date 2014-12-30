@@ -21,16 +21,16 @@ use Chiave\NAZWABUNDLA\Form\NAZWAGŁÓWNEJENCJIType;
  *
  * @Route("/admin/NAZWAGŁÓWNEJencji")
  */
-class NAZWAKONTROLERAController extends BaseController {
-
+class KOPI_PASTA_Controller extends BaseController
+{
     /**
      * @Route("s", name="NAZWAGŁÓWNEJencji_index")
      * @Method("GET")
      * @Template()
      */
 //     * @Template("ChiaveNAZWABUNDLA:NAZWAKONTROLERA:NAZWAGŁÓWNEJencjiIndex.html.twig")
-    public function indexAction() {
-
+    public function indexAction()
+    {
         $qb = $this->getQb('ChiaveNAZWABUNDLA:NAZWAGŁÓWNEJENCJI');
         $pagination = $this->get('knp_paginator')->paginate(
                 $qb, $this->get('request')->query->get('page', 1), 20
@@ -46,12 +46,12 @@ class NAZWAKONTROLERAController extends BaseController {
           ->andWhere("t.game = :game")
           ->setParameter("game", $game);
          */
-        
+
 //        $query = $em->createQuery("SELECT u FROM MyProject\User u");
 //        $query->setFetchMode("MyProject\User", "address", "EAGER");
 //        $query->execute();
-        
-        
+
+
         return array(
             'pagination' => $pagination,
         );
@@ -63,7 +63,8 @@ class NAZWAKONTROLERAController extends BaseController {
      * @Template()
      */
 //              @Template("ChiaveNAZWABUNDLA:NAZWAKONTROLERA:NAZWAGŁÓWNEJencjiUpdate.html.twig")
-    public function createAction(Request $request) {
+    public function createAction(Request $request)
+    {
         $em = $this->getManager();
         $NAZWAGŁÓWNEJencji = new NAZWAGŁÓWNEJENCJI();
 
@@ -72,12 +73,12 @@ class NAZWAKONTROLERAController extends BaseController {
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $em->persist($NAZWAGŁÓWNEJencji);
             $em->flush();
             $msg = $this->get('translator')
                     ->trans('Akcja wykonana pomyślnie');
             $this->addFlashMsg($msg, 'success');
+
             return $this->redirect($this->generateUrl('NAZWAGŁÓWNEJencji_update', array('id' => $NAZWAGŁÓWNEJencji->getId())));
         }
 
@@ -93,7 +94,8 @@ class NAZWAKONTROLERAController extends BaseController {
      * @Template("ChiaveNAZWABUNDLA:NAZWAKONTROLERA:update.html.twig")
      */
 //     * @Template("ChiaveNAZWABUNDLA:NAZWAKONTROLERA:NAZWAGŁÓWNEJencjiUpdate.html.twig")
-    public function newAction() {
+    public function newAction()
+    {
         $NAZWAGŁÓWNEJencji = new NAZWAGŁÓWNEJENCJI();
 
         $form = $this->createNAZWAGŁÓWNEJENCJIForm($NAZWAGŁÓWNEJencji, 'NAZWAGŁÓWNEJencji_create');
@@ -111,13 +113,12 @@ class NAZWAKONTROLERAController extends BaseController {
      */
 //     * @Template("ChiaveNAZWABUNDLA:NAZWAKONTROLERA:NAZWAGŁÓWNEJencjiUpdate.html.twig")
 
-    public function updateAction(Request $request, $id) {
-
+    public function updateAction(Request $request, $id)
+    {
         $NAZWAGŁÓWNEJencji = $this->getRepo('ChiaveNAZWABUNDLA:NAZWAGŁÓWNEJENCJI')->find($id);
         $form = $this->createNAZWAGŁÓWNEJENCJIForm(
                 $NAZWAGŁÓWNEJencji, 'NAZWAGŁÓWNEJencji_update'
         );
-
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
@@ -143,16 +144,17 @@ class NAZWAKONTROLERAController extends BaseController {
      * Creates a form for NAZWAGŁÓWNEJencji update.
      *
      * @param NAZWAGŁÓWNEJENCJI $NAZWAGŁÓWNEJencji
-     * @param string $route
+     * @param string              $route
      *
      * @return \Symfony\Component\Form\Form Form for visit
      */
-    public function createNAZWAGŁÓWNEJENCJIForm(NAZWAGŁÓWNEJENCJI $NAZWAGŁÓWNEJencji, $route) {
+    public function createNAZWAGŁÓWNEJENCJIForm(NAZWAGŁÓWNEJENCJI $NAZWAGŁÓWNEJencji, $route)
+    {
         return $this->createForm(
                         new NAZWAGŁÓWNEJENCJIType(), $NAZWAGŁÓWNEJencji, array(
                     'action' => $this->generateUrl(
                             $route, array(
-                        'id' => $NAZWAGŁÓWNEJencji->getId()
+                        'id' => $NAZWAGŁÓWNEJencji->getId(),
                             )
                     ),
                     'method' => 'post',
@@ -166,13 +168,13 @@ class NAZWAKONTROLERAController extends BaseController {
      * @Route("/{id}/delete", name="NAZWAGŁÓWNEJencji_delete")
      * @Method("POST")
      */
-    public function deleteAction(Request $request, $id) {
+    public function deleteAction(Request $request, $id)
+    {
         $result = new \stdClass();
         $result->success = false;
         $NAZWAGŁÓWNEJencji = $this->getRepo('ChiaveNAZWABUNDLA:NAZWAGŁÓWNEJENCJI')->find($id);
 
         if ($NAZWAGŁÓWNEJencji) {
-
             $em = $this->getManager();
 
             $em->remove($NAZWAGŁÓWNEJencji);
@@ -182,5 +184,4 @@ class NAZWAKONTROLERAController extends BaseController {
 
         return new JsonResponse($result);
     }
-
 }

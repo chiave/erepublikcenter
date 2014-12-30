@@ -3,29 +3,22 @@
 namespace Chiave\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\SecurityContext;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 //
-use Chiave\SocialEventBundle\Helper\Extension\CommonExtensionHelper;
 
 //use Doctrine\ODM\MongoDB\Query\Builder;
 // use Symfony\Component\DependencyInjection\ContainerAware;
 // extends ContainerAware
-class BaseController extends Controller {
-//    #NOTICE: Common method
+class BaseController extends Controller
+{
+    //    #NOTICE: Common method
 
     /**
-     * @param string $alias
+     * @param  string $alias
      * @return mixed
      */
-    public function get($alias) {
+    public function get($alias)
+    {
         return $this->container->get($alias);
     }
 
@@ -35,7 +28,8 @@ class BaseController extends Controller {
      *
      * @return mixed
      */
-    public function getDoctrine() {
+    public function getDoctrine()
+    {
         if ($this->container->has('doctrine_mongodb')) {
             return $this->container->get('doctrine_mongodb');
         }
@@ -49,7 +43,8 @@ class BaseController extends Controller {
      *
      * @return mixed
      */
-    public function getManager() {
+    public function getManager()
+    {
         return $this->getDoctrine()->getManager();
     }
 
@@ -57,10 +52,11 @@ class BaseController extends Controller {
      * Get repository.
      * No matter if m*sql or mongo is used.
      *
-     * @param string $alias
+     * @param  string $alias
      * @return mixed
      */
-    public function getRepo($alias) {
+    public function getRepo($alias)
+    {
         return $this->getManager()->getRepository($alias);
     }
 
@@ -68,12 +64,13 @@ class BaseController extends Controller {
      * getQb
      * No matter if m*sql or mongo is used.
      *
-     * @param string $alias - alias for class
+     * @param  string                             $alias - alias for class
      * @return Doctrine\ODM\MongoDB\Query\Builder
-     * return \Doctrine\ORM\QueryBuilder instance with an 'a' alias
+     *                                                  return \Doctrine\ORM\QueryBuilder instance with an 'a' alias
      */
-    public function getQb($alias, $queryName = 'a') {
-//        new \Doctrine\ORM\QueryBuilder
+    public function getQb($alias, $queryName = 'a')
+    {
+        //        new \Doctrine\ORM\QueryBuilder
         return $this->getDoctrine()
                         ->getRepository($alias)
                         ->createQueryBuilder($queryName)
@@ -91,9 +88,10 @@ class BaseController extends Controller {
      *      secondary   - gray
      *
      * @param string $message - autotranslated, if translation exists
-     * @param string $type = 'notice'
+     * @param string $type    = 'notice'
      */
-    public function addFlashMsg($message, $type = 'default') {
+    public function addFlashMsg($message, $type = 'default')
+    {
         $this->container
                 ->get('session')
                 ->getFlashBag()
@@ -106,7 +104,8 @@ class BaseController extends Controller {
      *
      * @param string $message - translated, if translation exists
      */
-    public function trans($message) {
+    public function trans($message)
+    {
         return $this->container
                         ->get('translator')
                         ->trans($message)

@@ -13,7 +13,6 @@ use Chiave\ErepublikScrobblerBundle\Document\CitizenHistory;
  */
 class CitizenInfluenceService
 {
-
     protected $container;
 
     public function setContainer($container)
@@ -32,7 +31,7 @@ class CitizenInfluenceService
 
         $endRankPoints = $citizen->getRankPoints();
 
-        if($previousHistory->getRankPoints() == 0) {
+        if ($previousHistory->getRankPoints() == 0) {
             $previousHistory->setRankPoints($endRankPoints);
         }
 
@@ -124,4 +123,3 @@ class CitizenInfluenceService
         ;
     }
 }
-

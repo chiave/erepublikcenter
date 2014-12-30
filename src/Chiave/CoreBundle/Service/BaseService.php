@@ -10,21 +10,23 @@ namespace Chiave\CoreBundle\Service;
  *
  * @author Konrad Mietelski <konrad.mski@gmail.com>
  */
-class BaseService {
-
+class BaseService
+{
     protected $container;
 
-    public function setContainer($container) {
+    public function setContainer($container)
+    {
         $this->container = $container;
     }
 
 //    #NOTICE: Common method
 
     /**
-     * @param string $alias
+     * @param  string $alias
      * @return mixed
      */
-    public function get($alias) {
+    public function get($alias)
+    {
         return $this->container->get($alias);
     }
 
@@ -34,7 +36,8 @@ class BaseService {
      *
      * @return mixed
      */
-    protected function getDoctrine() {
+    protected function getDoctrine()
+    {
         if ($this->container->has('doctrine_mongodb')) {
             return $this->container->get('doctrine_mongodb');
         }
@@ -48,7 +51,8 @@ class BaseService {
      *
      * @return mixed
      */
-    protected function getManager() {
+    protected function getManager()
+    {
         return $this->getManager();
     }
 
@@ -56,10 +60,11 @@ class BaseService {
      * Get repository.
      * No matter if m*sql or mongo is used.
      *
-     * @param string $alias
+     * @param  string $alias
      * @return mixed
      */
-    protected function getRepo($alias) {
+    protected function getRepo($alias)
+    {
         return $this->getManager()->getRepository($alias);
     }
 
@@ -67,11 +72,12 @@ class BaseService {
      * getQb
      * No matter if m*sql or mongo is used.
      *
-     * @param string $alias - alias for class
+     * @param  string                     $alias - alias for class
      * @return \Doctrine\ORM\QueryBuilder instance with an 'a' alias
      */
-    protected function getQb($alias, $queryName = 'a') {
-//        new \Doctrine\ORM\QueryBuilder
+    protected function getQb($alias, $queryName = 'a')
+    {
+        //        new \Doctrine\ORM\QueryBuilder
         return $this->getDoctrine()
                         ->getRepository($alias)
                         ->createQueryBuilder($queryName)
@@ -89,9 +95,10 @@ class BaseService {
      *      secondary   - gray
      *
      * @param string $message - autotranslated, if translation exists
-     * @param string $type = 'notice'
+     * @param string $type    = 'notice'
      */
-    protected function addFlashMsg($message, $type = 'default') {
+    protected function addFlashMsg($message, $type = 'default')
+    {
         $this->container
                 ->get('session')
                 ->getFlashBag()
@@ -104,7 +111,8 @@ class BaseService {
      *
      * @param string $message - translated, if translation exists
      */
-    protected function trans($message) {
+    protected function trans($message)
+    {
         return $this->container
                         ->get('translator')
                         ->trans($message)

@@ -3,7 +3,6 @@
 namespace Chiave\ErepublikScrobblerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -11,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Chiave\ErepublikScrobblerBundle\Document\CitizenHistory;
-use Chiave\ErepublikScrobblerBundle\Form\DofType;
 
 /**
  * BackendDofController.
@@ -19,16 +17,16 @@ use Chiave\ErepublikScrobblerBundle\Form\DofType;
  * @Route("/admin/dof")
  * @Security("has_role('ROLE_ADMIN')")
  */
-class BackendDofController extends BaseController {
-
+class BackendDofController extends BaseController
+{
     /**
      * Lists all citizens.
      *
      * @Route("s/", name="chiave_dofs")
      * @Template()
      */
-    public function indexAction(Request $request) {
-
+    public function indexAction(Request $request)
+    {
         $timeMaster = $this->container->get('date_time');
 
         $todayDay = $timeMaster->getErepublikDate(1);
@@ -62,7 +60,6 @@ class BackendDofController extends BaseController {
                 ->field('eday')->gte((int) $data['startDay'])
                 ->field('eday')->lte((int) $data['endDay'])
         ;
-
 
 //        $qb->addAnd(
 //                $qb->expr()->field('eday')->gte((int) $data['startDay'])
@@ -140,7 +137,8 @@ class BackendDofController extends BaseController {
      * @Method("POST")
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function changeAction(Request $request, $historyId, $status) {
+    public function changeAction(Request $request, $historyId, $status)
+    {
         $result = new \stdClass();
         $result->success = false;
 
@@ -168,8 +166,9 @@ class BackendDofController extends BaseController {
      *
      * @return \Symfony\Component\Form\Form Form
      */
-    public function createSearchForm($data) {
-//        return $this->createFormBuilder(null, array('csrf_protection' => false))
+    public function createSearchForm($data)
+    {
+        //        return $this->createFormBuilder(null, array('csrf_protection' => false))
         return $this->get('form.factory')
                         ->createNamedBuilder(null, 'form', array(), array(
                             'csrf_protection' => false,
@@ -216,8 +215,8 @@ class BackendDofController extends BaseController {
                         ->getForm();
     }
 
-    private function getEm() {
+    private function getEm()
+    {
         return $this->get('doctrine_mongodb')->getManager();
     }
-
 }

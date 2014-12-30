@@ -2,15 +2,12 @@
 
 namespace Chiave\ErepublikScrobblerBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Chiave\ErepublikScrobblerBundle\Document\Citizen;
-use Chiave\ErepublikScrobblerBundle\Form\CitizenType;
 
 /**
  * Citizen controller.
@@ -18,15 +15,15 @@ use Chiave\ErepublikScrobblerBundle\Form\CitizenType;
  * @Route("/super/citizens")
  * @Security("has_role('ROLE_SUPER_ADMIN')")
  */
-class SuperCitizenController extends BaseController {
-
+class SuperCitizenController extends BaseController
+{
     /**
      * @Route("/scrobble", name="super_players_scrobble")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction() {
-
+    public function indexAction()
+    {
         $nf = $this->get('egov_nationalraport_fetcher');
         $nf->fetchBluerosePlayers(100);
         die;
@@ -41,8 +38,8 @@ class SuperCitizenController extends BaseController {
      * @Method("GET")
      * @Template()
      */
-    public function indexNextAction() {
-
+    public function indexNextAction()
+    {
         $nf = $this->get('egov_nationalraport_fetcher');
         $nf->fetchOldHistory(40);
         die;
@@ -57,8 +54,8 @@ class SuperCitizenController extends BaseController {
      * @Method("GET")
      * @Template()
      */
-    public function fixerAction() {
-
+    public function fixerAction()
+    {
         $nf = $this->get('egov_nationalraport_fetcher');
         $nf->fixer();
         die;
@@ -67,5 +64,4 @@ class SuperCitizenController extends BaseController {
 //            'citizens' => $citizens,
 //        );
     }
-
 }

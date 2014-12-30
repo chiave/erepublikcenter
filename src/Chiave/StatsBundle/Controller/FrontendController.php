@@ -2,22 +2,18 @@
 
 namespace Chiave\StatsBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Chiave\CoreBundle\Controller\BaseController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class FrontendController extends BaseController {
-
+class FrontendController extends BaseController
+{
     /**
      * @Route("/zbiorki")
      * @Template()
      */
-    public function gatheringAction() {
+    public function gatheringAction()
+    {
         $em = $this->get('doctrine_mongodb')->getManager();
 
         $militaryUnits = $em
@@ -59,7 +55,8 @@ class FrontendController extends BaseController {
      * @Route("/ranking")
      * @Template()
      */
-    public function rankingAction() {
+    public function rankingAction()
+    {
         $em = $this->getEm();
 
         $lastRankingTime = $this->container->get('date_time')->getRankingTime();
@@ -71,15 +68,15 @@ class FrontendController extends BaseController {
                 )
         ;
 
-        $ranking = $rankings[0];
+        $ranking = reset($rankings);
 
         return array(
             'ranking' => $ranking,
         );
     }
 
-    private function getEm() {
+    private function getEm()
+    {
         return $this->getManager();
     }
-
 }

@@ -3,7 +3,6 @@
 namespace Chiave\ErepublikScrobblerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -18,8 +17,8 @@ use Chiave\ErepublikScrobblerBundle\Form\CitizenType;
  *
  * @Route("/")
  */
-class FrontendCitizenController extends BaseController {
-
+class FrontendCitizenController extends BaseController
+{
     /**
      * Lists all citizens.
      *
@@ -27,7 +26,8 @@ class FrontendCitizenController extends BaseController {
      * @Method("GET")
      * @Template()
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $em = $this->getManager();
 
         $citizens = $em

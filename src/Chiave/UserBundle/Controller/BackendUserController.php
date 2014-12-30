@@ -3,7 +3,6 @@
 namespace Chiave\UserBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -19,8 +18,8 @@ use Chiave\UserBundle\Form\UserType;
  * @Route("/admin/users")
  * @Security("has_role('ROLE_ADMIN')")
  */
-class BackendUserController extends BaseController {
-
+class BackendUserController extends BaseController
+{
     /**
      * Lists all users.
      *
@@ -28,7 +27,8 @@ class BackendUserController extends BaseController {
      * @Method("GET")
      * @Template()
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $em = $this->getManager();
 
         $users = $em
@@ -47,7 +47,8 @@ class BackendUserController extends BaseController {
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("ChiaveUserBundle:BackendUser:update.html.twig")
      */
-    public function createAction(Request $request) {
+    public function createAction(Request $request)
+    {
         $user = new User();
 
         $form = $this->createUserForm(
@@ -98,7 +99,8 @@ class BackendUserController extends BaseController {
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("ChiaveUserBundle:BackendUser:update.html.twig")
      */
-    public function newAction(Request $request) {
+    public function newAction(Request $request)
+    {
         $user = new User();
 
         $form = $this->createUserForm(
@@ -119,7 +121,8 @@ class BackendUserController extends BaseController {
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("ChiaveGalleryBundle:BackendCategories:update.html.twig")
      */
-    public function editAction($id) {
+    public function editAction($id)
+    {
         $em = $this->getManager();
 
         $category = $em->getRepository('ChiaveGalleryBundle:Categories')->find($id);
@@ -146,7 +149,8 @@ class BackendUserController extends BaseController {
      * @Security("has_role('ROLE_ADMIN')")
      * @Template()
      */
-    public function updateAction(Request $request, $id) {
+    public function updateAction(Request $request, $id)
+    {
         $em = $this->getManager();
 
         $category = $em->getRepository('ChiaveGalleryBundle:Categories')->find($id);
@@ -179,7 +183,8 @@ class BackendUserController extends BaseController {
      * @Method("POST")
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function deleteAction(Request $request, $id) {
+    public function deleteAction(Request $request, $id)
+    {
         $result = new \stdClass();
         $result->success = false;
 
@@ -202,12 +207,13 @@ class BackendUserController extends BaseController {
     /**
      * Creates a form for user.
      *
-     * @param User $user
+     * @param User   $user
      * @param string $route
      *
      * @return \Symfony\Component\Form\Form Form for user
      */
-    public function createUserForm(User $user, $route) {
+    public function createUserForm(User $user, $route)
+    {
         return $this->createForm(
                         new UserType(), $user, array(
                     'action' => $this->generateUrl(
@@ -218,5 +224,4 @@ class BackendUserController extends BaseController {
                         )
         );
     }
-
 }

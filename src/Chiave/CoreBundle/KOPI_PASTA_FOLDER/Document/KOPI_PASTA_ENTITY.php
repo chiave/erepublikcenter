@@ -14,25 +14,28 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  * @MongoDB\Document(collection="NAZWAKOLEKCJI")
  * @MongoDB\HasLifecycleCallbacks
  */
-class NAZWAENCJI extends Base {
-
+class KOPI_PASTA_ENTITY extends Base
+{
     /**
      * @MongoDB\Field(type="string")
      */
     protected $name;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return self
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
+
         return $this;
     }
 
@@ -41,7 +44,8 @@ class NAZWAENCJI extends Base {
      *
      * @return string $name
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -50,9 +54,10 @@ class NAZWAENCJI extends Base {
      *
      * @return string $className
      */
-    public function getClassName() {
+    public function getClassName()
+    {
         $className = get_class($this);
+
         return $className;
     }
-
 }

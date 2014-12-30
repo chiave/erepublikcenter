@@ -3,7 +3,6 @@
 namespace Chiave\ErepublikScrobblerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Chiave\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -19,8 +18,8 @@ use Chiave\ErepublikScrobblerBundle\Form\CitizenType;
  * @Route("/admin/citizens")
  * @Security("has_role('ROLE_ADMIN')")
  */
-class BackendCitizenController extends BaseController {
-
+class BackendCitizenController extends BaseController
+{
     /**
      * Lists all citizens.
      *
@@ -28,7 +27,8 @@ class BackendCitizenController extends BaseController {
      * @Method("GET")
      * @Template()
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $em = $this->getEm();
 
         $citizens = $em
@@ -47,7 +47,8 @@ class BackendCitizenController extends BaseController {
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("ChiaveErepublikScrobblerBundle:BackendCitizen:update.html.twig")
      */
-    public function createAction(Request $request) {
+    public function createAction(Request $request)
+    {
         $em = $this->getEm();
 
         $citizen = new Citizen();
@@ -83,7 +84,8 @@ class BackendCitizenController extends BaseController {
      * @Security("has_role('ROLE_ADMIN')")
      * @Template("ChiaveErepublikScrobblerBundle:BackendCitizen:update.html.twig")
      */
-    public function newAction(Request $request) {
+    public function newAction(Request $request)
+    {
         $citizen = new Citizen();
 
         $form = $this->createCitizenForm(
@@ -156,7 +158,8 @@ class BackendCitizenController extends BaseController {
      * @Method("POST")
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function deleteAction(Request $request, $id) {
+    public function deleteAction(Request $request, $id)
+    {
         $result = new \stdClass();
         $result->success = false;
 
@@ -179,12 +182,13 @@ class BackendCitizenController extends BaseController {
     /**
      * Creates a form for citizen.
      *
-     * @param User $citizen
+     * @param User   $citizen
      * @param string $route
      *
      * @return \Symfony\Component\Form\Form Form for citizen
      */
-    public function createCitizenForm(Citizen $citizen, $route) {
+    public function createCitizenForm(Citizen $citizen, $route)
+    {
         return $this->createForm(
                         new CitizenType(), $citizen, array(
                     'action' => $this->generateUrl(
@@ -196,8 +200,8 @@ class BackendCitizenController extends BaseController {
         );
     }
 
-    private function getEm() {
+    private function getEm()
+    {
         return $this->get('doctrine_mongodb')->getManager();
     }
-
 }

@@ -1,4 +1,4 @@
-{% extends "ChiaveCoreBundle::frontendbase.html.twig" %}
+{% extends "::frontendbase.html.twig" %}
 
 {% block body -%}
 
@@ -16,21 +16,28 @@
             </tr>
         </thead>
       <tbody>
-        {% for rankingUser in ranking.rankingUsers %}
-        <tr>
-            <td>{{ loop.index }}</td>
-            <td>
-                {{ rankingUser.nick }}
-                <img src="{{ rankingUser.citizen.history.smallAvatarUrl }}" /><br />
-            </td>
-            <td>{{ rankingUser.citizen.history.division }}</td>
-            <td>{{ rankingUser.egovBattles }}</td>
-            <td>{{ rankingUser.egovHits }}</td>
-            <td>{{ rankingUser.egovInfluence }}</td>
-            <td>TODO: {{ rankingUser.citizen.history.egovQWeaponHit }}</td>
-        </tr>
-        {% endfor %}
-
+        {% if ranking.rankingUsers is defined %}
+            {% for rankingUser in ranking.rankingUsers %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                    {{ rankingUser.nick }}
+                    <img src="{{ rankingUser.citizen.history.smallAvatarUrl }}" /><br />
+                </td>
+                <td>{{ rankingUser.citizen.history.division }}</td>
+                <td>{{ rankingUser.egovBattles }}</td>
+                <td>{{ rankingUser.egovHits }}</td>
+                <td>{{ rankingUser.egovInfluence }}</td>
+                <td>TODO: {{ rankingUser.citizen.history.egovQWeaponHit }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="6" style="text-align: center;">
+                    Wkrótce... :)
+                </td>
+            </tr>
+        {% endif %}
       </tbody>
     </table>
 

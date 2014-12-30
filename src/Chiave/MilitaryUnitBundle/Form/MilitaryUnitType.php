@@ -8,9 +8,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MilitaryUnitType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -20,7 +20,7 @@ class MilitaryUnitType extends AbstractType
             ->add('submit',
                 'submit',
                 array(
-                    'label' => 'Wyślij'
+                    'label' => 'Wyślij',
                 )
             )
         ;
@@ -32,7 +32,7 @@ class MilitaryUnitType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Chiave\MilitaryUnitBundle\Entity\MilitaryUnit'
+            'data_class' => 'Chiave\MilitaryUnitBundle\Document\MilitaryUnit',
         ));
     }
 

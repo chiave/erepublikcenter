@@ -1,6 +1,6 @@
 <?php
 
-namespace Chiave\StatsBundle\Entity;
+namespace Chiave\StatsBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
@@ -14,8 +14,13 @@ class Ranking
      */
     private $id;
 
-    /** 
-     * @ODM\ReferenceMany(targetDocument="RankingUser", mappedBy="ranking", cascade="all", OrderBy({"createdAt" = "DESC"}) ) 
+    /**
+     * @MongoDB\ReferenceMany(
+     *  targetDocument="RankingUser",
+     *  mappedBy="ranking",
+     *  cascade="all",
+     *  sort={"createdAt": "desc"}
+     * )
      */
     private $rankingUsers;
 
@@ -28,7 +33,6 @@ class Ranking
      * @MongoDB\Date
      */
     private $updatedAt;
-
 
     /**
      * Constructor
@@ -51,10 +55,10 @@ class Ranking
     /**
      * Add rankingUsers
      *
-     * @param \Chiave\StatsBundle\Entity\RankingUser $rankingUsers
+     * @param  \Chiave\StatsBundle\Document\RankingUser $rankingUsers
      * @return Ranking
      */
-    public function addRankingUser(\Chiave\StatsBundle\Entity\RankingUser $rankingUsers)
+    public function addRankingUser(\Chiave\StatsBundle\Document\RankingUser $rankingUsers)
     {
         $this->rankingUsers[] = $rankingUsers;
 
@@ -64,9 +68,9 @@ class Ranking
     /**
      * Remove rankingUsers
      *
-     * @param \Chiave\StatsBundle\Entity\RankingUser $rankingUsers
+     * @param \Chiave\StatsBundle\Document\RankingUser $rankingUsers
      */
-    public function removeRankingUser(\Chiave\StatsBundle\Entity\RankingUser $rankingUsers)
+    public function removeRankingUser(\Chiave\StatsBundle\Document\RankingUser $rankingUsers)
     {
         $this->rankingUsers->removeElement($rankingUsers);
     }
@@ -84,7 +88,7 @@ class Ranking
     /**
      * Set createdAt
      *
-     * @param \DateTime $createdAt
+     * @param  \DateTime $createdAt
      * @return Pages
      */
     public function setCreatedAt($createdAt)
@@ -105,7 +109,7 @@ class Ranking
     }
 
     /**
-     * @ORM\PrePersist
+     * @MongoDB\PrePersist
      */
     public function setInitialTimestamps()
     {
@@ -116,7 +120,7 @@ class Ranking
     /**
      * Set updatedAt
      *
-     * @param \DateTime $updatedAt
+     * @param  \DateTime $updatedAt
      * @return Pages
      */
     public function setUpdatedAt($updatedAt)
@@ -137,7 +141,7 @@ class Ranking
     }
 
     /**
-     * @ORM\PreUpdate
+     * @MongoDB\PreUpdate
      */
     public function setUpdatedTimestamps()
     {

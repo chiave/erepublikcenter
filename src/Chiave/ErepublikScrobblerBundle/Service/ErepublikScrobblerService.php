@@ -4,7 +4,6 @@ namespace Chiave\ErepublikScrobblerBundle\Service;
 
 use Chiave\ErepublikScrobblerBundle\Libraries\CurlUtils;
 use Chiave\ErepublikScrobblerBundle\Document\Citizen;
-use Chiave\ErepublikScrobblerBundle\Document\CitizenChange;
 
 /**
  * class ErepublikScrobblerService
@@ -14,63 +13,64 @@ use Chiave\ErepublikScrobblerBundle\Document\CitizenChange;
  * @author  Sowx <>
  * @author  Alphanumerix <>
  */
-class ErepublikScrobblerService extends CurlUtils {
-
+class ErepublikScrobblerService extends CurlUtils
+{
     protected $container;
 
-    public function setContainer($container) {
+    public function setContainer($container)
+    {
         $this->container = $container;
     }
 
-    CONST URL_PROFILE = 'http://www.erepublik.com/en/citizen/profile/';
+    const URL_PROFILE = 'http://www.erepublik.com/en/citizen/profile/';
 
     private $_xpath;
     private $_id;
 
-    public function showRawData($id) {
+    public function showRawData($id)
+    {
         $this->_prepare($id);
 
         if ($this->citizenExists()) {
-            echo '<br>nick: ' . $this->getName();
-            echo '<br>avatar url: ' . $this->getAvatar();
-            echo '<br>avatar large url: ' . $this->getAvatar('large');
-            echo '<br>avatar medium url: ' . $this->getAvatar('medium');
-            echo '<br>avatar small url: ' . $this->getAvatar('small');
-            echo '<br>lvl: ' . $this->getLvl();
-            echo '<br>exp: ' . $this->getExp();
-            echo '<br>str: ' . $this->getStr();
-            echo '<br>rank: ' . $this->getRank();
-            echo '<br>rank points: ' . $this->getRankPoints();
-            echo '<br>rank image url: ' . $this->getRankImage();
-            echo '<br>tp: ' . $this->getTruePatriot();
+            echo '<br>nick: '.$this->getName();
+            echo '<br>avatar url: '.$this->getAvatar();
+            echo '<br>avatar large url: '.$this->getAvatar('large');
+            echo '<br>avatar medium url: '.$this->getAvatar('medium');
+            echo '<br>avatar small url: '.$this->getAvatar('small');
+            echo '<br>lvl: '.$this->getLvl();
+            echo '<br>exp: '.$this->getExp();
+            echo '<br>str: '.$this->getStr();
+            echo '<br>rank: '.$this->getRank();
+            echo '<br>rank points: '.$this->getRankPoints();
+            echo '<br>rank image url: '.$this->getRankImage();
+            echo '<br>tp: '.$this->getTruePatriot();
             echo '<br>';
-            echo '<br>eUrodziny: ' . $this->getEBirthday()->format('Y-m-d');
-            echo '<br>panstwo: ' . $this->getCountry();
-            echo '<br>region: ' . $this->getRegion();
-            echo '<br>obywatelstwo: ' . $this->getCitizenship();
+            echo '<br>eUrodziny: '.$this->getEBirthday()->format('Y-m-d');
+            echo '<br>panstwo: '.$this->getCountry();
+            echo '<br>region: '.$this->getRegion();
+            echo '<br>obywatelstwo: '.$this->getCitizenship();
 
-            echo '<br>national rank: ' . $this->getNationalRank();
+            echo '<br>national rank: '.$this->getNationalRank();
             echo '<br>';
-            echo '<br>partia: ' . $this->getParty();
-            echo '<br>id partii: ' . $this->getPartyId();
-            echo '<br>mu: ' . $this->getMilitaryUnit();
-            echo '<br>id mu: ' . $this->getMilitaryUnitId();
+            echo '<br>partia: '.$this->getParty();
+            echo '<br>id partii: '.$this->getPartyId();
+            echo '<br>mu: '.$this->getMilitaryUnit();
+            echo '<br>id mu: '.$this->getMilitaryUnitId();
             echo '<br>';
             echo '<br>';
             var_dump($this->getMedals());
             echo '<br>';
             echo '<br>';
-            echo '<br>small bombs: ' . $this->getSmallBombs();
-            echo '<br>big bombs: ' . $this->getBigBombs();
-            echo '<br>last used: ' . $this->getLastUsedMsg();
+            echo '<br>small bombs: '.$this->getSmallBombs();
+            echo '<br>big bombs: '.$this->getBigBombs();
+            echo '<br>last used: '.$this->getLastUsedMsg();
         } else {
             echo '<br />User o podanym ID prawdopodobnie nie istnieje.';
         }
     }
 
-    public function updateCitizens() {
-
-
+    public function updateCitizens()
+    {
         $em = $this->getEm();
 
         $citizens = $em
@@ -83,8 +83,8 @@ class ErepublikScrobblerService extends CurlUtils {
         }
     }
 
-    public function updateCitizen($citizenInGameId) {
-
+    public function updateCitizen($citizenInGameId)
+    {
         $em = $this->getEm();
 
         $citizen = $em
@@ -92,9 +92,9 @@ class ErepublikScrobblerService extends CurlUtils {
                 ->findOneByCitizenId($citizenInGameId)
         ;
 
-
         if ($citizen == null) {
             echo '<error>There is no citizen in the system with such id!<error>';
+
             return -1;
         }
 
@@ -103,7 +103,8 @@ class ErepublikScrobblerService extends CurlUtils {
         return $citizen;
     }
 
-    public function updateCitizenHistory($citizen) {
+    public function updateCitizenHistory($citizen)
+    {
         $this->_prepare($citizen->getCitizenId());
 
         if (!$this->citizenExists()) {
@@ -156,7 +157,8 @@ class ErepublikScrobblerService extends CurlUtils {
         return $history;
     }
 
-    public function citizenExists() {
+    public function citizenExists()
+    {
         $query = $this->_xpath->query("//div[@class='citizen_profile_header']/h2");
 
         if ($query && $query->item(0) && $query->item(0)->nodeValue) {
@@ -166,63 +168,73 @@ class ErepublikScrobblerService extends CurlUtils {
         return false;
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return trim($this->_xpath->query("//div[@class='citizen_profile_header']/h2")
                         ->item(0)->nodeValue
         );
     }
 
-    public function getAvatar($size = 'large') {
+    public function getAvatar($size = 'large')
+    {
         return trim($this->_getImage(
                         $this->_xpath->query("//img[@class='citizen_avatar']/@style")
                                 ->item(0)->nodeValue, $size
         ));
     }
 
-    public function getLvl() {
+    public function getLvl()
+    {
         return trim($this->_xpath->query("//div[@class='citizen_experience']/strong[@class='citizen_level']")
                         ->item(0)->nodeValue
         );
     }
 
-    public function getExp() {
+    public function getExp()
+    {
         return trim($this->_formatNumber($this->_getBeforeSlash(
                                 $this->_xpath->query("//div[@class='citizen_experience']/div/p")
                                         ->item(0)->nodeValue
         )));
     }
 
-    public function getStr() {
+    public function getStr()
+    {
         return trim($this->_formatNumber(
                         $this->_xpath->query("//div[@class='citizen_military'][1]/h4")
                                 ->item(0)->nodeValue
         ));
     }
 
-    public function getRank() {
+    public function getRank()
+    {
         return trim($this->_xpath->query("//div[@class='citizen_military'][2]/h4/a")
                         ->item(0)->nodeValue
         );
     }
 
-    public function getRankImage() {
+    public function getRankImage()
+    {
         return trim($this->_xpath->query("//div[@class='citizen_military'][2]/h4/img/@src")
                         ->item(0)->nodeValue
         );
     }
 
-    public function getRankPoints() {
+    public function getRankPoints()
+    {
         return trim($this->_formatNumber($this->_getBeforeSlash(
                                 $this->_xpath->query("//div[@class='citizen_military'][2]/div[@class='stat']/small[2]/strong")
                                         ->item(0)->nodeValue
         )));
     }
 
-    public function getTruePatriot() {
+    public function getTruePatriot()
+    {
         $query = $this->_xpath->query("//div[@class='citizen_military'][3]/div[@class='stat']/small[2]/strong")
                 ->item(0)
         ;
@@ -237,39 +249,46 @@ class ErepublikScrobblerService extends CurlUtils {
         return null;
     }
 
-    public function getEBirthday() {
+    public function getEBirthday()
+    {
         $eBirthday = trim($this->_xpath->query("//div[@class='citizen_info']/div[@class='citizen_second']/p[2]")
                         ->item(0)->nodeValue);
         $dt = new \DateTime();
         $dt = $dt->createFromFormat('M d, Y', $eBirthday);
+
         return $dt;
     }
 
-    public function getCountry() {
+    public function getCountry()
+    {
         return trim($this->_xpath->query("//div[@class='citizen_sidebar']/div[@class='citizen_info']/a[1]")
                         ->item(0)->nodeValue
         );
     }
 
-    public function getRegion() {
+    public function getRegion()
+    {
         return trim($this->_xpath->query("//div[@class='citizen_sidebar']/div[@class='citizen_info']/a[2]")
                         ->item(0)->nodeValue
         );
     }
 
-    public function getCitizenship() {
+    public function getCitizenship()
+    {
         return trim($this->_xpath->query("//div[@class='citizen_sidebar']/div[@class='citizen_info']/a[3]")
                         ->item(0)->nodeValue
         );
     }
 
-    public function getNationalRank() {
+    public function getNationalRank()
+    {
         return trim($this->_xpath->query("//div[@class='citizen_second']/small[3]/strong")
                         ->item(0)->nodeValue
         );
     }
 
-    public function getParty() {
+    public function getParty()
+    {
         $partyString = $this->_xpath->query("//div[@class='citizen_activity']/div[@class='place'][1]/div/span/a")
                 ->item(0)
         ;
@@ -281,7 +300,8 @@ class ErepublikScrobblerService extends CurlUtils {
         return null;
     }
 
-    public function getPartyId() {
+    public function getPartyId()
+    {
         $partyString = $this->_xpath->query("//div[@class='citizen_activity']/div[@class='place'][1]/div/span/a/@href")
                 ->item(0)
         ;
@@ -289,13 +309,15 @@ class ErepublikScrobblerService extends CurlUtils {
         if ($partyString) {
             $party = $partyString->nodeValue;
             preg_match('/(\d+)/', $party, $id);
+
             return $id[1];
         }
 
         return null;
     }
 
-    public function getMilitaryUnit() {
+    public function getMilitaryUnit()
+    {
         $mu = $this->_xpath->query("//div[@class='citizen_activity']/div[@class='place'][2]/div[@class='one_newspaper']/a")
                 ->item(0)
         ;
@@ -307,19 +329,22 @@ class ErepublikScrobblerService extends CurlUtils {
         return null;
     }
 
-    public function getMilitaryUnitId() {
+    public function getMilitaryUnitId()
+    {
         $mu = $this->_xpath->query("//div[@class='citizen_activity']/div[@class='place'][2]/div[@class='one_newspaper']/a/@href")->item(0);
 
         if ($mu) {
             $result = $mu->nodeValue;
             $id = explode('/', $result);
+
             return end($id);
         }
 
         return null;
     }
 
-    public function getMedals() {
+    public function getMedals()
+    {
         $allMedals = $this->_xpath->query("//ul[@id='achievment']/li");
         $medals = array();
         foreach ($allMedals as $medal) {
@@ -328,22 +353,26 @@ class ErepublikScrobblerService extends CurlUtils {
             $amount = $this->_xpath->query(".//div[@class='counter']", $medal);
             $medals[$type] = ($amount->length > 0 ? (int) $amount->item(0)->nodeValue : 0);
         }
+
         return $medals;
     }
 
-    public function getSmallBombs() {
+    public function getSmallBombs()
+    {
         return trim($this->_xpath->query("//div[@class='citizen_mass_destruction']/strong[1]/b")
                         ->item(0)->nodeValue
         );
     }
 
-    public function getBigBombs() {
+    public function getBigBombs()
+    {
         return trim($this->_xpath->query("//div[@class='citizen_mass_destruction']/strong[2]/b")
                         ->item(0)->nodeValue
         );
     }
 
-    public function getLastUsedMsg() {
+    public function getLastUsedMsg()
+    {
         return trim($this->_xpath->query("//div[@class='citizen_mass_destruction']/em")
                         ->item(0)->nodeValue
         );
@@ -351,7 +380,8 @@ class ErepublikScrobblerService extends CurlUtils {
 
     //helpers
 
-    private function getEm() {
+    private function getEm()
+    {
         return $this->container
                         ->get('doctrine_mongodb')
                         ->getManager()
@@ -360,32 +390,37 @@ class ErepublikScrobblerService extends CurlUtils {
 
     //inits
 
-    private function _prepare($id) {
-        $html = $this->_get(self::URL_PROFILE . $id);
+    private function _prepare($id)
+    {
+        $html = $this->_get(self::URL_PROFILE.$id);
         $dom = new \DOMDocument();
         @$dom->loadHTML($html);
         $this->_xpath = new \DOMXPath($dom);
         $this->_id = $id;
     }
 
-    private function _formatNumber($number) {
+    private function _formatNumber($number)
+    {
         return str_replace(',', '', $number);
     }
 
-    private function _getBeforeSlash($string) {
+    private function _getBeforeSlash($string)
+    {
         $temp = explode('/', $string);
+
         return trim($temp[0]);
     }
 
-    private function _getImage($string, $size) {
+    private function _getImage($string, $size)
+    {
         preg_match('@((?:https?\:\/\/)(?:[a-zA-Z]{1}(?:[\w\-]+\.)+(?:[\w]{2,5}))(?:\:[\d]{1,5})?\/(?:[^\s\/]+\/)*(?:[^\s]+\.(?:jpe?g|gif|png))(?:\?\w+=\w+(?:&\w+=\w+)*)?)@', $string, $matches);
-        if ($size == 'large')
+        if ($size == 'large') {
             return str_replace('_142x142', '', $matches[1]);
-        else if ($size == 'medium')
+        } elseif ($size == 'medium') {
             return $matches[1];
-        else if ($size == 'small')
+        } elseif ($size == 'small')
             ;
+
         return str_replace('_142x142', '_55x55', $matches[1]);
     }
-
 }

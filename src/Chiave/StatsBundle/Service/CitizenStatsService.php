@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CitizenStatsService
 {
-
     protected $container;
 
     public function setContainer($container)
@@ -152,4 +151,3 @@ class CitizenStatsService
         ;
     }
 }
-
