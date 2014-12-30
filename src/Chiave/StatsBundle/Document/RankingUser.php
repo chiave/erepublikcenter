@@ -15,12 +15,12 @@ class RankingUser
     private $id;
 
     /**
-     * @ODM\ReferenceMany(targetDocument="Ranking", inversedBy="ranking_id",
+     * @MongoDB\ReferenceMany(targetDocument="Ranking", inversedBy="ranking_id",
      */
     private $ranking;
 
     /**
-     * @ODM\ReferenceMany(targetDocument="Chiave\ErepublikScrobblerBundle\Document\Citizen", inversedBy="ranking_id",
+     * @MongoDB\ReferenceMany(targetDocument="Chiave\ErepublikScrobblerBundle\Document\Citizen", inversedBy="ranking_id",
      */
     private $citizen;
 
@@ -168,7 +168,7 @@ class RankingUser
      * @param  \Chiave\StatsBundle\Document\Ranking $ranking
      * @return RankingUser
      */
-    public function setRanking(\Chiave\StatsBundle\Document\Ranking $ranking = null)
+    public function setRanking(Ranking $ranking = null)
     {
         $this->ranking = $ranking;
 
@@ -232,7 +232,7 @@ class RankingUser
     }
 
     /**
-     * @ORM\PrePersist
+     * @MongoDB\PrePersist
      */
     public function setInitialTimestamps()
     {
@@ -264,7 +264,7 @@ class RankingUser
     }
 
     /**
-     * @ORM\PreUpdate
+     * @MongoDB\PreUpdate
      */
     public function setUpdatedTimestamps()
     {
