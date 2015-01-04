@@ -63,6 +63,7 @@
         </thead>
         <tbody>
             {#         {% for citizen in citizens %}#}
+            {% if results['players'] is defined %}
             {% for result in results['players'] %}
                 <tr>
                     <td>{{ loop.index }}</td>
@@ -141,6 +142,7 @@
                     </tr>
                 {% endfor %}
             {% endfor %}
+            {% endif %}
         </tbody>
     </table>
 

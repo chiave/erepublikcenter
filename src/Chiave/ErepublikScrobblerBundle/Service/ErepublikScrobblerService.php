@@ -175,8 +175,8 @@ class ErepublikScrobblerService extends CurlUtils
 
     public function getName()
     {
-        return trim($this->_xpath->query("//div[@class='citizen_profile_header']/h2")
-                        ->item(0)->nodeValue
+        return trim(
+            $this->_xpath->query("//div[@class='citizen_profile_header']/h2")->item(0)->lastChild->nodeValue
         );
     }
 
@@ -190,37 +190,38 @@ class ErepublikScrobblerService extends CurlUtils
 
     public function getLvl()
     {
-        return trim($this->_xpath->query("//div[@class='citizen_experience']/strong[@class='citizen_level']")
+        return trim($this->_xpath->query("//div[@class='citizen_profile_header']/h2/strong")
                         ->item(0)->nodeValue
         );
     }
 
     public function getExp()
     {
-        return trim($this->_formatNumber($this->_getBeforeSlash(
-                                $this->_xpath->query("//div[@class='citizen_experience']/div/p")
-                                        ->item(0)->nodeValue
-        )));
+        return '0';
+        // return trim($this->_formatNumber($this->_getBeforeSlash(
+        //                         $this->_xpath->query("//div[@class='citizen_experience']/div/p")
+        //                                 ->item(0)->nodeValue
+        // )));
     }
 
     public function getStr()
     {
         return trim($this->_formatNumber(
-                        $this->_xpath->query("//div[@class='citizen_military'][1]/h4")
-                                ->item(0)->nodeValue
+            $this->_xpath->query("//span[@class='military_box_info mb_bottom']")
+                ->item(0)->nodeValue
         ));
     }
 
     public function getRank()
     {
-        return trim($this->_xpath->query("//div[@class='citizen_military'][2]/h4/a")
+        return trim($this->_xpath->query("//span[@class='rank_name_holder']/a")
                         ->item(0)->nodeValue
         );
     }
 
     public function getRankImage()
     {
-        return trim($this->_xpath->query("//div[@class='citizen_military'][2]/h4/img/@src")
+        return trim($this->_xpath->query("//img[@class='regular_rank_img']/@src")
                         ->item(0)->nodeValue
         );
     }
@@ -228,7 +229,7 @@ class ErepublikScrobblerService extends CurlUtils
     public function getRankPoints()
     {
         return trim($this->_formatNumber($this->_getBeforeSlash(
-                                $this->_xpath->query("//div[@class='citizen_military'][2]/div[@class='stat']/small[2]/strong")
+                                $this->_xpath->query("//span[@class='rank_numbers']")
                                         ->item(0)->nodeValue
         )));
     }
